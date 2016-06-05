@@ -6,37 +6,30 @@
 # Dependencies: bash, wget
 
 
+# User scripts/shaders to download
+
+scripts=(
+    # User shaders
+    "https://gist.githubusercontent.com/igv/2364ffa6e81540f29cb7ab4c9bc05b6b/raw/SSimSuperRes.glsl"
+    "https://gist.githubusercontent.com/voltmtr/8b4404b4e23129b226b9e64863d3e28b/raw/LumaSharpenHook.glsl"
+    "https://gist.githubusercontent.com/igv/a015fc885d5c22e6891820ad89555637/raw/CrossBilateral.glsl"
+
+    # User scripts
+    "https://raw.githubusercontent.com/mpv-player/mpv/master/TOOLS/lua/autoload.lua"
+    "https://raw.githubusercontent.com/Argon-/mpv-stats/master/stats.lua"
+    "https://raw.githubusercontent.com/lvml/mpv-plugin-xrandr/master/xrandr.lua"
+)
+
+
 # mpv folder
 
 
-# mpv script dir
 script_dir="$HOME/.config/mpv/scripts"
 
 # Create the directory if it doesn't exist.
 mkdir -p "$script_dir"
 
-
-# Scripts to download
-
-
-# User Shaders
-SSimSuperRes="https://gist.githubusercontent.com/igv/2364ffa6e81540f29cb7ab4c9bc05b6b/raw/SSimSuperRes.glsl"
-LumaSharpenHook="https://gist.githubusercontent.com/voltmtr/8b4404b4e23129b226b9e64863d3e28b/raw/LumaSharpenHook.glsl"
-CrossBilateral="https://gist.githubusercontent.com/igv/a015fc885d5c22e6891820ad89555637/raw/CrossBilateral.glsl"
-
-# User Scripts
-autoload="https://raw.githubusercontent.com/mpv-player/mpv/master/TOOLS/lua/autoload.lua"
-stats="https://raw.githubusercontent.com/Argon-/mpv-stats/master/stats.lua"
-xrandr="https://raw.githubusercontent.com/lvml/mpv-plugin-xrandr/master/xrandr.lua"
-
-# Add all scripts to an array
-scripts=($SSimSuperRes $LumaSharpenHook $CrossBilateral $autoload $stats $xrandr)
-
-
-# Download the scripts
-
 cd "$script_dir" || exit
-
 for script in "${scripts[@]}"; do
     wget -O "${script##*/}" "$script"
 done

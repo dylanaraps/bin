@@ -1,0 +1,30 @@
+#!/bin/bash
+# Clone my github projects
+#
+# Created by Dylan Araps
+#
+# Dependencies: bash. git
+
+
+# Repos to clone
+repos=(
+    "https://github.com/dylanaraps/neofetch"
+    "https://github.com/dylanaraps/ryuuko"
+)
+
+
+# Project folder
+
+project_dir="$HOME/projects"
+
+# Create the directory if it doesn't exist.
+mkdir -p "$project_dir"
+
+cd "$project_dir" || exit
+for project in "${repos[@]}"; do
+    git clone "$project"
+done
+
+# cd back to previous directory.
+cd - 2>/dev/null
+
