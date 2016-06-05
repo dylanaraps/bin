@@ -37,7 +37,7 @@ scripts=($SSimSuperRes $LumaSharpenHook $CrossBilateral $autoload $stats $xrandr
 
 cd "$script_dir" || exit
 
-for script in ${scripts[@]}; do
+for script in "${scripts[@]}"; do
     wget -O "${script##*/}" "$script"
 done
 
