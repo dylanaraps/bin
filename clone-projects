@@ -22,9 +22,9 @@ mkdir -p "$project_dir"
 
 cd "$project_dir" || exit
 for project in "${repos[@]}"; do
-    git clone "$project"
+    git clone "$project" 2>/dev/null
 done
 
 # cd back to previous directory.
-cd - 2>/dev/null
+cd - >/dev/null
 
