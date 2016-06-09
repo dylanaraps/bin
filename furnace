@@ -37,4 +37,8 @@ coal --gtk2 > "$color_dir/colors.rc" && \
 coal --firefox > "$color_dir/colors.css" && \
     printf "%s\n" "[x] Generated Firefox color variables"
 
+# SCSS variables
+coal --scss > "$color_dir/colors.scss" && \
+    printf "%s\n" "[x] Generated SCSS color variables"
+
 
