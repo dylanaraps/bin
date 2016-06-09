@@ -30,8 +30,8 @@ coal --shell > "$color_dir/colors.sh" && \
 
 # GTK2 variables
 coal --gtk2 > "$color_dir/colors.rc" && \
-    printf "%s\n" "[x] Generated GTK2 color variables" && \
-    sed -i "4s|include.*|include \"$HOME/.colors/colors.rc\"|" "$HOME/.themes/yellow/gtk-2.0/gtkrc"
+    sed -i "4s|include.*|include \"$HOME/.colors/colors.rc\"|" "$HOME/.themes/yellow/gtk-2.0/gtkrc" && \
+    printf "%s\n" "[x] Generated GTK2 color variables"
 
 # Firefox css variables
 coal --firefox > "$color_dir/colors.css" && \
@@ -39,6 +39,8 @@ coal --firefox > "$color_dir/colors.css" && \
 
 # SCSS variables
 coal --scss > "$color_dir/colors.scss" && \
+    sed -i "5s|\@import.*|\@import '$HOME/.colors/colors.scss';|" "$HOME/projects/startpage/scss/style.scss" && \
+    sassc "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css" && \
     printf "%s\n" "[x] Generated SCSS color variables"
 
 
