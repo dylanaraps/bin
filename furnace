@@ -35,7 +35,7 @@ coal --gtk2 > "$color_dir/colors.rc" && \
 
 # Firefox css variables
 coal --firefox > "$color_dir/colors.css" && \
-    sed -i "1s|\@import.*|\@import \"file://$HOME/.colors/colors.scss\";|" "$HOME/dotfiles/.config/firefox/userChrome.css" && \
+    sed -i "1s|\@import.*|\@import \"file://$HOME/.colors/colors.css\";|" "$HOME/dotfiles/.config/firefox/userChrome.css" && \
     printf "%s\n" "[x] Generated Firefox color variables"
 
 # SCSS variables
