@@ -40,7 +40,7 @@ coal --firefox > "$color_dir/colors.css" && \
 # SCSS variables
 coal --scss > "$color_dir/colors.scss" && \
     sed -i "5s|\@import.*|\@import '$HOME/.colors/colors.scss';|" "$HOME/projects/startpage/scss/style.scss" && \
-    sassc "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css" && \
+    sassc --style expanded "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css" && \
     printf "%s\n" "[x] Generated SCSS color variables"
 
 
