@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Furnace
+# For use with coal.
+#
+# https://github.com/dylanaraps/coal
+#
+# Created by Dylan Araps
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
+
+# Colorscheme folder
+color_dir="$HOME/.colors"
+
+# Create the directory if it doesn't exist.
+mkdir -p "$color_dir"
+
+# Export coal colors to files in '$HOME/.colors'
+
+# urxvt
+coal --urxvt > "$color_dir/xcolors" && \
+    printf "%s\n" "[x] Generated xcolors"
+
+# Shell Envars
+coal --shell > "$color_dir/colors.sh" && \
+    printf "%s\n" "[x] Generated shell envars"
+
+# GTK2 variables
+coal --gtk2 > "$color_dir/colors.rc" && \
+    printf "%s\n" "[x] Generated GTK2 color variables" && \
+    sed -i "4s|include.*|include \"$HOME/.colors/colors.rc\"|" "$HOME/.themes/yellow/gtk-2.0/gtkrc"
+
+# Firefox css variables
+coal --firefox > "$color_dir/colors.css" && \
+    printf "%s\n" "[x] Generated Firefox color variables"
+
+

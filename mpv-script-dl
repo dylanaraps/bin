@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Download latest versions of mpv user-shaders and user-scripts.
 #
 # Created by Dylan Araps
@@ -17,7 +17,7 @@ scripts=(
     # User scripts
     "https://raw.githubusercontent.com/mpv-player/mpv/master/TOOLS/lua/autoload.lua"
     "https://raw.githubusercontent.com/Argon-/mpv-stats/master/stats.lua"
-    "https://raw.githubusercontent.com/lvml/mpv-plugin-xrandr/master/xrandr.lua"
+    # "https://raw.githubusercontent.com/lvml/mpv-plugin-xrandr/master/xrandr.lua"
 )
 
 
