@@ -10,7 +10,6 @@
 export LC_ALL=C
 export LANG=C
 
-
 open () {
     # Save current mouse position
     mouse_pos="$(xdotool getmouselocation)"
