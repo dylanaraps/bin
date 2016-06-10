@@ -41,5 +41,8 @@ EOF
 # Args
 case "$1" in
     --open) open ;;
-    --install) install > "$HOME/.local/share/applications/ob-menu.desktop" ;;
+    --install)
+        mkdir -p "$HOME/.local/share/applications" 2>/dev/null
+        install > "$HOME/.local/share/applications/ob-menu.desktop"
+    ;;
 esac
