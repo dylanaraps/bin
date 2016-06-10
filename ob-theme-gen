@@ -21,19 +21,19 @@ cat <<-EOF
 # Titlebar colors
 window.active.title.bg.color: $color4
 window.inactive.title.bg.color: $color2
-window.active.label.text.color: $color1
-window.inactive.label.text.color: $color1
-window.*.button.*.image.color: $color1
+window.active.label.text.color: $color7
+window.inactive.label.text.color: $color7
+window.*.button.*.image.color: $color7
 
 # Menu colors
-menu*.bg.color: $color1
+menu*.bg.color: $color7
 menu*.text.color: $color8
-menu.border.color: $color1
-menu.separator.color: $color1
+menu.border.color: $color7
+menu.separator.color: $color7
 
 # Border colors
-window.active.border.color: $color1
-window.inactive.border.color: $color1
+window.active.border.color: $color7
+window.inactive.border.color: $color7
 
 
 # Borders
