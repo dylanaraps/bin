@@ -18,11 +18,10 @@ mon_height="$(xrandr --nograb --current | awk -F ' |x|+' '/primary/ {printf $5}'
 percent=3
 height=$((mon_height * percent / 100))
 
-# Font
-font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
-
 # Run dmenu with variables.
 dmenu_run \
     -nb "$color0" -nf "$color7" -sb "$color7" -sf "$color8" \
-    -h $height -y $((mon_height - height)) -fn "$font"
+    -h $height -y $((mon_height - height)) \
+    -fn "${bar_font:-"-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"}"
+
 
