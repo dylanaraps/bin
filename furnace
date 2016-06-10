@@ -48,6 +48,8 @@ coal --scss > "$color_dir/colors.scss" && \
 
 # Openbox Theme
 ob-theme-gen > "$HOME/.themes/yellow/openbox-3/themerc" && \
+    # Send signal to openbox to reload config files
+    killall -USR2 openbox && \
     printf "%s\n" "[x] Generated Openbox Theme"
 
 
