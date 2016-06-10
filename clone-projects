@@ -10,6 +10,7 @@
 repos=(
     "https://github.com/dylanaraps/neofetch"
     "https://github.com/dylanaraps/ryuuko"
+    "https://github.com/dylanaraps/coal"
 )
 
 
