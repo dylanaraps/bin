@@ -24,7 +24,7 @@ mkdir -p "$project_dir"
 
 cd "$project_dir" || exit
 for project in "${repos[@]}"; do
-    printf "%s\n" "Cloaning $project..."
+    printf "%s\n" "Cloning $project..."
     git clone "$project" 2>/dev/null
 done
 
