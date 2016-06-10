@@ -46,11 +46,17 @@ coal --scss > "$color_dir/colors.scss" && \
     sassc --style expanded "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css" && \
     printf "%s\n" "[x] Generated SCSS color variables"
 
-# Openbox Theme
+# Openbox theme
 ob-theme-gen > "$HOME/.themes/yellow/openbox-3/themerc" && \
     # Send signal to openbox to reload config files
     killall -USR2 openbox && \
     printf "%s\n" "[x] Generated Openbox Theme"
+
+# Tint2 config
+tint2-theme-gen > "$HOME/.config/tint2/tint2rc" && \
+    # Send signal to tint2 to reload config files
+    killall -SIGUSR1 tint2 && \
+    printf "%s\n" "[x] Generated Tint2 config"
 
 
 # }}}
