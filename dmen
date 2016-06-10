@@ -19,8 +19,7 @@ height=$((mon_height * ${bar_percent:-3} / 100))
 
 # Run dmenu with variables.
 dmenu_run \
-    -nb "$color0" -nf "$color7" -sb "$color7" -sf "$color8" \
-    -h $height -y $((mon_height - height)) \
+    -b -nb "$color0" -nf "$color7" -sb "$color7" -sf "$color8" -h $height \
     -fn "${bar_font:-"-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"}"
 
 
