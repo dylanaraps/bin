@@ -17,11 +17,8 @@ open () {
     mouse_pos=${mouse_pos//x:}
     mouse_pos=${mouse_pos//y:}
 
-    # Where to draw the menu
-    menu_pos="1920 1048"
-
     # Move the mouse
-    xdotool mousemove $menu_pos
+    xdotool mousemove ${mon_width:-1920 1048}
     xdotool click 3
     xdotool mousemove $mouse_pos
 }
