@@ -27,5 +27,5 @@ font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
 # Run dmenu with variables.
 dmenu_run \
     -nb "$color0" -nf "$color7" -sb "$color7" -sf "$color8" \
-    -i -h $height -y $((current_mon[1] - height)) -fn "$font"
+    -h $height -y $((current_mon[1] - height)) -fn "$font"
 
