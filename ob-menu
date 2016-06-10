@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Openbox menu
+# Use the right click menu as a start button.
+#
+# Created by Dylan Araps
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
+
+
+open () {
+    # Save current mouse position
+    mouse_pos="$(xdotool getmouselocation)"
+    mouse_pos=${mouse_pos// screen*}
+    mouse_pos=${mouse_pos//x:}
+    mouse_pos=${mouse_pos//y:}
+
+    # Where to draw the menu
+    menu_pos="1920 1048"
+
+    # Move the mouse
+    xdotool mousemove $menu_pos
+    xdotool click 3
+    xdotool mousemove $mouse_pos
+}
+
+install () {
+cat <<EOF
+[Desktop Entry]
+Name=Openbox Menu
+Exec=ob-menu --open
+Icon=$HOME/dotfiles/themes/yellow/hamburger.png
+Terminal=false
+Type=Application
+Categories=System;
+EOF
+}
+
+# Args
+case "$1" in
+    --open) open ;;
+    --install) install > "$HOME/.local/share/applications/ob-menu.desktop" ;;
+esac
