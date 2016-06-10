@@ -24,10 +24,13 @@ mkdir -p "$color_dir"
 
 # urxvt
 coal --urxvt > "$color_dir/xcolors" && \
+    xrdb "$HOME/.Xresources" && \
     printf "%s\n" "[x] Generated xcolors"
 
 # Shell Envars
 coal --shell > "$color_dir/colors.sh" && \
+    # Source colors
+    . "$HOME/.colors/colors.sh" && \
     printf "%s\n" "[x] Generated shell envars"
 
 # GTK2 variables
