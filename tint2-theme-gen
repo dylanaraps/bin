@@ -41,12 +41,12 @@ border_color_pressed = $color7 100
 rounded = 0
 border_width = 1
 border_sides = TBLR
-background_color = $color1 100
-border_color = $color1 100
-background_color_hover = $color1 100
-border_color_hover = $color1 100
-background_color_pressed = $color1 100
-border_color_pressed = $color1 100
+background_color = $color4 100
+border_color = $color4 100
+background_color_hover = $color4 100
+border_color_hover = $color4 100
+background_color_pressed = $color4 100
+border_color_pressed = $color4 100
 
 # Panel
 panel_items = ${tint2_items:-LTSC}

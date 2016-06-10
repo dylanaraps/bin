@@ -8,31 +8,36 @@
 
 # User scripts/shaders to download
 
-scripts=(
-    # User shaders
-    "https://gist.githubusercontent.com/igv/2364ffa6e81540f29cb7ab4c9bc05b6b/raw/SSimSuperRes.glsl"
-    "https://gist.githubusercontent.com/voltmtr/8b4404b4e23129b226b9e64863d3e28b/raw/LumaSharpenHook.glsl"
+shaders=(
     "https://gist.githubusercontent.com/igv/a015fc885d5c22e6891820ad89555637/raw/CrossBilateral.glsl"
+    "https://gist.githubusercontent.com/igv/2364ffa6e81540f29cb7ab4c9bc05b6b/raw/SSimSuperRes.glsl"
+    "https://gist.githubusercontent.com/igv/8a77e4eb8276753b54bb94c1c50c317e/raw/adaptive-sharpen.glsl"
+)
 
-    # User scripts
+scripts=(
     "https://raw.githubusercontent.com/mpv-player/mpv/master/TOOLS/lua/autoload.lua"
     "https://raw.githubusercontent.com/Argon-/mpv-stats/master/stats.lua"
-    # "https://raw.githubusercontent.com/lvml/mpv-plugin-xrandr/master/xrandr.lua"
 )
 
 
-# mpv folder
+# Download the files
 
 
+shader_dir="$HOME/.config/mpv/shaders"
 script_dir="$HOME/.config/mpv/scripts"
 
-# Create the directory if it doesn't exist.
+# Create the directories if they don't exist.
 mkdir -p "$script_dir"
+mkdir -p "$shader_dir"
 
+# Download the shaders
+cd "$shader_dir" || exit
+for shader in "${shaders[@]}"; do
+    wget -O "${shader##*/}" "$shader"
+done
+
+# Download the scripts
 cd "$script_dir" || exit
 for script in "${scripts[@]}"; do
     wget -O "${script##*/}" "$script"
 done
-
-# cd back to previous directory.
-cd - >/dev/null
