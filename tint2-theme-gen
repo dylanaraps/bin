@@ -47,7 +47,7 @@ background_color_pressed = $color1 100
 border_color_pressed = $color1 100
 
 # Panel
-panel_items = TSC
+panel_items = LTSC
 panel_size = 100% 3%
 panel_margin = 0 0
 panel_padding = 0 0 0
@@ -123,15 +123,16 @@ systray_icon_asb = 50 0 0
 systray_monitor = 1
 
 # Launcher
-launcher_padding = 2 0 2
+launcher_padding = 15 8 2
 launcher_background_id = 1
 launcher_icon_background_id = 1
 launcher_icon_size = 24
-launcher_icon_asb = 100 0 0
+launcher_icon_asb = 100 100 100
 launcher_icon_theme = UltraFlatIcons
 launcher_icon_theme_override = 0
 startup_notifications = 1
 launcher_tooltip = 1
+launcher_item_app = ~/.local/share/applications/ob-menu.desktop
 
 # Clock
 time1_format = %a %d %b %l:%M %p

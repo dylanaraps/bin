@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# dmen
+# Dmenu launch script
+#
+# Created by Dylan Araps
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
+
+# Get current monitor
+current_mon="$(xrandr --nograb --current | awk '/primary/ {printf $4}')"
+current_mon=${current_mon//x/ }
+current_mon=${current_mon//+/ }
+current_mon=($current_mon)
+
+# Height
+# Bar will be 3% the monitor height
+percent=3
+height=$((current_mon[1] * percent / 100))
+
+# Font
+font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
+
+# Run dmenu with variables.
+dmenu_run \
+    -nb "$color0" -nf "$color7" -sb "$color7" -sf "$color8" \
+    -i -h $height -y $((current_mon[1] - height)) -fn "$font"
+
