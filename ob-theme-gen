@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Openbox theme gen
+# Generate an openbox theme using variables for
+# the colors.
+#
+# Created by Dylan Araps
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
+
+# Config
+cat <<-EOF
+# Dylan's Openbox Theme
+
+
+# Colors
+
+# Titlebar colors
+window.active.title.bg.color: $color4
+window.inactive.title.bg.color: $color2
+window.active.label.text.color: $color1
+window.inactive.label.text.color: $color1
+window.*.button.*.image.color: $color1
+
+# Menu colors
+menu*.bg.color: $color1
+menu*.text.color: $color8
+menu.border.color: $color1
+menu.separator.color: $color1
+
+# Border colors
+window.active.border.color: $color1
+window.inactive.border.color: $color1
+
+
+# Borders
+
+# Hide bloat
+window.handle.width: 0
+window.client.padding.width: 0
+
+# Set border width
+border.width: ${border_width:-0}
+
+
+# Title
+
+# Add some padding
+padding.width: ${titlebar_padding:-7}
+padding.height: ${titlebar_padding:-7}
+
+# Set title colors
+window.*.title.bg: Solid Flat
+window.*.*.bg: Parentrelative
+
+window.label.text.justify: center
+
+
+# Menu
+
+# Set menu colors
+menu.*.bg: Solid Flat
+
+# Add some padding
+menu.border.width: 20
+
+# Add some submenu padding
+menu.overlap.x: -30
+menu.overlap.y: 0
+
+# Add padding between items
+menu.separator.padding.height: 3
+EOF

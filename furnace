@@ -18,7 +18,9 @@ color_dir="$HOME/.colors"
 # Create the directory if it doesn't exist.
 mkdir -p "$color_dir"
 
-# Export coal colors to files in '$HOME/.colors'
+
+# Export coal colors to files in '$HOME/.colors' {{{
+
 
 # urxvt
 coal --urxvt > "$color_dir/xcolors" && \
@@ -43,5 +45,12 @@ coal --scss > "$color_dir/colors.scss" && \
     sed -i "5s|\@import.*|\@import '$HOME/.colors/colors.scss';|" "$HOME/projects/startpage/scss/style.scss" && \
     sassc --style expanded "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css" && \
     printf "%s\n" "[x] Generated SCSS color variables"
+
+# Openbox Theme
+ob-theme-gen > "$HOME/.themes/yellow/openbox-3/themerc" && \
+    printf "%s\n" "[x] Generated Openbox Theme"
+
+
+# }}}
 
 
