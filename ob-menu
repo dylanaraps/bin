@@ -5,6 +5,8 @@
 # Use the right click menu as a start button.
 #
 # Created by Dylan Araps
+#
+# Dependencies: bash, xdotool, cat, mkdir
 
 # Speed up script by not using unicode
 export LC_ALL=C

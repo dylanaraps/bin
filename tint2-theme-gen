@@ -6,6 +6,8 @@
 # the colors.
 #
 # Created by Dylan Araps
+#
+# Dependencies: bash, cat
 
 # Speed up script by not using unicode
 export LC_ALL=C

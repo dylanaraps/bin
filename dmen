@@ -5,6 +5,8 @@
 # Dmenu launch script
 #
 # Created by Dylan Araps
+#
+# Dependencies: bash, xrandr, awk, dmenu2
 
 # Speed up script by not using unicode
 export LC_ALL=C
