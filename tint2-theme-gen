@@ -48,7 +48,7 @@ border_color_pressed = $color1 100
 
 # Panel
 panel_items = LTSC
-panel_size = 100% 3%
+panel_size = 100% ${bar_percent:-3}%
 panel_margin = 0 0
 panel_padding = 0 0 0
 panel_background_id = 1

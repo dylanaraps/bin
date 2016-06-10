@@ -17,8 +17,11 @@ open () {
     mouse_pos=${mouse_pos//x:}
     mouse_pos=${mouse_pos//y:}
 
+    # Get bar height
+    height=$((${mon_height:-1080} * ${bar_percent:-3} / 100))
+
     # Move the mouse
-    xdotool mousemove ${mon_width:-1920 1048}
+    xdotool mousemove ${mon_width:-1920} $((${mon_height:-1080} - height))
     xdotool click 3
     xdotool mousemove $mouse_pos
 }
