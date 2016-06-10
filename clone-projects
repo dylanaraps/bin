@@ -3,8 +3,11 @@
 #
 # Created by Dylan Araps
 #
-# Dependencies: bash. git
+# Dependencies: bash, git
 
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
 
 # Repos to clone
 repos=(
