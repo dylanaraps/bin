@@ -120,7 +120,7 @@ systray_background_id = 1
 systray_sort = ascending
 systray_icon_size = 24
 systray_icon_asb = 50 0 0
-systray_monitor = 2
+systray_monitor = 1
 
 # Launcher
 launcher_padding = 2 0 2
