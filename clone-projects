@@ -11,6 +11,7 @@ repos=(
     "https://github.com/dylanaraps/neofetch"
     "https://github.com/dylanaraps/ryuuko"
     "https://github.com/dylanaraps/coal"
+    "https://github.com/dylanaraps/startpage"
 )
 
 
@@ -23,6 +24,7 @@ mkdir -p "$project_dir"
 
 cd "$project_dir" || exit
 for project in "${repos[@]}"; do
+    printf "%s\n" "Cloaning $project..."
     git clone "$project" 2>/dev/null
 done
 
