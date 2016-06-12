@@ -57,10 +57,10 @@ ob-theme-gen > "$HOME/.themes/yellow/openbox-3/themerc" && \
 
 # Tint2 config
 tint2-theme-gen > "$HOME/.config/tint2/tint2rc" && \
-    # Send signal to tint2 to reload config files
-    killall -SIGUSR1 tint2 && \
+    # Relaunch tint2.
+    pkill tint2
+    tint2 >/dev/null 2>&1 &
     printf "%s\n" "[x] Generated Tint2 config"
-
 
 # }}}
 
