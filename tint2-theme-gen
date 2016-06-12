@@ -15,6 +15,11 @@ export LANG=C
 
 # Config
 cat <<EOF
+# Dylan's tint2 config
+#
+# Generated using tint2-theme-gen.
+# https://github.com/dylanaraps/bin/blob/master/tint2-theme-gen
+
 # Backgrounds
 rounded = 0
 border_width = 0

@@ -16,6 +16,9 @@ export LANG=C
 # Config
 cat <<-EOF
 # Dylan's Openbox Theme
+#
+# Generated using ob-theme-gen.
+# https://github.com/dylanaraps/bin/blob/master/ob-theme-gen
 
 
 # Colors
