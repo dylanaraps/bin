@@ -15,6 +15,12 @@ export LANG=C
 # Source colors
 . "$HOME/.colors/colors.sh"
 
+# Set primary monitor
+case "$HOSTNAME" in
+    "Winter") xrandr --output eDP-1 --primary ;;
+    *) xrandr --output DVI-0 --primary ;;
+esac
+
 # Get current monitor height
 mon_height="$(xrandr --nograb --current | awk -F ' |x|+' '/primary/ {printf $5}')"
 
