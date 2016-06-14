@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+# set -x
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Coal
+# https://github.com/dylanaraps/coal
+#
+# A script written in pure bash that takes a list of
+# colors and outputs them in various formats for use in other programs.
+#
+# Created by Dylan Araps
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=C
+
+# Default colors to use if '--colors' isn't passed.
+# https://github.com/dylanaraps/ryuuko
+c=(
+    '#232c33'
+    '#99736e'
+    '#78a090'
+    '#bfb7a1'
+    '#7c9fa6'
+    '#BF9C86'
+    '#99BFBA'
+    '#f0f0f0'
+    '#70838c'
+    '#99736e'
+    '#78a090'
+    '#bfb7a1'
+    '#7c9fa6'
+    '#BF9C86'
+    '#99BFBA'
+    '#f0f0f0'
+)
+
+# Color functions {{{
+
+
+# Terminals {{{
+
+
+# Xresources {{{
+
+xresources() {
+    printf "%s\n" "*.foreground:  ${c[15]:-${c[0]}}"
+    printf "%s\n" "*.background:  ${c[0]}"
+    printf "%s\n" "*.cursorColor: ${c[15]:-${c[0]}}"
+
+    for col in "${c[@]}"; do
+        printf "%s\n" "*.color${num:-0}:${space:-  }    ${col}"
+        num=$((num+=1))
+
+        # Align the colors
+        [ "${#num}" == 2 ] && space=" "
+    done
+}
+
+# }}}
+
+# iTerm2 Theme {{{
+
+iterm() {
+    printf "%s\n" "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    printf "%s\n" "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+    printf "%s\n" "<plist version=\"1.0\">"
+    printf "%s\n" "<dict>"
+
+    div () {
+        if [ "${1:-0}" -eq 255 ]; then
+            printf "%s\n" "1.0"
+        else
+            printf "%s\n" "0.$((${1:-0}0000000000000000/255))"
+        fi
+    }
+
+    for col in "${c[@]}"; do
+        red=$(div $((16#${col:1:2})))
+        green=$(div $((16#${col:3:2})))
+        blue=$(div $((16#${col:5:2})))
+
+        printf "%s\n" "        <key>Ansi ${num:-0} Color</key>"
+        printf "%s\n" "        <dict>"
+        printf "%s\n" "                <key>Blue Component</key>"
+        printf "%s\n" "                <real>$blue</real>"
+        printf "%s\n" "                <key>Green Component</key>"
+        printf "%s\n" "                <real>$green</real>"
+        printf "%s\n" "                <key>Red Component</key>"
+        printf "%s\n" "                <real>$red</real>"
+        printf "%s\n" "        </dict>"
+
+        num=$((num+=1))
+    done
+
+    printf "%s\n" "</dict>"
+    printf "%s\n" "</plist>"
+}
+
+# }}}
+
+# Termite {{{
+
+termite() {
+    printf "%s\n" "[colors]"
+    printf "%s\n" "foreground      = ${c[15]:-${c[0]}}"
+    printf "%s\n" "foreground_bold = ${c[15]:-${c[0]}}"
+    printf "%s\n" "cursor          = ${c[15]:-${c[0]}}"
+    printf "%s\n" "background      = ${c[0]}"
+
+    for col in "${c[@]}"; do
+        printf "%s\n" "color${num:-0}${space:-  }= ${col}"
+        num=$((num+=1))
+
+        # Align the colors
+        [ "${#num}" == 2 ] && space=" "
+    done
+}
+
+# }}}
+
+# Xfce4-terminal {{{
+
+xfce4-terminal() {
+    printf "%s\n" "[Configuration]"
+    printf "%s\n" "ColorCursor=${c[15]:-${c[0]}}"
+    printf "%s\n" "ColorForeground=${c[15]:-${c[0]}}"
+    printf "%s\n" "ColorBackground=${c[0]}"
+    printf "%s" "ColorPalette="
+
+    for col in "${c[@]}"; do
+        printf "%s" "${col};"
+    done
+
+    printf "%s\n"
+}
+
+# }}}
+
+
+# }}}
+
+# Shell Variables {{{
+
+shell() {
+    for col in "${c[@]}"; do
+        printf "%s\n" "export color${num:-0}='${col}'"
+        num=$((num+=1))
+    done
+}
+
+# }}}
+
+# GTK2 Theme {{{
+
+gtk2() {
+    for col in "${c[@]}"; do
+        printf "%s\n" "gtk_color_scheme = \"color_${num:-0}:${space:-  }${col}\""
+        num=$((num+=1))
+
+        # Align the colors
+        [ "${#num}" == 2 ] && space=" "
+    done
+}
+
+# }}}
+
+# Firefox CSS {{{
+
+firefox() {
+    printf "%s\n" "/* Color variables */"
+    printf "%s\n" ":root {"
+
+    for col in "${c[@]}"; do
+        printf "%s\n" "    --color${num:-0}:${space:-  }${col};"
+        num=$((num+=1))
+
+        # Align the colors
+        [ "${#num}" == 2 ] && space=" "
+    done
+
+    printf "%s\n" "}"
+}
+
+# }}}
+
+# SCSS variables {{{
+
+scss() {
+    for col in "${c[@]}"; do
+        printf "%s\n" "\$color${num:-0}:${space:-  }${col};"
+        num=$((num+=1))
+
+        # Align the colors
+        [ "${#num}" == 2 ] && space=" "
+    done
+}
+
+# }}}
+
+
+# }}}
+
+
+# Args {{{
+
+# If args are empty.
+if [ $# -eq 0 ]; then
+    printf "%s\n" "Coal must be run with flags."
+    exit 1
+fi
+
+while [ "$1" ]; do
+    case $1 in
+        --colors) c=(${@//--*}) ;;
+        --shell) shell ;;
+        --gtk2) gtk2 ;;
+        --firefox) firefox ;;
+        --scss) scss ;;
+
+        # Terminals
+        --urxvt | --xterm) xresources ;;
+        --iterm) iterm ;;
+        --termite) termite ;;
+        --xfce4-terminal) xfce4-terminal ;;
+    esac
+
+    shift
+done
+
+# }}}

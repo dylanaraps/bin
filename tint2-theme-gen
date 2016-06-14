@@ -46,12 +46,12 @@ border_color_pressed = $color7 100
 rounded = 0
 border_width = 1
 border_sides = TBLR
-background_color = $color4 100
-border_color = $color4 100
-background_color_hover = $color4 100
-border_color_hover = $color4 100
-background_color_pressed = $color4 100
-border_color_pressed = $color4 100
+background_color = $color7 100
+border_color = $color7 100
+background_color_hover = $color7 100
+border_color_hover = $color7 100
+background_color_pressed = $color7 100
+border_color_pressed = $color7 100
 
 # Panel
 panel_items = ${tint2_items:-LTSC}
@@ -107,7 +107,7 @@ task_font = ${bar_font:-lemon 10}
 task_tooltip = 1
 task_font_color = $color7 100
 task_normal_font_color = $color0 100
-task_active_font_color = $color7 100
+task_active_font_color = $color8 100
 task_urgent_font_color = $color0 100
 task_iconified_font_color = $color7 100
 task_background_id = 1

@@ -24,11 +24,12 @@ cat <<-EOF
 # Colors
 
 # Titlebar colors
-window.active.title.bg.color: $color4
-window.inactive.title.bg.color: $color2
+window.active.title.bg.color: $color5
+window.inactive.title.bg.color: $color1
 window.active.label.text.color: $color7
 window.inactive.label.text.color: $color7
-window.*.button.*.image.color: $color7
+window.active.button.*.image.color: $color7
+window.inactive.button.*.image.color: $color7
 
 # Menu colors
 menu*.bg.color: $color7
