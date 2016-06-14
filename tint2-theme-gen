@@ -55,7 +55,7 @@ border_color_pressed = $color7 100
 
 # Panel
 panel_items = ${tint2_items:-LTSC}
-panel_size = 100% ${bar_percent:-3}%
+panel_size = 100% ${bar_size}px
 panel_margin = 0 0
 panel_padding = 0 0 0
 panel_background_id = 1
@@ -130,7 +130,7 @@ systray_icon_asb = 50 0 0
 systray_monitor = 1
 
 # Launcher
-launcher_padding = 15 8 2
+launcher_padding = 15 4 2
 launcher_background_id = 1
 launcher_icon_background_id = 1
 launcher_icon_size = 24
