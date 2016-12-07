@@ -2,14 +2,16 @@
 #
 # Dylan's Lemonbar script
 #
+# Created by Dylan Araps.
+#
 # Depends on: xorg-xrandr, lemonbar, date
 
 # Options
 width="200"
 height="30"
 font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
-bg="#FFF"
-fg="#000"
+bg="#f0f0f0"
+fg="#2b3635"
 
 # Dynamic monitor stuff
 resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1}')"

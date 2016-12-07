@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Change pulseaudio volume and send a notification.
+#
+# Created by Dylan Araps.
+#
+# Depends on: pactl, libnotify (patched with id support)
+case "$1" in
+    "up")   pactl set-sink-volume 1 +5% ;;
+    "down") pactl set-sink-volume 1 -5% ;;
+    "mute") pactl set-sink-mute 1 toggle ;;
+    *) printf "%s\n" "Usage: ./vol up, ./vol down"; exit ;;
+esac
+
+vol="$(amixer -c 1 -M -D pulse get Master | grep -o -E [[:digit:]]+%)"
+
+# The '-r' flag is from a patched version of 'libnotify'.
+# '-r' lets you replace notifications using the same id.
+notify-send -t 1 -r 112 "Volume: ${vol/$'\n'*}"
+
