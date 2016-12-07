@@ -95,6 +95,12 @@ get_args() {
     done
 }
 
+reload_env() {
+    i3-msg reload >/dev/null &
+    pkill bar &
+    bar "${colors[15]}" "${colors[0]}" &
+}
+
 main () {
     get_args "$@"
     get_wall
@@ -103,7 +109,7 @@ main () {
     send_sequences
     feh --bg-fill "$wal" &
     set_xresources
-    i3-msg reload >/dev/null &
+    reload_env
 }
 
 main "$@"

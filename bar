@@ -10,8 +10,6 @@
 width="200"
 height="30"
 font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
-bg="#f0f0f0"
-fg="#2b3635"
 
 # Get monitor width so we can center the bar.
 resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1; exit}')"
@@ -26,7 +24,7 @@ while :; do
 done |\
 
 # Launch lemonbar
-lemonbar -b -d -g "$geometry" -f "$font" -B "$bg" -F "$fg" -n "bar" # &
+lemonbar -b -d -g "$geometry" -f "$font" -B "${1:-\#f0f0f0}" -F "${2:-\#000000}" -n "bar" # &
 
 # Move lemonbar down a layer since '-d' on i3 has an always on top side-effect.
 # sleep 1
