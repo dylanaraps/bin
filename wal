@@ -6,6 +6,7 @@
 
 # Options
 wal_dir="$HOME/Pictures/Wallpapers"
+temp_dir="$HOME/.cache/wal/schemes"
 newline=$'\n'
 
 get_wall() {
@@ -16,7 +17,16 @@ get_wall() {
 }
 
 get_colors() {
-    colors=($(convert "${wal}"  +dither -colors 16 -unique-colors txt:- | awk -F '# |  ' '!/enumer/ {print $2}'))
+    temp_file="${temp_dir}/${wal//\/}"
+
+    if [[ -f "$temp_file" ]]; then
+        colors=($(< "$temp_file"))
+    else
+        colors=($(convert "${wal}"  +dither -colors 16 -unique-colors txt:- | grep -E -o " \#.{6}"))
+
+        mkdir -p "${temp_dir}"
+        echo "${colors[@]}" > "$temp_file"
+    fi
 }
 
 set_color() {
@@ -31,6 +41,7 @@ set_special() {
     case "$1" in
         10) x_colors+="*foreground: ${2}${newline}" ;;
         11) x_colors+="*background: ${2}${newline}" ;;
+        12) x_colors+="*cursor: ${2}${newline}" ;;
     esac
 }
 
@@ -63,8 +74,9 @@ create_sequences() {
 send_sequences() {
     create_sequences
 
+
     for term in /dev/pts/[0-9]*; do
-        printf "%b" "$sequences" > "$term"
+        printf "%b" "$sequences" > "$term" &
     done
 }
 
@@ -73,14 +85,25 @@ set_xresources() {
     xrdb -merge >/dev/null 2>%1 <<< "$x_colors"
 }
 
+get_args() {
+    while [[ "$1" ]]; do
+        case "$1" in
+            "-c") rm -rf "$temp_dir" ;;
+        esac
+
+        shift
+    done
+}
+
 main () {
+    get_args "$@"
     get_wall
-    get_colors
+    time get_colors
     create_sequences
     send_sequences
     feh --bg-fill "$wal" &
     set_xresources
-    i3-msg reload &
+    i3-msg reload >/dev/null &
 }
 
-main
+main "$@"
