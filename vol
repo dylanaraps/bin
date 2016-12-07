@@ -6,9 +6,9 @@
 #
 # Depends on: pactl, libnotify (patched with id support)
 case "$1" in
-    "up")   pactl set-sink-volume 1 +5% ;;
-    "down") pactl set-sink-volume 1 -5% ;;
-    "mute") pactl set-sink-mute 1 toggle ;;
+    "up")   pactl set-sink-volume 0 +5% ;;
+    "down") pactl set-sink-volume 0 -5% ;;
+    "mute") pactl set-sink-mute 0 toggle ;;
     *) printf "%s\n" "Usage: ./vol up, ./vol down"; exit ;;
 esac
 
