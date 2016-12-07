@@ -100,8 +100,7 @@ reload_env() {
     i3-msg reload >/dev/null &
 
     # Reload lemonbar
-    pkill bar &
-    bar "${colors[15]}" "${colors[0]}" &
+    bar "${colors[15]}" "${colors[0]}" && pkill bar &
 
     # Reload dunst
     pkill dunst
@@ -116,7 +115,7 @@ main () {
     send_sequences
     feh --bg-fill "$wal" &
     set_xresources
-    reload_env
+    reload_env &
 }
 
 main "$@"
