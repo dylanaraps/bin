@@ -5,12 +5,11 @@
 # Depends on: feh, imagemagick
 
 # Options
+wal_dir="$HOME/Pictures/Wallpapers"
 newline=$'\n'
 
 get_wall() {
-    [[ -z "$1" ]] && wal_dir="$HOME/Pictures/Wallpapers"
-
-    if [[ -d "${wal_dir:=${1}}" ]]; then
+    if [[ -d "$wal_dir" ]]; then
         files=("${wal_dir%/}"/*.{png,jpg,jpeg})
         wal="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
     fi
@@ -75,7 +74,7 @@ set_xresources() {
 }
 
 main () {
-    get_wall "$@"
+    get_wall
     get_colors
     create_sequences
     send_sequences
@@ -84,4 +83,4 @@ main () {
     i3-msg reload &
 }
 
-main "$@"
+main
