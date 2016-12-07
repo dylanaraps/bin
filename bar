@@ -13,8 +13,8 @@ font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
 bg="#f0f0f0"
 fg="#2b3635"
 
-# Dynamic monitor stuff
-resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1}')"
+# Get monitor width so we can center the bar.
+resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1; exit}')"
 monitor_width="${resolution/x*}"
 offset="$((monitor_width / 2 - width / 2))"
 geometry="${width}x${height}+${offset:-860}+${height}"
