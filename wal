@@ -96,9 +96,16 @@ get_args() {
 }
 
 reload_env() {
+    # Reload i3
     i3-msg reload >/dev/null &
+
+    # Reload lemonbar
     pkill bar &
     bar "${colors[15]}" "${colors[0]}" &
+
+    # Reload dunst
+    pkill dunst
+    dunst -lb "${colors[15]}" -nb "${colors[15]}" -cb "${colors[15]}" -lf "${colors[0]}" -bf "${colors[0]}" -cf "${colors[9]}"
 }
 
 main () {
