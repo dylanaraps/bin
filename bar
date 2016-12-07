@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# Dylan's Lemonbar script
+#
+# Depends on: xorg-xrandr, lemonbar, date
+
+# Options
+width="200"
+height="30"
+font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-ISO8859-1"
+bg="#FFF"
+fg="#000"
+
+# Dynamic monitor stuff
+resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1}')"
+monitor_width="${resolution/x*}"
+offset="$((monitor_width / 2 - width / 2))"
+geometry="${width}x${height}+${offset:-860}+${height}"
+
+# Loop and print the info
+while :; do
+    echo "%{c}$(date "+%a %d %b %l:%M %p")"
+    sleep 30s
+done |\
+
+# Launch lemonbar
+lemonbar -b -d -g "$geometry" -f "$font" -B "$bg" -F "$fg" -n "bar" # &
+
+# Move lemonbar down a layer since '-d' on i3 has an always on top side-effect.
+# sleep 1
+# xdo lower -a "bar"
