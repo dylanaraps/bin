@@ -25,7 +25,7 @@ get_colors() {
         colors=($(convert "${wal}"  +dither -colors 16 -unique-colors txt:- | grep -E -o " \#.{6}"))
 
         mkdir -p "${temp_dir}"
-        echo "${colors[@]}" > "$temp_file"
+        printf "%s\n" "${colors[@]}" > "$temp_file"
     fi
 }
 
