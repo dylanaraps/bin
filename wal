@@ -10,7 +10,7 @@ temp_dir="$HOME/.cache/wal/schemes"
 newline=$'\n'
 
 get_wall() {
-    if [[ -d "$wal_dir" ]]; then
+    if [[ -d "$wal_dir" && -z "$wal" ]]; then
         files=("${wal_dir%/}"/*.{png,jpg,jpeg})
         wal="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
     fi
@@ -89,6 +89,7 @@ get_args() {
     while [[ "$1" ]]; do
         case "$1" in
             "-c") rm -rf "$temp_dir" ;;
+            "-i") wal="$2" ;;
         esac
 
         shift
@@ -110,7 +111,7 @@ reload_env() {
 main () {
     get_args "$@"
     get_wall
-    time get_colors
+    get_colors
     create_sequences
     send_sequences
     feh --bg-fill "$wal" &
@@ -118,4 +119,4 @@ main () {
     reload_env &
 }
 
-main "$@"
+main "$@" >/dev/null 2>&1
