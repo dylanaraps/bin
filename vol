@@ -4,15 +4,15 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: pactl, libnotify (patched with id support)
+# Depends on: amixer, libnotify (patched with id support)
 case "$1" in
-    "up")   pactl set-sink-volume 0 +5% ;;
-    "down") pactl set-sink-volume 0 -5% ;;
-    "mute") pactl set-sink-mute 0 toggle ;;
+    "up")   amixer -q sset Master 5%+ ;;
+    "down") amixer -q sset Master 5%- ;;
+    "mute") amixer -q sset Master toggle ;;
     *) printf "%s\n" "Usage: ./vol up, ./vol down"; exit ;;
 esac
 
-vol="$(amixer -c 1 -M -D pulse get Master | grep -o -E [[:digit:]]+%)"
+vol="$(amixer -c 1 -M -D pulse get Master | grep -o -E "[[:digit:]]+%")"
 
 # The '-r' flag is from a patched version of 'libnotify'.
 # '-r' lets you replace notifications using the same id.
