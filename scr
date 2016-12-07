@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Take a screenshot and display a notification.
+#
+# Created by Dylan Araps.
+#
+# Depends on: imagemagick, date, libnotify (patched with id support)
+
+# Screenshot directory
+scr_dir="$HOME/Pictures/Screenshots"
+mkdir -p "$scr_dir" || { printf "%s\n" "Error: Couldn't create screenshot directory"; exit; }
+
+# Name the screenshot
+scr="${scr_dir}/$(date +%F-%I-%M-%S).png"
+
+# Send the notification
+notify-send -r 111 "Saved screenshot as ${scr/*\/}"
+
+# Take the screenshot
+import -window root "$scr"
+
+
