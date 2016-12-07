@@ -36,8 +36,12 @@ set_special() {
 }
 
 create_sequences() {
-    set_special 11 "${colors[0]}"
-    set_special 10 "${colors[15]}"
+    set_special 10  "${colors[15]}"
+    set_special 11  "${colors[0]}"
+    set_special 12  "${colors[15]}"
+    set_special 13  "${colors[15]}"
+    set_special 14  "${colors[0]}"
+    set_special 708 "${colors[0]}"
 
     set_color 0  "${colors[0]}"
     set_color 1  "${colors[9]}"
