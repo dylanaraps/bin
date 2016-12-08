@@ -17,15 +17,18 @@ monitor_width="${resolution/x*}"
 offset="$((monitor_width / 2 - width / 2))"
 geometry="${width}x${height}+${offset:-860}+${height}"
 
-# Loop and print the info
+# Kill previous instances.
+killall -q lemonbar
+
+# Loop and print the info.
 while :; do
     echo "%{c}$(date "+%a %d %b %l:%M %p")"
     sleep 30s
 done |\
 
-# Launch lemonbar
-lemonbar -b -d -g "$geometry" -f "$font" -B "${1:-\#f0f0f0}" -F "${2:-\#000000}" -n "bar" # &
+# Launch lemonbar.
+lemonbar -b -d -g "$geometry" -f "$font" -B "${1:-#f0f0f0}" -F "${2:-#000000}" -n "bar" # &
 
 # Move lemonbar down a layer since '-d' on i3 has an always on top side-effect.
-# sleep 1
-# xdo lower -a "bar"
+sleep 1
+xdo lower -a "bar"
