@@ -7,7 +7,7 @@
 # Depends on: imagemagick, date, libnotify (patched with id support)
 
 # Screenshot directory
-scr_dir="$HOME/Pictures/Screenshots"
+scr_dir="${HOME}/Pictures/Screenshots"
 mkdir -p "$scr_dir" || { printf "%s\n" "Error: Couldn't create screenshot directory"; exit; }
 
 # Use printf to store the current date/time as variables.
@@ -23,7 +23,7 @@ scr="${scr_dir}/${date}/${date}-${time}.png"
 # Send the notification
 notify-send -r 111 "Saved screenshot as ${scr/*\/}"
 
-# Take the screenshot
+# Take the screenshot and crop out my second monitor.
 import -window root -gravity north -crop 1920x1080+0+0 "$scr"
 
 
