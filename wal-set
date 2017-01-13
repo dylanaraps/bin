@@ -23,7 +23,7 @@ set_bar() {
 }
 
 set_scss() {
-    sassc --style expanded "$HOME/projects/startpage/scss/style.scss" > "$HOME/projects/startpage/style.css"
+    sassc --style expanded "${HOME}/projects/startpage/scss/style.scss" > "${HOME}/projects/startpage/style.css"
 }
 
 main() {
