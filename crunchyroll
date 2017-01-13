@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Stream from Crunchyroll using livestreamer.
+
+read -rs -p "Crunchyroll Password: " password
+
+livestreamer "$1" --crunchyroll-username dylanaraps --crunchyroll-password "$password" --default-stream "high" --player "mpv"

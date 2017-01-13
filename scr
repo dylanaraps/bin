@@ -10,17 +10,20 @@
 scr_dir="$HOME/Pictures/Screenshots"
 mkdir -p "$scr_dir" || { printf "%s\n" "Error: Couldn't create screenshot directory"; exit; }
 
-# Put screenshot in current date folder.
-date="$(date +%F)"
+# Use printf to store the current date/time as variables.
+printf -v date "%(%F)T"
+printf -v time "%(%I-%M-%S)T"
+
+# Create current date format.
 mkdir -p "${scr_dir}/${date}"
 
 # Name the screenshot
-scr="${scr_dir}/${date}/$(date +%F-%I-%M-%S).png"
+scr="${scr_dir}/${date}/${date}-${time}.png"
 
 # Send the notification
 notify-send -r 111 "Saved screenshot as ${scr/*\/}"
 
 # Take the screenshot
-import -window root "$scr"
+import -window root -gravity north -crop 1920x1080+0+0 "$scr"
 
 
