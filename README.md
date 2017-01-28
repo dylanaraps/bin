@@ -4,6 +4,10 @@
 
 Simple lemonbar that displays the date and time.
 
+### saur
+
+Simple aur helper.
+
 ### scr
 
 Take a screenshot and display a notification.

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# Simple aur helper.
+# Use this to install a real aur helper.
+#
+# Depends on: git
+#
+# Usage: ./saur pkg pkg pkg
+
+if [[ "$@" ]]; then
+    temp_dir="$(mktemp -d)"
+    cd "$temp_dir" || exit
+fi
+
+# Download the PKGBUILDs.
+for pkg in "$@"; do
+    git clone "https://aur.archlinux.org/${pkg}.git"
+    cd "$pkg"
+done
+
+cd "$temp_dir"
+
+# Check PKGBUILDs.
+for pkg in "$@"; do
+    cd "$pkg"
+
+    read -s -r -n 1 -p "View PKGBUILD for ${pkg}? [y/n]"$'\n' response
+    [[ "${response,,}" =~ ^(yes|y)$ ]] && "$EDITOR" PKGBUILD
+done
+
+cd "$temp_dir"
+
+# Install packages.
+for pkg in "$@"; do
+    cd "$pkg"
+    makepkg -si
+done
