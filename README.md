@@ -4,6 +4,10 @@
 
 Simple lemonbar that displays the date and time.
 
+### grt
+
+Toggle github repo remote to/from https/ssh.
+
 ### saur
 
 Simple aur helper.
