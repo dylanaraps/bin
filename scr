@@ -25,5 +25,3 @@ notify-send -r 111 "Saved screenshot as ${scr/*\/}"
 
 # Take the screenshot and crop out my second monitor.
 import -window root -gravity north -crop 1920x1080+0+0 "$scr"
-
-
