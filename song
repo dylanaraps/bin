@@ -4,7 +4,7 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: mpc, libnotify (patched with id support)
+# Depends on: playerctl, libnotify (patched with id support)
 
 case "$1" in
     "next") playerctl next ;;
