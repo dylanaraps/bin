@@ -24,7 +24,9 @@ cd "$temp_dir" || exit
 for pkg in "$@"; do
     cd "$pkg" || exit
 
-    read -s -r -n 1 -p "View PKGBUILD for ${pkg}? [y/n]"$'\n' response
+    read -s -r -n 1 -p "View PKGBUILD for ${pkg}? [y/n] " response
+    printf "\n"
+
     [[ "${response,,}" =~ ^(yes|y)$ ]] && "$EDITOR" PKGBUILD
 done
 
