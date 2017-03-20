@@ -14,7 +14,9 @@ reload_dunst() {
             -cb "$color15" \
             -lf "$color0"  \
             -bf "$color0"  \
-            -cf "$color9" &
+            -cf "$color9"  \
+            -fn "${DUNST_FONT:-Artwiz Lemon 7}" \
+            -geometry "${DUNST_SIZE:-300x30-40+40}" &
 }
 
 set_bar() {
