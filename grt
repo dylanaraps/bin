@@ -4,6 +4,8 @@
 
 repo_remote="$(git remote get-url origin || exit 1)"
 
+[[ -z "$repo_remote" ]] && exit 1
+
 if [[ "$repo_remote" =~ ^git@github ]]; then
     repo="${repo_remote/'git@github.com:'}"
     repo="${repo/'.git'}"
