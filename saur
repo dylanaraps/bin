@@ -15,23 +15,23 @@ fi
 # Download the PKGBUILDs.
 for pkg in "$@"; do
     git clone "https://aur.archlinux.org/${pkg}.git"
-    cd "$pkg"
+    cd "$pkg" || exit
 done
 
-cd "$temp_dir"
+cd "$temp_dir" || exit
 
 # Check PKGBUILDs.
 for pkg in "$@"; do
-    cd "$pkg"
+    cd "$pkg" || exit
 
     read -s -r -n 1 -p "View PKGBUILD for ${pkg}? [y/n]"$'\n' response
     [[ "${response,,}" =~ ^(yes|y)$ ]] && "$EDITOR" PKGBUILD
 done
 
-cd "$temp_dir"
+cd "$temp_dir" || exit
 
 # Install packages.
 for pkg in "$@"; do
-    cd "$pkg"
+    cd "$pkg" || exit
     makepkg -si
 done
