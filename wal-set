@@ -30,8 +30,9 @@ set_scss() {
 
 main() {
     reload_dunst &
-    set_bar &
-    set_scss &
+    # pgrep i3 && i3-msg reload &
+    # set_bar &
+    # set_scss &
 }
 
 main >/dev/null 2>&1
