@@ -4,15 +4,7 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: xorg-xrandr, xorg-xrandr, mpc, lemonbar
-
-# Options.
-height="30"
-font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
-
-# Import colors from 'wal'.
-# https://github.com/dylanaraps/pywal
-source "${HOME}/.cache/wal/colors.sh"
+# Depends on: xorg-xrandr, xorg-xrandr, mpc, lemonbar, ip
 
 
 get_mon_width() {
@@ -62,23 +54,42 @@ get_workspaces() {
     printf "%s\n" "$workspaces"
 }
 
-get_song() {
-    # Get the current song.
-    printf "%s\n" "$(mpc current)"
-}
-
 get_date() {
     # Get the date using printf's '%(T)' format.
     printf "%(%a %d %b - %l:%M %p)T\n" # shellcheck disable=SC2183
 }
 
+get_song() {
+    # Get the current song.
+    printf "%s\n" "$(mpc current)"
+}
+
+get_local_ip() {
+    # Get the local IP address.
+    local local_ip
+    local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
+    printf "%s\n" "Local IP:${local_ip/uid*}"
+}
+
 main() {
+    # Main script function.
+    local font
+    local height
     local width
     local workspaces
-    local song
     local date
+    local song
+    local local_ip
 
+    # Import colors from 'wal'.
+    # https://github.com/dylanaraps/pywal
+    source "${HOME}/.cache/wal/colors.sh"
+
+    # Info that doesn't need to grabbed more than once.
+    font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
+    height="30"
     width="$(get_mon_width)"
+    local_ip="$(get_local_ip)"
 
     # Loop and print the info.
     while :; do
@@ -89,7 +100,7 @@ main() {
         printf "%s%s%s\n" \
                "%{l}     ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}     "
+               "%{r}${song}     ${local_ip}     "
         sleep .3s
     done |\
 
@@ -98,5 +109,6 @@ main() {
              -B "${color0:-#f0f0f0}" -F "${color15:-#000000}"\
              -n "bar" # &
 }
+
 
 main "$@"
