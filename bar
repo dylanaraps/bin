@@ -35,8 +35,8 @@ ws() {
 
     # If focused.
     if [[ "$2" ]]; then
-        ws_bg="${color4:-#F0F0F0}"
-        ws_fg="${color15:-#000000}"
+        ws_bg="${color15:-#F0F0F0}"
+        ws_fg="${color0:-#000000}"
     fi
 
     printf "%s%s%s\n" "%{B${ws_bg:-${color2:-#000000}}}" \
@@ -90,7 +90,7 @@ main() {
                "%{l}     ${workspaces}" \
                "%{c}${date}" \
                "%{r}${song}     "
-        sleep 1s
+        sleep .3s
     done |\
 
     # Launch lemonbar.
