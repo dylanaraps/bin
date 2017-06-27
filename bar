@@ -4,28 +4,99 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: xorg-xrandr, lemonbar, date
+# Depends on: xorg-xrandr, xorg-xrandr, mpc, lemonbar
 
-# Options
-width="200"
+# Options.
 height="30"
 font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
 
-# Get monitor width so we can center the bar.
-resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1; exit}')"
-monitor_width="${resolution/x*}"
-offset="$((monitor_width / 2 - width / 2))"
-geometry="${width}x${height}+${offset:-860}+${height}"
+# Import colors from 'wal'.
+# https://github.com/dylanaraps/pywal
+source "${HOME}/.cache/wal/colors.sh"
 
-# Loop and print the info.
-while :; do
-    printf "%s%(%a %d %b %l:%M %p)T\n" "%{c}"
-    sleep 60s
-done |\
 
-# Launch lemonbar.
-lemonbar -b -d -g "$geometry" -f "$font" -B "${1:-#f0f0f0}" -F "${2:-#000000}" -n "bar" # &
+get_mon_width() {
+    # Get the monitor width.
+    local resolution
+    local xrandr_cmd
 
-# Move lemonbar down a layer since '-d' on i3 has an always on top side-effect.
-# sleep 1
-# xdo lower -a "bar"
+    xrandr_cmd=("xrandr" "--nograb" "--current")
+
+    type -p "${xrandr_cmd[@]}" >/dev/null 2>&1 && \
+        resolution="$("${xrandr_cmd[@]}" | awk -F 'x|\t' '/\*/ {print $1; exit}')"
+
+    printf "%s\n" "${resolution:-1920}"
+}
+
+ws() {
+    # Format workspace "blocks".
+    local ws_bg
+    local ws_fg
+
+    # If focused.
+    if [[ "$2" ]]; then
+        ws_bg="${color4:-#F0F0F0}"
+        ws_fg="${color15:-#000000}"
+    fi
+
+    printf "%s%s%s\n" "%{B${ws_bg:-${color2:-#000000}}}" \
+                      "%{F${ws_fg:-${color15:-#F0F0F0}}}" \
+                      "   ${1}   %{F-}%{B-}"
+}
+
+get_workspaces() {
+    # Get the current workspace.
+    local current_workspace
+    local workspaces
+    current_workspace="$(xprop -root -notype _NET_CURRENT_DESKTOP)"
+
+    case "${current_workspace/* = }" in
+        1) workspaces="$(ws 1 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6)" ;;
+        2) workspaces="$(ws 1)$(ws 2 1)$(ws 3)$(ws 4)$(ws 5)$(ws 6)" ;;
+        3) workspaces="$(ws 1)$(ws 2)$(ws 3 1)$(ws 4)$(ws 5)$(ws 6)" ;;
+        4) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4 1)$(ws 5)$(ws 6)" ;;
+        5) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5 1)$(ws 6)" ;;
+        6) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6 1)" ;;
+    esac
+
+    printf "%s\n" "$workspaces"
+}
+
+get_song() {
+    # Get the current song.
+    printf "%s\n" "$(mpc current)"
+}
+
+get_date() {
+    # Get the date using printf's '%(T)' format.
+    printf "%(%a %d %b - %l:%M %p)T\n" # shellcheck disable=SC2183
+}
+
+main() {
+    local width
+    local workspaces
+    local song
+    local date
+
+    width="$(get_mon_width)"
+
+    # Loop and print the info.
+    while :; do
+        workspaces="$(get_workspaces)"
+        song="$(get_song)"
+        date="$(get_date)"
+
+        printf "%s%s%s\n" \
+               "%{l}     ${workspaces}" \
+               "%{c}${date}" \
+               "%{r}${song}     "
+        sleep 1s
+    done |\
+
+    # Launch lemonbar.
+    lemonbar -g "${width}x${height}" -f "$font" \
+             -B "${color0:-#f0f0f0}" -F "${color15:-#000000}"\
+             -n "bar" # &
+}
+
+main "$@"

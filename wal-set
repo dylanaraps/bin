@@ -21,7 +21,7 @@ reload_dunst() {
 
 set_bar() {
     pkill bar
-    bar "$color15" "$color0" 2>/dev/null &
+    bar 2>/dev/null &
 }
 
 set_scss() {
@@ -31,7 +31,7 @@ set_scss() {
 main() {
     reload_dunst &
     # pgrep i3 && i3-msg reload &
-    # set_bar &
+    set_bar &
     # set_scss &
 }
 
