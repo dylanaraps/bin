@@ -27,13 +27,14 @@ ws() {
 
     # If focused.
     if [[ "$2" ]]; then
-        ws_bg="${color15:-#F0F0F0}"
+        ws_bg="#F0F0F0"
         ws_fg="${color0:-#000000}"
     fi
 
-    printf "%s%s%s\n" "%{B${ws_bg:-${color2:-#000000}}}" \
-                      "%{F${ws_fg:-${color15:-#F0F0F0}}}" \
-                      "   ${1}   %{F-}%{B-}"
+    printf "%s%s%s%s\n" "%{A:i3-msg workspace ${1}:}" \
+                      "%{B${ws_bg:-${color3:-#000000}}}" \
+                      "%{F${ws_fg:-#FFFFFF}}" \
+                      "   ${1}   %{F-}%{B-}%{A}"
 }
 
 get_workspaces() {
@@ -61,14 +62,17 @@ get_date() {
 
 get_song() {
     # Get the current song.
-    printf "%s\n" "$(mpc current)"
+    local song
+    song="$(mpc current)"
+    printf "%s%s\n" "%{B${color1:-#000000}}%{F#F0F0F0}" \
+                    "   > ${song:0:60}   %{B-}%{F-}"
 }
 
 get_local_ip() {
     # Get the local IP address.
     local local_ip
     local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
-    printf "%s\n" "Local IP:${local_ip/uid*}"
+    printf "%s\n" "Local IP: ${local_ip/uid*}"
 }
 
 main() {
@@ -97,17 +101,17 @@ main() {
         song="$(get_song)"
         date="$(get_date)"
 
-        printf "%s%s%s\n" \
-               "%{l}     ${workspaces}" \
+        printf "%s%s%b\n" \
+               "%{l}   <')))><    ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}     ${local_ip}     "
-        sleep .3s
+               "%{r}${song}    ${local_ip}   "
+        sleep .1s
     done |\
 
     # Launch lemonbar.
     lemonbar -g "${width}x${height}" -f "$font" \
              -B "${color0:-#f0f0f0}" -F "${color15:-#000000}"\
-             -n "bar" # &
+             -n "bar" | bash
 }
 
 
