@@ -5,4 +5,12 @@
 [[ "$HOSTNAME" == "bonez" ]] && \
     font="Roboto 25"
 
-rofi -show run -font "${font:-Artwiz Lemon 7}"
+rofi -show run \
+     -font "${font:-Artwiz Lemon 7}" \
+     -separator-style none \
+     -scrollbar-width 0 \
+     -location 1 \
+     -yoffset 30 \
+     -lines 10 \
+     -width 20 \
+     -bw 0 \

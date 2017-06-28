@@ -61,9 +61,17 @@ get_date() {
 }
 
 get_song() {
-    # Get the current song.
+    # Get the current song from spotify.
     local song
-    song="$(mpc current)"
+    song="$(\
+        dbus-send --print-reply \
+                  --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+                  org.freedesktop.DBus.Properties.Get \
+                  string:'org.mpris.MediaPlayer2.Player' \
+                  string:'Metadata' |\
+        awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+        awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}'
+    )"
     printf "%s%s\n" "%{B${color1:-#000000}}%{F#F0F0F0}" \
                     "   > ${song:0:60}   %{B-}%{F-}"
 }
