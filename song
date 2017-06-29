@@ -7,23 +7,15 @@
 # Depends on: playerctl or mpc, libnotify (patched with id support)
 
 # Get the player.
-if pgrep spotify; then
-    song_cmd="playerctl"
-    toggle="play-pause"
-else
-    song_cmd="mpc"
-    toggle="toggle"
-fi
-
 case "$1" in
-    "next") "$song_cmd" "next" ;;
-    "prev") "$song_cmd" "prev" ;;
+    "next") playerctl next ;;
+    "prev") playerctl prev ;;
     "toggle")
-        "$song_cmd" "$toggle"
+        playerctl play-pause
 
         # The '-r' flag is from a patched version of 'libnotify'.
         # '-r' lets you replace notifications using the same id.
-        notify-send -t 1 -r 114 "Song: $("$song_cmd" status)"
+        notify-send -t 1 -r 114 "Song: $(playerctl status)"
     ;;
 
     *) printf "%s\n" "Usage: ./song next, ./song prev, ./song toggle"; exit ;;
