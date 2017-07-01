@@ -9,14 +9,15 @@ source "${HOME}/.cache/wal/colors.sh"
 reload_dunst() {
     pkill dunst && \
         dunst \
-            -lb "$color15" \
-            -nb "$color15" \
-            -cb "$color15" \
-            -lf "$color0"  \
-            -bf "$color0"  \
-            -cf "$color9"  \
+            -lb "$color0" \
+            -nb "$color0" \
+            -cb "$color0" \
+            -lf "$color15" \
+            -bf "$color15" \
+            -cf "$color15" \
+            -nf "$color15" \
             -fn "${DUNST_FONT:-Artwiz Lemon 7}" \
-            -geometry "${DUNST_SIZE:-300x30-40+40}" &
+            -geometry "${DUNST_SIZES:-300x30-40+70}" &
 }
 
 set_bar() {

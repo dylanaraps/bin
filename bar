@@ -72,8 +72,11 @@ get_song() {
         awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
         awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}'
     )"
-    printf "%s%s\n" "%{B${color1:-#000000}}%{F#F0F0F0}" \
-                    "   > ${song:0:60}   %{B-}%{F-}"
+
+    # Print song if something is playing.
+    (("${#song}" > 4)) &&
+        printf "%s%s\n" "%{B${color1:-#000000}}%{F${color0:-#FFFFFF}}" \
+                        "   > ${song:0:60}   %{B-}%{F-}"
 }
 
 get_local_ip() {
