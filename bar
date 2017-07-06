@@ -4,7 +4,7 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: xorg-xrandr, xdotool, mpc, lemonbar, ip
+# Depends on: xorg-xrandr, wmctrl, mpc, lemonbar, ip
 
 
 get_mon_width() {
@@ -31,7 +31,7 @@ ws() {
         ws_fg="${color0:-#000000}"
     fi
 
-    printf "%s%s%s%s\n" "%{A:xdotool set_desktop ${1}:}" \
+    printf "%s%s%s%s\n" "%{A:wmctrl -s ${1}:}" \
                       "%{B${ws_bg:-${color3:-#000000}}}" \
                       "%{F${ws_fg:-#FFFFFF}}" \
                       "   ${1}   %{F-}%{B-}%{A}"
@@ -41,7 +41,7 @@ get_workspaces() {
     # Get the current workspace.
     local current_workspace
     local workspaces
-    current_workspace="$(xdotool get_desktop)"
+    current_workspace="$(wmctrl -d | awk '/\*/ {print $NF}')"
 
     case "$current_workspace" in
         1) workspaces="$(ws 1 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6)" ;;
