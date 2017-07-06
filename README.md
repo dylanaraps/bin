@@ -8,7 +8,7 @@ Taskbar script.
 Depends on:
 
 - Dynamic width: `xorg-xrandr`
-- Workspace switcher: `xdotool`,
+- Workspace switcher: `wmctrl`,
 - Current song (Spotify): `dbus-send`
 - Bar: `lemonbar`
 - IP Address: `ip`
