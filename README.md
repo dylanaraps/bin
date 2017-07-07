@@ -14,6 +14,11 @@ Depends on:
 - IP Address: `ip`
 
 
+### bri
+
+Control brightness.
+
+
 ### grt
 
 Toggle a `git remote` url to and from `https`/`git`.
