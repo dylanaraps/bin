@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# Control brightness.
+
+
+main() {
+    local bl_dir
+    bl_dir="/sys/class/backlight/intel_backlight/brightness"
+
+    if [[ -d "$bl_dir" ]]; then
+        sudo tee "$bl_dir"  <<< "${1:-937}"
+    else
+        printf "%s\n" "error: No backlight found."
+    fi
+}
+
+
+main "$@"
+
