@@ -124,9 +124,11 @@ main() {
     done |\
 
     # Launch lemonbar.
-    lemonbar -b -d -g "${width}x${height}+$((width / 2))+$((height * 2))" -f "$font" \
+    lemonbar -g "${width}x${height}+$((width / 2))+$((height * 2 + 4))" \
              -B "${color15:-#f0f0f0}" -F "${color8:-#000000}"\
-             -n "bar" | bash
+             -n "bar" -b -d  -f "$font" | bash
+
+    # xdo raise -a "bar" 2>/dev/null
 }
 
 
