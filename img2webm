@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# Convert single image to static webm.
+ffmpeg -loop 1 \
+       -i "$1" \
+       -an \
+       -c:v libvpx \
+       -qmin 4 \
+       -qmax 16 \
+       -crf 16 \
+       -quality best \
+       -threads "$(nproc)" \
+       -t 2 \
+       -r 1 \
+       "${1%.*}.webm"

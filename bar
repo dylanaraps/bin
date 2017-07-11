@@ -27,8 +27,8 @@ ws() {
 
     # If focused.
     if [[ "$2" ]]; then
-        ws_bg="#F0F0F0"
-        ws_fg="${color0:-#000000}"
+        ws_bg="${color15:-#FFFFFF}"
+        ws_fg="${color8:-#000000}"
     fi
 
     printf "%s%s%s%s\n" "%{A:wmctrl -s ${1}:}" \
@@ -75,7 +75,7 @@ get_song() {
 
     # Print song if something is playing.
     (("${#song}" > 4)) &&
-        printf "%s%s\n" "%{B${color1:-#000000}}%{F${color0:-#FFFFFF}}" \
+        printf "%s%s\n" "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}" \
                         "   > ${song:0:60}   %{B-}%{F-}"
 }
 
@@ -83,13 +83,15 @@ get_local_ip() {
     # Get the local IP address.
     local local_ip
     local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
-    printf "%s\n" "Local IP: ${local_ip/uid*}"
+    printf "%s%s\n" "%{B${color2:-#000000}}%{F#FFFFFF}" \
+                    "   Local IP: ${local_ip/uid*}   %{B-}%{F-}"
 }
 
 main() {
     # Main script function.
     local font
     local height
+    local mon_width
     local width
     local workspaces
     local date
@@ -102,8 +104,10 @@ main() {
 
     # Info that doesn't need to grabbed more than once.
     font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
+    # font="Roboto:style=Bold Italic"
     height="30"
-    width="$(get_mon_width)"
+    mon_width="$(get_mon_width)"
+    width="$((mon_width / 2))"
     local_ip="$(get_local_ip)"
 
     # Loop and print the info.
@@ -113,15 +117,15 @@ main() {
         date="$(get_date)"
 
         printf "%s%s%b\n" \
-               "%{l}   <')))><    ${workspaces}" \
+               "%{l}${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}    ${local_ip}   "
+               "%{r}${song}    ${local_ip}"
         sleep .1s
     done |\
 
     # Launch lemonbar.
-    lemonbar -g "${width}x${height}" -f "$font" \
-             -B "${color0:-#f0f0f0}" -F "${color15:-#000000}"\
+    lemonbar -b -d -g "${width}x${height}+$((width / 2))+$((height * 2))" -f "$font" \
+             -B "${color15:-#f0f0f0}" -F "${color8:-#000000}"\
              -n "bar" | bash
 }
 
