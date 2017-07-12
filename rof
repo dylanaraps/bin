@@ -10,7 +10,7 @@ rofi -show run \
      -separator-style none \
      -scrollbar-width 0 \
      -location 1 \
-     -yoffset 30 \
+     -yoffset 0 \
      -lines 10 \
      -width 20 \
      -bw 0 \

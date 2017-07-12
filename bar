@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env dash
 #
 # Dylan's bar script
 #
@@ -10,14 +10,12 @@
 get_mon_width() {
     # Get the monitor width.
     local resolution
-    local xrandr_cmd
 
-    xrandr_cmd=("xrandr" "--nograb" "--current")
+    type -p xrandr --nograb --current >/dev/null 2>&1 && \
+        resolution="$(xrandr --nograb --current | \
+                      awk -F 'x|\t' '/\*/ {print $1; exit}')"
 
-    type -p "${xrandr_cmd[@]}" >/dev/null 2>&1 && \
-        resolution="$("${xrandr_cmd[@]}" | awk -F 'x|\t' '/\*/ {print $1; exit}')"
-
-    printf "%s\n" "${resolution:-1920}"
+    printf "%s\\n" "${resolution:-1920}"
 }
 
 ws() {
@@ -26,15 +24,14 @@ ws() {
     local ws_fg
 
     # If focused.
-    if [[ "$2" ]]; then
+    if [ "$2" ]; then
         ws_bg="${color15:-#FFFFFF}"
         ws_fg="${color8:-#000000}"
     fi
 
-    printf "%s%s%s%s\n" "%{A:wmctrl -s ${1}:}" \
-                      "%{B${ws_bg:-${color3:-#000000}}}" \
-                      "%{F${ws_fg:-#FFFFFF}}" \
-                      "   ${1}   %{F-}%{B-}%{A}"
+    printf "%s%s%s\\n" "%{B${ws_bg:-${color3:-#000000}}}" \
+                         "%{F${ws_fg:-#FFFFFF}}" \
+                         "   ${1}   %{F-}%{B-}"
 }
 
 get_workspaces() {
@@ -52,12 +49,12 @@ get_workspaces() {
         6) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6 1)" ;;
     esac
 
-    printf "%s\n" "$workspaces"
+    printf "%s\\n" "$workspaces"
 }
 
 get_date() {
     # Get the date using printf's '%(T)' format.
-    printf "%(%a %d %b - %l:%M %p)T\n" # shellcheck disable=SC2183
+    printf "%s\\n" "$(date +"%a %d %b - %l:%M %p")"
 }
 
 get_song() {
@@ -74,17 +71,17 @@ get_song() {
     )"
 
     # Print song if something is playing.
-    (("${#song}" > 4)) &&
-        printf "%s%s\n" "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}" \
-                        "   > ${song:0:60}   %{B-}%{F-}"
+    [ "${#song}" -gt 4 ] &&
+        printf "%s%s\\n" "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}" \
+                        "   > ${song}   %{B-}%{F-}"
 }
 
 get_local_ip() {
     # Get the local IP address.
     local local_ip
-    local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
-    printf "%s%s\n" "%{B${color2:-#000000}}%{F#FFFFFF}" \
-                    "   Local IP: ${local_ip/uid*}   %{B-}%{F-}"
+    local_ip="$(ip route get 1 | awk -F'src | uid' '{print $2; exit}')"
+    printf "%s%s\\n" "%{B${color2:-#000000}}%{F#FFFFFF}" \
+                    "   Local IP: ${local_ip}   %{B-}%{F-}"
 }
 
 main() {
@@ -100,7 +97,7 @@ main() {
 
     # Import colors from 'wal'.
     # https://github.com/dylanaraps/pywal
-    source "${HOME}/.cache/wal/colors.sh"
+    . "${HOME}/.cache/wal/colors.sh"
 
     # Info that doesn't need to grabbed more than once.
     font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
@@ -116,7 +113,7 @@ main() {
         song="$(get_song)"
         date="$(get_date)"
 
-        printf "%s%s%b\n" \
+        printf "%s%s%b\\n" \
                "%{l}${workspaces}" \
                "%{c}${date}" \
                "%{r}${song}    ${local_ip}"
@@ -126,7 +123,7 @@ main() {
     # Launch lemonbar.
     lemonbar -g "${width}x${height}+$((width / 2))+$((height * 2 + 4))" \
              -B "${color15:-#f0f0f0}" -F "${color8:-#000000}"\
-             -n "bar" -b -d  -f "$font" | bash
+             -n "bar" -b -d  -f "$font"
 
     # xdo raise -a "bar" 2>/dev/null
 }
