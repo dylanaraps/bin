@@ -93,7 +93,7 @@ main() {
 
     # Launch lemonbar.
     lemonbar -g "${mon_width}x${height}" \
-             -B "#000000" -F "${color8}"\
+             -B "${color0}" -F "${color8}"\
              -n "bar" -f "$font"
 
     # xdo lower -a "bar"
