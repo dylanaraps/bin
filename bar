@@ -59,6 +59,12 @@ get_song() {
         printf "%s%.75s\\n" "> " "${song}"
 }
 
+get_volume() {
+    # Get the system volume.
+    printf "%s%s\n" "vol: " \
+           "$(amixer sget Master | grep -o -m 1 -E "[[:digit:]]+%")"
+}
+
 get_local_ip() {
     # Get the local IP address.
     local_ip="$(ip route get 1 | awk -F'src | uid' '{print $2; exit}')"
@@ -81,13 +87,14 @@ main() {
     # Loop and print the info.
     while :; do
         workspaces="$(get_workspaces)"
-        song="$(get_song)"
         date="$(get_date)"
+        song="$(get_song)"
+        volume="$(get_volume)"
 
         printf "%s%s%s\\n" \
                "%{l}   ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}      ${local_ip}     "
+               "%{r}${song}   ${volume}    ${local_ip}     "
         sleep .2s
     done |\
 
