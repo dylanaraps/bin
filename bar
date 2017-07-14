@@ -95,7 +95,7 @@ main() {
         printf "%s%s%s\\n" \
                "%{l}   ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}   ${volume}    ${local_ip}     "
+               "%{r}${song}    ${volume}    ${local_ip}     "
         sleep .2s
     done |\
 
