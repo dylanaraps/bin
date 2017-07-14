@@ -18,7 +18,7 @@ get_mon_width() {
 
 ws() {
     # Format workspace "blocks".
-    printf "%s%s\\n" "  ${2:+/}${1}${2:+/}  "
+    printf "%s\\n" "  ${2:+/}${1}${2:+/}  "
 }
 
 get_workspaces() {
@@ -56,19 +56,20 @@ get_song() {
 
     # Print song if something is playing.
     [ "${#song}" -gt 4 ] &&
-        printf "%s%.75s\\n" "> " "${song}"
+        printf "%s%.75s\\n" "song: " "${song}"
 }
 
 get_volume() {
     # Get the system volume.
-    printf "%s%s\n" "vol: " \
-           "$(amixer sget Master | grep -o -m 1 -E "[[:digit:]]+%")"
+    volume="$(amixer sget Master | grep -o -m 1 -E "[[:digit:]]+%")"
+    printf "%s\\n" "vol: ${volume}"
+
 }
 
 get_local_ip() {
     # Get the local IP address.
     local_ip="$(ip route get 1 | awk -F'src | uid' '{print $2; exit}')"
-    printf "%s%s\\n" "Local IP: ${local_ip}"
+    printf "%s\\n" "local ip: ${local_ip}"
 }
 
 main() {
@@ -99,7 +100,7 @@ main() {
     done |\
 
     # Launch lemonbar.
-    lemonbar -g "${mon_width}x${height}" \
+    lemonbar -g "${width}x${height}" \
              -B "${color0}" -F "${color8}"\
              -n "bar" -f "$font"
 
