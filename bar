@@ -72,10 +72,9 @@ get_song() {
 
     # Print song if something is playing.
     [ "${#song}" -gt 4 ] &&
-        printf "%s%.30s%s\\n"
-               "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}   > " \
-               "${song}" \
-               "   %{B-}%{F-}"
+        printf "%s%.30s%s\\n" "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}   > " \
+                              "${song}" \
+                              "   %{B-}%{F-}"
 }
 
 get_local_ip() {
