@@ -9,8 +9,6 @@
 
 get_mon_width() {
     # Get the monitor width.
-    local resolution
-
     type -p xrandr --nograb --current >/dev/null 2>&1 && \
         resolution="$(xrandr --nograb --current | \
                       awk -F 'x|\t' '/\*/ {print $1; exit}')"
@@ -20,24 +18,11 @@ get_mon_width() {
 
 ws() {
     # Format workspace "blocks".
-    local ws_bg
-    local ws_fg
-
-    # If focused.
-    if [ "$2" ]; then
-        ws_bg="${color15:-#FFFFFF}"
-        ws_fg="${color8:-#000000}"
-    fi
-
-    printf "%s%s%s\\n" "%{B${ws_bg:-${color3:-#000000}}}" \
-                         "%{F${ws_fg:-#FFFFFF}}" \
-                         "   ${1}   %{F-}%{B-}"
+    printf "%s%s\\n" "  ${2:+/}${1}${2:+/}  "
 }
 
 get_workspaces() {
     # Get the current workspace.
-    local current_workspace
-    local workspaces
     current_workspace="$(wmctrl -d | awk '/\*/ {print $NF}')"
 
     case "$current_workspace" in
@@ -59,7 +44,6 @@ get_date() {
 
 get_song() {
     # Get the current song from spotify.
-    local song
     song="$(\
         dbus-send --print-reply \
                   --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
@@ -72,29 +56,17 @@ get_song() {
 
     # Print song if something is playing.
     [ "${#song}" -gt 4 ] &&
-        printf "%s%.30s%s\\n" "%{B${color15:-#000000}}%{F${color8:-#FFFFFF}}   > " \
-                              "${song}" \
-                              "   %{B-}%{F-}"
+        printf "%s%.75s\\n" "> " "${song}"
 }
 
 get_local_ip() {
     # Get the local IP address.
-    local local_ip
     local_ip="$(ip route get 1 | awk -F'src | uid' '{print $2; exit}')"
-    printf "%s%s\\n" "%{B${color2:-#000000}}%{F#FFFFFF}" \
-                    "   Local IP: ${local_ip}   %{B-}%{F-}"
+    printf "%s%s\\n" "Local IP: ${local_ip}"
 }
 
 main() {
     # Main script function.
-    local font
-    local height
-    local mon_width
-    local width
-    local workspaces
-    local date
-    local song
-    local local_ip
 
     # Import colors from 'wal'.
     # https://github.com/dylanaraps/pywal
@@ -102,10 +74,8 @@ main() {
 
     # Info that doesn't need to grabbed more than once.
     font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
-    # font="Roboto:style=Bold Italic"
     height="30"
-    mon_width="$(get_mon_width)"
-    width="$((mon_width / 2))"
+    width="$(get_mon_width)"
     local_ip="$(get_local_ip)"
 
     # Loop and print the info.
@@ -114,19 +84,19 @@ main() {
         song="$(get_song)"
         date="$(get_date)"
 
-        printf "%s%s%b\\n" \
-               "%{l}${workspaces}" \
+        printf "%s%s%s\\n" \
+               "%{l}   ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}    ${local_ip}"
-        sleep .1s
+               "%{r}${song}      ${local_ip}     "
+        sleep .2s
     done |\
 
     # Launch lemonbar.
-    lemonbar -g "${width}x${height}+$((width / 2))+$((height * 2 + 4))" \
-             -B "${color15:-#f0f0f0}" -F "${color8:-#000000}"\
-             -n "bar" -b -d  -f "$font"
+    lemonbar -g "${mon_width}x${height}" \
+             -B "#000000" -F "${color8}"\
+             -n "bar" -f "$font"
 
-    # xdo raise -a "bar" 2>/dev/null
+    # xdo lower -a "bar"
 }
 
 
