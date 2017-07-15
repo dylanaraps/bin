@@ -51,8 +51,11 @@ get_song() {
     )"
 
     # Print song if something is playing.
-    [ "${#song}" -gt 4 ] &&
+    if [ "${#song}" -lt 5 ]; then
+        printf "%s\\n" "song: Not playing"
+    else
         printf "%s%.75s\\n" "song: " "${song}"
+    fi
 }
 
 get_volume() {
@@ -92,7 +95,7 @@ main() {
                "%{l}   ${workspaces}" \
                "%{c}${date}" \
                "%{r}${song}  |  ${volume}  |  ${local_ip}    "
-        sleep .2s
+        sleep .1s
     done |\
 
     # Launch lemonbar.
