@@ -1,4 +1,5 @@
 #!/usr/bin/env dash
+# vim: set ft=sh:
 #
 # Dylan's bar script
 #
@@ -16,22 +17,17 @@ get_mon_width() {
     printf "%s\\n" "${resolution:-1920}"
 }
 
-ws() {
-    # Format workspace "blocks".
-    printf "%s\\n" "  ${2:+/}${1}${2:+/}  "
-}
-
 get_workspaces() {
     # Get the current workspace.
     current_workspace="$(wmctrl -d | awk '/\*/ {print $NF}')"
 
     case "$current_workspace" in
-        1) workspaces="$(ws 1 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6)" ;;
-        2) workspaces="$(ws 1)$(ws 2 1)$(ws 3)$(ws 4)$(ws 5)$(ws 6)" ;;
-        3) workspaces="$(ws 1)$(ws 2)$(ws 3 1)$(ws 4)$(ws 5)$(ws 6)" ;;
-        4) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4 1)$(ws 5)$(ws 6)" ;;
-        5) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5 1)$(ws 6)" ;;
-        6) workspaces="$(ws 1)$(ws 2)$(ws 3)$(ws 4)$(ws 5)$(ws 6 1)" ;;
+        1) workspaces="/1/   2    3    4    5    6" ;;
+        2) workspaces=" 1   /2/   3    4    5    6" ;;
+        3) workspaces=" 1    2   /3/   4    5    6" ;;
+        4) workspaces=" 1    2    3   /4/   5    6" ;;
+        5) workspaces=" 1    2    3    4   /5/   6" ;;
+        6) workspaces=" 1    2    3    4    5   /6/" ;;
     esac
 
     printf "%s\\n" "$workspaces"
@@ -68,7 +64,7 @@ get_volume() {
 
 get_local_ip() {
     # Get the local IP address.
-    local_ip="$(ip route get 1 | awk -F'src | uid' '{print $2; exit}')"
+    local_ip="$(ip route get 1 | awk -F 'src | uid' '{print $2; exit}')"
     printf "%s\\n" "local ip: ${local_ip}"
 }
 
@@ -95,16 +91,14 @@ main() {
         printf "%s%s%s\\n" \
                "%{l}   ${workspaces}" \
                "%{c}${date}" \
-               "%{r}${song}    ${volume}    ${local_ip}     "
+               "%{r}${song}  |  ${volume}  |  ${local_ip}    "
         sleep .2s
     done |\
 
     # Launch lemonbar.
     lemonbar -g "${width}x${height}" \
-             -B "${color0}" -F "${color8}"\
+             -B "${color0:-#000000}" -F "${color8:-#666666}"\
              -n "bar" -f "$font"
-
-    # xdo lower -a "bar"
 }
 
 
