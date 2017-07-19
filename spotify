@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #
 # Custom spotify command.
+export LD_PRELOAD=libcurl-openssl-1.0.so
 spotify --force-device-scale-factor=2
 

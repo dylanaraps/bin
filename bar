@@ -14,7 +14,7 @@ get_mon_width() {
         resolution="$(xrandr --nograb --current | \
                       awk -F 'x|\t' '/\*/ {print $1; exit}')"
 
-    printf "%s\\n" "${resolution:-1920}"
+    printf "%s\\n" "$resolution"
 }
 
 get_workspaces() {
@@ -79,8 +79,8 @@ main() {
     . "${HOME}/.cache/wal/colors.sh"
 
     # Info that doesn't need to grabbed more than once.
-    font="-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"
-    height="30"
+    font="${BAR_FONT:-"-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"}"
+    height="${BAR_HEIGHT:-30}"
     width="$(get_mon_width)"
     local_ip="$(get_local_ip)"
 
