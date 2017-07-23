@@ -7,17 +7,17 @@
 source "${HOME}/.cache/wal/colors.sh"
 
 reload_dunst() {
-    pkill dunst && \
-        dunst \
-            -lb "$color0" \
-            -nb "$color0" \
-            -cb "$color0" \
-            -lf "$color15" \
-            -bf "$color15" \
-            -cf "$color15" \
-            -nf "$color15" \
-            -fn "${DUNST_FONT:-Artwiz Lemon 7}" \
-            -geometry "${DUNST_SIZES:-300x30-40+70}" &
+    pkill dunst
+    dunst \
+        -lb "${color0:=#F0F0F0}" \
+        -nb "$color0" \
+        -cb "$color0" \
+        -lf "${color8:=#000000}" \
+        -bf "$color8" \
+        -cf "$color8" \
+        -nf "$color8" \
+        -fn "${DUNST_FONT:-Artwiz Lemon 7}" \
+        -geometry "${DUNST_SIZE:-300x30-40+70}" &
 }
 
 set_bar() {
@@ -31,9 +31,8 @@ set_scss() {
 
 main() {
     reload_dunst &
-    # pgrep i3 && i3-msg reload &
     set_bar &
     # set_scss &
 }
 
-main >/dev/null 2>&1
+main
