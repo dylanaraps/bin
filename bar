@@ -7,6 +7,10 @@
 #
 # Depends on: xorg-xrandr, wmctrl, dbus, lemonbar, ip, xdotool
 
+font="${BAR_FONT:-"-*-lemon-*"}"
+icon="${BAR_ICON:-"-*-siji-*"}"
+height="${BAR_HEIGHT:-35}"
+
 
 get_mon_width() {
     # Get the monitor width.
@@ -99,9 +103,6 @@ main() {
     . "${HOME}/.cache/wal/colors.sh"
 
     # Info that doesn't need to grabbed more than once.
-    font="${BAR_FONT:-"-*-lemon-*"}"
-    icon="${BAR_ICON:-"-*-siji-*"}"
-    height="${BAR_HEIGHT:-30}"
     width="$(get_mon_width)"
     local_ip="$(icon "") $(get_local_ip)"
 
