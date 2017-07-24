@@ -10,33 +10,28 @@
 
 get_mon_width() {
     # Get the monitor width.
-    type -p xrandr --nograb --current >/dev/null 2>&1 && \
-        resolution="$(xrandr --nograb --current | \
-                      awk -F 'x|\t' '/\*/ {print $1; exit}')"
+    command -v xrandr >/dev/null 2>&1 && \
+        resolution="$(xrandr --nograb --current |
+                      awk -F 'primary |x' '/primary/ {print $2}')"
 
-    printf "%s\\n" "$resolution"
+    printf "%s\\n" "${resolution:-1920}"
 }
 
+
 get_workspaces() {
-    # Get the current workspace.
-    current_workspace="$(wmctrl -d | awk '/\*/ {print $NF}')"
-
-    case "$current_workspace" in
-        1) workspaces="/1/   2    3    4    5    6" ;;
-        2) workspaces=" 1   /2/   3    4    5    6" ;;
-        3) workspaces=" 1    2   /3/   4    5    6" ;;
-        4) workspaces=" 1    2    3   /4/   5    6" ;;
-        5) workspaces=" 1    2    3    4   /5/   6" ;;
-        6) workspaces=" 1    2    3    4    5   /6/" ;;
-    esac
-
+    # Create a dynamic workspace switcher.
+    workspaces="$(wmctrl -d | awk '$6!="0,0"{next}
+                                   $2=="-"{printf "  " $NF "  "}
+                                   $2=="*"{printf " /" $NF "/ "}')"
     printf "%s\\n" "$workspaces"
 }
 
+
 get_date() {
-    # Get the date using printf's '%(T)' format.
+    # Get the date and time.
     printf "%s\\n" "$(date +"%a %d %b - %l:%M %p")"
 }
+
 
 get_song() {
     # Get the current song from spotify.
@@ -54,9 +49,10 @@ get_song() {
     if [ "${#song}" -lt 5 ]; then
         printf "%s\\n" "song: Not playing"
     else
-        printf "%s%.75s\\n" "song: " "${song}"
+        printf "%s%.100s\\n" "song: " "${song}"
     fi
 }
+
 
 get_volume() {
     # Get the system volume.
@@ -64,6 +60,7 @@ get_volume() {
     printf "%s\\n" "vol: ${volume}"
 
 }
+
 
 get_local_ip() {
     # Get the local IP address.
@@ -103,6 +100,5 @@ main() {
              -B "${color0:-#000000}" -F "${color8:-#666666}"\
              -n "bar" -f "$font"
 }
-
 
 main "$@"
