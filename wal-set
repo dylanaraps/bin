@@ -20,7 +20,7 @@ reload_dunst() {
         -geometry "${DUNST_SIZE:-300x30-40+70}" &
 }
 
-set_bar() {
+reload_bar() {
     pkill bar
     bar 2>/dev/null &
 }
@@ -31,7 +31,7 @@ set_scss() {
 
 main() {
     reload_dunst &
-    set_bar &
+    reload_bar &
     # set_scss &
 }
 
