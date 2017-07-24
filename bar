@@ -68,6 +68,7 @@ get_local_ip() {
     printf "%s\\n" "local ip: ${local_ip}"
 }
 
+
 main() {
     # Main script function.
 
@@ -100,5 +101,6 @@ main() {
              -B "${color0:-#000000}" -F "${color8:-#666666}"\
              -n "bar" -f "$font"
 }
+
 
 main "$@"
