@@ -32,7 +32,7 @@ set_scss() {
 main() {
     reload_dunst &
     reload_bar &
-    # set_scss &
+    set_scss &
 }
 
 main

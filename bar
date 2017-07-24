@@ -5,7 +5,7 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: xorg-xrandr, wmctrl, mpc, lemonbar, ip
+# Depends on: xorg-xrandr, wmctrl, dbus, lemonbar, ip, xdotool
 
 
 get_mon_width() {
@@ -20,10 +20,17 @@ get_mon_width() {
 
 get_workspaces() {
     # Create a dynamic workspace switcher.
-    workspaces="$(wmctrl -d | awk '$6!="0,0"{next}
-                                   $2=="-"{printf "  " $NF "  "}
-                                   $2=="*"{printf " /" $NF "/ "}')"
+    workspaces="$(wmctrl -d | awk -v fg="${color8:-#F0F0F0}" \
+                                  '$6!="0,0"{next}
+                                   $2=="-"{printf "  %{F"fg"}" $NF "  %{F}"}
+                                   $2=="*"{printf "  " $NF "  "}')"
     printf "%s\\n" "$workspaces"
+}
+
+
+get_window() {
+    # Get title of focused window.
+    printf "%s\\n" "$(xdotool getwindowfocus getwindowname)"
 }
 
 
@@ -47,17 +54,26 @@ get_song() {
 
     # Print song if something is playing.
     if [ "${#song}" -lt 5 ]; then
-        printf "%s\\n" "song: Not playing"
+        printf "%s\\n" "Not playing"
     else
-        printf "%s%.100s\\n" "song: " "${song}"
+        printf "%.100s\\n" "${song}"
     fi
 }
 
 
 get_volume() {
     # Get the system volume.
+    local icon
     volume="$(amixer sget Master | grep -o -m 1 -E "[[:digit:]]+%")"
-    printf "%s\\n" "vol: ${volume}"
+
+    case "$volume" in
+        0%|[0-9]%)   icon=" " ;;
+        1?%|2?%|3?%) icon="" ;;
+        4?%|5?%|6?%) icon="" ;;
+        *) icon="" ;;
+    esac
+
+    printf "%s\\n" "$(icon "$icon") ${volume}"
 
 }
 
@@ -65,7 +81,13 @@ get_volume() {
 get_local_ip() {
     # Get the local IP address.
     local_ip="$(ip route get 1 | awk -F 'src | uid' '{print $2; exit}')"
-    printf "%s\\n" "local ip: ${local_ip}"
+    printf "%b\\n" "$local_ip"
+}
+
+
+icon() {
+    # Format an icon.
+    printf "%s\\n" "%{F${color3:-#F0F0F0}}${1}%{F}"
 }
 
 
@@ -77,20 +99,22 @@ main() {
     . "${HOME}/.cache/wal/colors.sh"
 
     # Info that doesn't need to grabbed more than once.
-    font="${BAR_FONT:-"-benis-lemon-medium-r-normal--10-110-75-75-m-50-iso8859-9"}"
+    font="${BAR_FONT:-"-*-lemon-*"}"
+    icon="${BAR_ICON:-"-*-siji-*"}"
     height="${BAR_HEIGHT:-30}"
     width="$(get_mon_width)"
-    local_ip="$(get_local_ip)"
+    local_ip="$(icon "") $(get_local_ip)"
 
     # Loop and print the info.
     while :; do
         workspaces="$(get_workspaces)"
+        window="$(icon "") $(get_window)"
         date="$(get_date)"
-        song="$(get_song)"
+        song="$(icon "") $(get_song)"
         volume="$(get_volume)"
 
         printf "%s%s%s\\n" \
-               "%{l}   ${workspaces}" \
+               "%{l}   ${workspaces} |  ${window}" \
                "%{c}${date}" \
                "%{r}${song}  |  ${volume}  |  ${local_ip}    "
         sleep .1s
@@ -98,8 +122,8 @@ main() {
 
     # Launch lemonbar.
     lemonbar -g "${width}x${height}" \
-             -B "${color0:-#000000}" -F "${color8:-#666666}"\
-             -n "bar" -f "$font"
+             -B "${color0:-#000000}" -F "${color15:-#F0F0F0}"\
+             -n "bar" -f "$font" -f "$icon"
 }
 
 
