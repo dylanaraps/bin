@@ -9,7 +9,7 @@
 
 font="${BAR_FONT:-"-*-lemon-*"}"
 icon="${BAR_ICON:-"-*-siji-*"}"
-height="${BAR_HEIGHT:-35}"
+height="${BAR_HEIGHT:-36}"
 
 
 get_mon_width() {
