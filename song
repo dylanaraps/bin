@@ -8,14 +8,12 @@
 
 # Get the player.
 case "$1" in
-    "next") playerctl next ;;
-    "prev") playerctl prev ;;
+    "next") mpc next ;;
+    "prev") mpc prev ;;
     "toggle")
-        playerctl play-pause
-
         # The '-r' flag is from a patched version of 'libnotify'.
         # '-r' lets you replace notifications using the same id.
-        notify-send -t 1 -r 114 "Song: $(playerctl status)"
+        notify-send -t 1 -r 114 "Song: $(mpc toggle)"
     ;;
 
     *) printf "%s\n" "Usage: ./song next, ./song prev, ./song toggle"; exit ;;

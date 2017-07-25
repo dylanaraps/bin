@@ -5,7 +5,7 @@
 #
 # Created by Dylan Araps.
 #
-# Depends on: xorg-xrandr, wmctrl, dbus, lemonbar, ip, xdotool
+# Depends on: xorg-xrandr, wmctrl, mpc, lemonbar, ip, xdotool
 
 font="${BAR_FONT:-"-*-lemon-*"}"
 icon="${BAR_ICON:-"-*-siji-*"}"
@@ -45,23 +45,8 @@ get_date() {
 
 
 get_song() {
-    # Get the current song from spotify.
-    song="$(\
-        dbus-send --print-reply \
-                  --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
-                  org.freedesktop.DBus.Properties.Get \
-                  string:'org.mpris.MediaPlayer2.Player' \
-                  string:'Metadata' |\
-        awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-        awk -F '"|\\(|-|&' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}'
-    )"
-
-    # Print song if something is playing.
-    if [ "${#song}" -lt 5 ]; then
-        printf "%s\\n" "Not playing"
-    else
-        printf "%.100s\\n" "${song}"
-    fi
+    # Get the current song from mopidy/mpd.
+    printf "%.100s\\n" "$(mpc current)"
 }
 
 
