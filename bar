@@ -34,7 +34,7 @@ get_workspaces() {
 
 get_window() {
     # Get title of focused window.
-    printf "%s\\n" "$(xdotool getwindowfocus getwindowname)"
+    printf "%.75s\\n" "$(xdotool getwindowfocus getwindowname)"
 }
 
 
