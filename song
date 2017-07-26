@@ -18,3 +18,7 @@ case "$1" in
 
     *) printf "%s\n" "Usage: ./song next, ./song prev, ./song toggle"; exit ;;
 esac
+
+# Reload bum
+# https://github.com/dylanaraps/bum
+# pkill -USR1 bum &
