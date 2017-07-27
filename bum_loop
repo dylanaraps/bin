@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Wake up bum on song change.
+while :; do
+    mpc idleloop player | pkill -USR1 bum$
+done
