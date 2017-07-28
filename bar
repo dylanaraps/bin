@@ -66,13 +66,6 @@ get_volume() {
 }
 
 
-get_local_ip() {
-    # Get the local IP address.
-    local_ip="$(ip route get 1 | awk -F 'src | uid' '{print $2; exit}')"
-    printf "%b\\n" "$local_ip"
-}
-
-
 icon() {
     # Format an icon.
     printf "%s\\n" "%{F${color3:-#F0F0F0}}${1}%{F}"
@@ -88,7 +81,6 @@ main() {
 
     # Info that doesn't need to grabbed more than once.
     width="$(get_mon_width)"
-    local_ip="$(icon "") $(get_local_ip)"
 
     # Loop and print the info.
     while :; do
@@ -101,7 +93,7 @@ main() {
         printf "%s%s%s\\n" \
                "%{l}   ${workspaces} |  ${window}" \
                "%{c}${date}" \
-               "%{r}${song}  |  ${volume}  |  ${local_ip}    "
+               "%{r}${song}  |  ${volume}    "
         sleep .1s
     done |\
 
