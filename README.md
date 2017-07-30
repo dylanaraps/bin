@@ -9,9 +9,9 @@ Depends on:
 
 - Dynamic width: `xorg-xrandr`
 - Workspace switcher: `wmctrl`,
-- Current song (Spotify): `dbus-send`
+- Current song: `mpc`,
 - Bar: `lemonbar`
-- IP Address: `ip`
+- Current Window: `xdotool`,
 
 
 ### bri
