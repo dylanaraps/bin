@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""
+Script to send data to lemonbar.
+"""
+import json
+import os
+import pathlib
+import subprocess
+
+FONT = os.getenv('BAR_FONT', "-*-lemon-*")
+ICON = os.getenv('BAR_ICON', "-*-siji-*")
+HEIGHT = os.getenv('BAR_HEIGHT', "36")
+
+
+def read_colors(color_file):
+    """Read colors from pywal."""
+    with open(color_file, "r") as json_file:
+        colors = json.load(json_file)
+
+    return colors
+
+
+def main():
+    """Main function."""
+    color_file = pathlib.Path.home() / ".cache/wal/colors.json"
+    colors = read_colors(color_file)
+
+    subprocess.call(["lemonbar", "-B", colors["colors"]["color0"], "-p"])
+
+
+main()
