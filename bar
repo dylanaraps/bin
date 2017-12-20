@@ -19,6 +19,11 @@ tim() {
     printf "%(%a %d %b  - %l:%M %p)T"
 }
 
+bri() {
+    cur="$(< /sys/class/backlight/intel_backlight/brightness)"
+    printf "%b" "$((cur / 10 + 7))% \uf0eb"
+}
+
 bat() {
     cur="$(< /sys/class/power_supply/BAT1/capacity)"
     sta="$(< /sys/class/power_supply/BAT1/status)"
@@ -37,7 +42,7 @@ bat() {
 }
 
 for((;;)) {
-    printf "    %s    \\n" "$(vol)%{c}$(tim)%{r}$(bat)"
+    printf "    %s    \\n" "$(vol)%{c}$(tim)%{r}$(bri)   $(bat)"
     sleep 2
 } |\
 
