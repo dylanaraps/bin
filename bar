@@ -26,8 +26,9 @@ bat() {
     case "$cur" in
         [0-9])  bat_icon="\\uf244" ;;
         [1-3]?) bat_icon="\\uf243" ;;
-        [4-7]?) bat_icon="\\uf242" ;;
-        *)      bat_icon="\\uf241" ;;
+        [4-5]?) bat_icon="\\uf242" ;;
+        [6-7]?) bat_icon="\\uf241" ;;
+        *)      bat_icon="\\uf240" ;;
     esac
 
     [[ "$sta" == Charging ]] && bat_icon+="  \\uf0e7"
