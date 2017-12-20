@@ -21,7 +21,7 @@ mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}.png"
 
 # Send the notification
-notify-send "Saved screenshot as ${scr/*\/}"
+# notify-send "Saved screenshot as ${scr/*\/}"
 
 # Take the screenshot and crop out my second monitor.
 scrot "$scr"

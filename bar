@@ -45,5 +45,5 @@ lemonbar -db \
          -g 1100x100+1050+120 \
          -f "Roboto 22" \
          -f "FontAwesome-15" \
-         -B "$color15" \
+         -B "#FFFFFF" \
          -F "$color0"

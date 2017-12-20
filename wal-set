@@ -22,7 +22,7 @@ reload_dunst() {
 
 reload_openbox() {
     sed -i"" \
-        -e "s/bg.color: #.*/bg.color: ${color2:-#FFFFFF}/" \
+        -e "s/bg.color: #.*/bg.color: ${color5:-#FFFFFF}/" \
         -e "s/text.color: #.*/text.color: ${color0:-#000000}/" \
         -e "s/image.color: #.*/image.color: ${color0:-#000000}/" \
         "${HOME}/.themes/thicc/openbox-3/themerc"
