@@ -16,8 +16,8 @@ reload_dunst() {
         -bf "${color15:=#000000}" \
         -cf "${color15:=#000000}" \
         -nf "${color15:=#000000}" \
-        -fn "Roboto 13" \
-        -geometry "300x40-40+50" &
+        -fn "Roboto 12" \
+        -geometry "600x40-80+100" &
 }
 
 reload_openbox() {
@@ -29,9 +29,15 @@ reload_openbox() {
     openbox --reconfigure
 }
 
+reload_bar() {
+   pkill bar
+   bar &
+}
+
 main() {
     reload_dunst &
     reload_openbox &
+    reload_bar &
 }
 
 main

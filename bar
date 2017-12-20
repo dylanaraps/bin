@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Speed up script by not using unicode.
+# export LC_ALL=C
+
+. ~/.cache/wal/colors.sh
+
+vol() {
+    cur="$(amixer get Master -n | grep -oE "[0-9]{1,3}%")"
+
+    case "$cur" in
+        [0-9]%)    vol_icon="\\uf026" ;;
+        [1-4]?%)   vol_icon="\\uf027" ;;
+        [5-6]?%|*) vol_icon="\\uf028" ;;
+    esac
+
+    printf "%b" "$vol_icon $cur"
+}
+
+tim() {
+    printf "%(%a %d %b  - %l:%M %p)T"
+}
+
+bat() {
+    cur="$(< /sys/class/power_supply/BAT1/capacity)"
+    sta="$(< /sys/class/power_supply/BAT1/status)"
+
+    case "$cur" in
+        [0-9])  bat_icon="\\uf244" ;;
+        [1-3]?) bat_icon="\\uf243" ;;
+        [4-7]?) bat_icon="\\uf242" ;;
+        *)      bat_icon="\\uf241" ;;
+    esac
+
+    [[ "$sta" == Charging ]] && bat_icon+="  \\uf0e7"
+
+    printf "%s%%  %b" "$cur" "$bat_icon"
+}
+
+for((;;)) {
+    printf "    %s    \\n" "$(vol)%{c}$(tim)%{r}$(bat)"
+    sleep 2
+} |\
+
+lemonbar -db \
+         -g 1100x100+1050+120 \
+         -f "Roboto 22" \
+         -f "FontAwesome-15" \
+         -B "$color15" \
+         -F "$color0"
