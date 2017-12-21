@@ -48,7 +48,7 @@ for((;;)) {
 } |\
 
 lemonbar -db \
-         -g 1100x100+1050+120 \
+         -g 1200x100+1000+120 \
          -f "Roboto 22" \
          -f "FontAwesome-15" \
          -B "#FFFFFF" \
