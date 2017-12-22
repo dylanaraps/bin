@@ -30,8 +30,10 @@ reload_openbox() {
 }
 
 reload_bar() {
-   pkill bar
-   bar &
+    pkill bar
+    bar &
+    sleep 1
+    xdo lower -a bar
 }
 
 main() {
