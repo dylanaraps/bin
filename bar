@@ -16,13 +16,18 @@ vol() {
     printf "%b" "$vol_icon ${cur/ *}"
 }
 
+wif() {
+    cur="$(< /tmp/ssid)"
+    printf "%b" "\\uf1eb ${cur/connect}"
+}
+
 tim() {
     printf "%(%a %d %b  - %l:%M %p)T"
 }
 
 bri() {
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
-    printf "%b" "$((cur / 10 + 7))% \uf0eb"
+    printf "%b" "$((cur / 10 + 7))% \\uf0eb"
 }
 
 bat() {
@@ -43,7 +48,7 @@ bat() {
 }
 
 for((;;)) {
-    printf "    %s    \\n" "$(vol)%{c}$(tim)%{r}$(bri)   $(bat)"
+    printf "    %s    \\n" "$(vol)   $(wif)%{c}$(tim)%{r}$(bri)   $(bat)"
     sleep 2
 } |\
 

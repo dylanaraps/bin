@@ -36,10 +36,15 @@ reload_bar() {
     xdo lower -a bar
 }
 
+set_scss() {
+    sassc --style expanded "${HOME}/projects/startpage/scss/style.scss" > "${HOME}/projects/startpage/style.css"
+}
+
 main() {
-    reload_dunst &
     reload_openbox &
+    reload_dunst &
     reload_bar &
+    set_scss &
 }
 
 main
