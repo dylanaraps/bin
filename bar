@@ -58,4 +58,4 @@ lemonbar -db \
          -f "FontAwesome-15" \
          -n "bar" \
          -B "#FFFFFF" \
-         -F "$color0"
+         -F "${color0:-#000000}"
