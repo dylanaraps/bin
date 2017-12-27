@@ -18,7 +18,8 @@ printf -v time "%(%I-%M-%S)T"
 mkdir -p "${scr_dir}/${date}"
 
 # Name the screenshot
-scr="${scr_dir}/${date}/${date}-${time}.png"
+scr="${scr_dir}/${date}/${date}-${time}"
 
 notify-send " Saved screenshot as ${scr/*\/}"
-scrot -d 3 "$scr"
+scrot "$scr".png
+scrot "$scr".jpg

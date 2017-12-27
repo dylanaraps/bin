@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Treat mopidy/ncmpcpp as a standalone player.
+mopidy >/dev/null 2>&1 &
+ncmpcpp
+pkill mopidy

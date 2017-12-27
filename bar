@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2183,SC1090
 #
 # bar - Dylan Araps
-# shellcheck source=/dev/null
 . ~/.cache/wal/colors.sh
 
 vol() {
@@ -23,7 +23,7 @@ wif() {
 }
 
 tim() {
-    printf "%(%a %d %b  - %l:%M %p)T" ""
+    printf "%(%a %d %b  - %l:%M %p)T"
 }
 
 bri() {
