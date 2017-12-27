@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2183,SC1090
 #
 # bar - Dylan Araps
 . ~/.cache/wal/colors.sh
 
 vol() {
-    cur="$(amixer get Master -n |
+    cur="$(LC_ALL=C amixer get Master -n |
            awk -F '\\[|\\]' '/[0-9]{1,3}%/ {print $2" "$6}')"
 
     case "$cur" in
@@ -48,7 +49,10 @@ bat() {
 }
 
 for((;;)) {
-    printf "    %s    \\n" "$(vol)   $(wif)%{c}$(tim)%{r}$(bri)   $(bat)"
+    printf "    %s%s%s    \\n" \
+           "$(vol)   $(wif)" \
+           "%{c}$(tim)" \
+           "%{r}$(bri)   $(bat)"
     sleep 2
 } |\
 

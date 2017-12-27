@@ -21,4 +21,4 @@ mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}.png"
 
 notify-send " Saved screenshot as ${scr/*\/}"
-scrot "$scr"
+scrot -d 3 "$scr"
