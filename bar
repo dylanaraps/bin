@@ -59,7 +59,7 @@ for((;;)) {
 lemonbar -db \
          -g 1200x100+1000+75 \
          -f "Roboto Mono 22" \
-         -f "FontAwesome-15" \
+         -f "Font Awesome-15" \
          -n "bar" \
          -B "${1:-#FFFFFF}" \
          -F "${2:-#000000}"
