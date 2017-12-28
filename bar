@@ -61,5 +61,5 @@ lemonbar -db \
          -f "Roboto Mono 22" \
          -f "FontAwesome-15" \
          -n "bar" \
-         -B "#FFFFFF" \
-         -F "${color0:-#000000}"
+         -B "${1:-#FFFFFF}" \
+         -F "${2:-#000000}"

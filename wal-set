@@ -9,20 +9,20 @@
 reload_dunst() {
     pkill dunst
     dunst \
-        -lb "#FFFFFF" \
-        -nb "#FFFFFF" \
-        -cb "#FFFFFF" \
-        -lf "${color0:=#000000}" \
-        -bf "${color0:=#000000}" \
-        -cf "${color0:=#000000}" \
-        -nf "${color0:=#000000}" \
+        -lb "${color15:-#FFFFFF}}" \
+        -nb "${color15:-#FFFFFF}}" \
+        -cb "${color15:-#FFFFFF}}" \
+        -lf "${color0:-#000000}" \
+        -bf "${color0:-#000000}" \
+        -cf "${color0:-#000000}" \
+        -nf "${color0:-#000000}" \
         -fn "Roboto 12" \
         -geometry "600x40-80+100" &
 }
 
 reload_openbox() {
     sed -i"" --follow-symlinks \
-        -e "s/bg.color: #.*/bg.color: ${color15:+#FFFFFF}/" \
+        -e "s/bg.color: #.*/bg.color: ${color15:-#FFFFFF}/" \
         -e "s/text.color: #.*/text.color: ${color0:-#000000}/" \
         -e "s/image.color: #.*/image.color: ${color0:-#000000}/" \
         "${HOME}/.themes/thicc/openbox-3/themerc"
@@ -31,7 +31,7 @@ reload_openbox() {
 
 reload_bar() {
     pkill bar
-    bar &
+    bar "$color15" "$color0" &
     sleep 1
     xdo lower -a bar
 }
