@@ -1,2 +1,19 @@
 #!/usr/bin/env bash
-echo "${6:0:10} - ${12:0:20}" > /tmp/song
+#
+# Pipe current song info to file.
+#
+# Created by Dylan Araps.
+
+while [[ "$1" ]]; do
+    case "$1" in
+        "title") title="$2" ;;
+        "artist") artist="$2" ;;
+        "status") status="$2" ;;
+    esac
+
+    shift
+done
+
+[[ "$status" =~ (stopped|paused) ]] && status2="Paused"
+
+echo "${status2:-${artist:0:15} - ${title:0:20}}" > /tmp/song

@@ -24,7 +24,7 @@ wif() {
 
 son() {
     cur="$(< /tmp/song)"
-    printf "%b  %s" "\\uf001" "$cur"
+    printf "%b  %s" "\\uf001" "${cur:-Not Playing}"
 }
 
 tim() {
