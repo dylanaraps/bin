@@ -3,10 +3,10 @@
 #
 # bar - Dylan Araps
 . ~/.cache/wal/colors.sh
+unset PATH
 
 # Enable builtin sleep.
 enable -f /usr/lib64/bash/sleep sleep
-
 
 wif() {
     cur="$(< /tmp/ssid)"
@@ -76,7 +76,7 @@ for((;;)) {
     builtin sleep 2
 } |\
 
-lemonbar -db \
+/bin/lemonbar -db \
          -g 1800x100+700+75 \
          -f "Roboto Mono 22" \
          -f "Font Awesome-15" \
