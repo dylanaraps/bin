@@ -77,7 +77,7 @@ for((;;)) {
     builtin sleep 2
 } |\
 
-/bin/lemonbar -db \
+lemonbar -db \
          -g 1800x100+700+75 \
          -f "Roboto Mono 22" \
          -f "Font Awesome-15" \
