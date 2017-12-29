@@ -4,6 +4,9 @@
 # bar - Dylan Araps
 . ~/.cache/wal/colors.sh
 
+# Enable builtin sleep.
+enable -f /usr/lib64/bash/sleep sleep
+
 
 wif() {
     cur="$(< /tmp/ssid)"
@@ -71,8 +74,7 @@ for((;;)) {
     printf "    %b    \\n" \
            "$son%{c}$tim%{r}$bri    $vol    $wif   $bat"
 
-    # Sleep without calling an external process.
-    read -rt 2 -N 0
+    builtin sleep 2
 } |\
 
 /bin/lemonbar -db \
