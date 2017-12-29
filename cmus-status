@@ -3,6 +3,8 @@
 # Pipe current song info to file.
 #
 # Created by Dylan Araps.
+unset PATH
+LC_ALL=C
 
 while [[ "$1" ]]; do
     case "$1" in
