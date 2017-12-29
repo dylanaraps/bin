@@ -8,6 +8,7 @@ unset PATH
 # Enable builtin sleep.
 enable -f /usr/lib64/bash/sleep sleep
 
+
 wif() {
     cur="$(< /tmp/ssid)"
     wif="${cur/connect} \\uf1eb"
