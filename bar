@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2183,SC1090
+# shellcheck disable=SC1090
 #
 # bar - Dylan Araps
 . ~/.cache/wal/colors.sh
@@ -14,21 +14,26 @@ vol() {
         [5-6]?%*|*)  vol_icon="\\uf028" ;;
     esac
 
-    printf "%b" "$vol_icon ${cur/ *}"
+    printf "%s %b" "${cur/ *}" "$vol_icon"
 }
 
 wif() {
     cur="$(< /tmp/ssid)"
-    printf "%b" "\\uf1eb ${cur/connect}"
+    printf "%s %b" "${cur/connect}" "\\uf1eb"
+}
+
+son() {
+    cur="$(< /tmp/song)"
+    printf "%b  %s" "\\uf001" "$cur"
 }
 
 tim() {
-    printf "%(%a %d %b  - %l:%M %p)T"
+    printf "%(%a %d %b  - %l:%M %p)T" "-1"
 }
 
 bri() {
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
-    printf "%b" "$((cur / 10 + 7))% \\uf0eb"
+    printf "%s %b" "$((cur / 10 + 7))%" "\\uf0eb"
 }
 
 bat() {
@@ -50,14 +55,14 @@ bat() {
 
 for((;;)) {
     printf "    %s%s%s    \\n" \
-           "$(vol)   $(wif)" \
+           "$(son)" \
            "%{c}$(tim)" \
-           "%{r}$(bri)   $(bat)"
+           "%{r}$(bri)    $(vol)    $(wif)   $(bat)"
     sleep 2
 } |\
 
 lemonbar -db \
-         -g 1200x100+1000+75 \
+         -g 1800x100+700+75 \
          -f "Roboto Mono 22" \
          -f "Font Awesome-15" \
          -n "bar" \
