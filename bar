@@ -4,10 +4,6 @@
 # bar - Dylan Araps
 . ~/.cache/wal/colors.sh
 
-# Create a pipe to do a sleepless sleep.
-mkfifo /tmp/bar
-trap 'rm /tmp/bar' 0
-
 
 wif() {
     cur="$(< /tmp/ssid)"
@@ -76,7 +72,7 @@ for((;;)) {
            "$son%{c}$tim%{r}$bri    $vol    $wif   $bat"
 
     # Sleep without calling an external process.
-    read -rt 2 <> "/tmp/bar"
+    read -rt 2 -N 0
 } |\
 
 /bin/lemonbar -db \
