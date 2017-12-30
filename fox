@@ -1,0 +1,2 @@
+#!/bin/sh
+apulse firefox-nightly "$@"

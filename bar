@@ -16,7 +16,7 @@ wif() {
 
 
 son() {
-    cur="$(< /tmp/song)"
+    cur="$(< ~/.cache/song)"
     son="\\uf001  ${cur:-Not Playing}"
 }
 
@@ -51,7 +51,7 @@ bat() {
 
 
 vol() {
-    cur="$(< /tmp/vol)"
+    cur="$(< ~/.cache/vol)"
 
     case "$cur" in
         [0-9]%*|*f*) vol_icon="\\uf026" ;;

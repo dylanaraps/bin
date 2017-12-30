@@ -18,4 +18,4 @@ done
 
 [[ "$status" =~ (stopped|paused) ]] && status2="Paused"
 
-echo "${status2:-${artist:0:15} - ${title:0:20}}" > /tmp/song
+echo "${status2:-${artist:0:15} - ${title:0:20}}" > ~/.cache/song
