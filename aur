@@ -1,56 +1,29 @@
 #!/usr/bin/env bash
 #
 # Simple aur helper.
+# Use this to install a real aur helper.
 #
-# Usage: ./saur -S pkg pkg pkg
-SAUR_CACHE_DIR="${SAUR_CACHE_DIR:-${HOME}/.cache/saur}"
-SAUR_VERSION=0.0.1
+# Usage: ./saur pkg pkg pkg
+SAUR_CACHE_DIR="${HOME}/.cache/saur"
+mkdir -p "$SAUR_CACHE_DIR"
+cd "$SAUR_CACHE_DIR" || exit 1
 
+# Download the PKGBUILDs.
+for pkg in "$@"; do
+    cd "$pkg" 2>/dev/null || git clone "https://aur.archlinux.org/${pkg}.git"
+done
+cd "$SAUR_CACHE_DIR" || exit
 
-install_pkg() {
-    # Download the PKGBUILDs.
-    for pkg in "$@"; do
-        cd "$pkg" 2>/dev/null || git clone "https://aur.archlinux.org/${pkg}.git"
-    done
-    cd "$SAUR_CACHE_DIR" || exit
+# Check PKGBUILDs.
+for pkg in "$@"; do
+    cd "$pkg" || exit
+    read -rn 1 -p "View PKGBUILD for ${pkg}? [y/n] " response; echo
+    [[ "${response,,}" =~ y ]] && "${EDITOR:-vi}" PKGBUILD
+done
+cd "$SAUR_CACHE_DIR" || exit
 
-    # Check PKGBUILDs.
-    for pkg in "$@"; do
-        cd "$pkg" || exit
-        read -rn 1 -p "View PKGBUILD for ${pkg}? [y/n] " response; echo
-        [[ "${response,,}" =~ y ]] && "${EDITOR:-vi}" PKGBUILD
-    done
-    cd "$SAUR_CACHE_DIR" || exit
-
-    # Install packages.
-    for pkg in "$@"; do
-        cd "$pkg" || exit
-        makepkg -sfci
-    done
-}
-
-get_args() {
-    while [[ "$1" ]]; do
-        case "$1" in
-            "-S") install=1 ;;
-            "-C") clean=1 ;;
-            "-v") printf "%s\\n" "saur $SAUR_VERSION"; exit 1 ;;
-            "-"*) shift ;;
-            *) packages+=("$1")
-        esac
-        shift
-    done
-
-    [[ "$clean" ]] && rm -rf "${SAUR_CACHE_DIR:-~/.cache/saur}"
-    [[ "$install" ]] && install_pkg "${packages[@]}"
-
-}
-
-main() {
-    mkdir -p "$SAUR_CACHE_DIR"
-    cd "$SAUR_CACHE_DIR" || exit 1
-
-    get_args "$@"
-}
-
-main "$@"
+# Install packages.
+for pkg in "$@"; do
+    cd "$pkg" || exit
+    makepkg -sfci
+done
