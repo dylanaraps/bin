@@ -12,6 +12,7 @@ if [[ "$repo_remote" =~ ^git@github ]]; then
     repo="https://github.com/${repo}"
 else
     repo="${repo_remote/'https://github.com/'}"
+    repo="${repo%%.git}"
     repo="git@github.com:${repo}.git"
 fi
 
