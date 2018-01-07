@@ -31,7 +31,7 @@ reload_openbox() {
 
 reload_bar() {
     pkill bar
-    bar "$color15" "$color0" &
+    bar "$color15" &
     sleep 1
     xdo lower -a bar
 }

@@ -10,29 +10,34 @@ enable -f /usr/lib64/bash/sleep sleep
 
 
 wif() {
+    # Read wifi information from file populated by netctl hook.
     cur="$(< /tmp/ssid)"
     wif="${cur/connect} \\uf1eb"
 }
 
 
 son() {
+    # Read song information from file populated by cmus.
     cur="$(< ~/.cache/song)"
     son="\\uf001  ${cur:-Not Playing}"
 }
 
 
 tim() {
+    # Get the current date/time using printf format string.
     printf -v tim "%(%a %d %b  - %l:%M %p)T" "-1"
 }
 
 
 bri() {
+    # Read brightness from file.
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
     bri="$((cur / 10 + 7))% \\uf0eb"
 }
 
 
 bat() {
+    # Read battery status from file.
     cur="$(< /sys/class/power_supply/BAT1/capacity)"
     sta="$(< /sys/class/power_supply/BAT1/status)"
 
@@ -51,6 +56,7 @@ bat() {
 
 
 vol() {
+    # Read volume information from file populated by volume hotkeys.
     cur="$(< ~/.cache/vol)"
 
     case "$cur" in
@@ -81,6 +87,8 @@ for((;;)) {
          -g 1800x100+700+75 \
          -f "Roboto Mono 22" \
          -f "Font Awesome-15" \
+         -o 0 \
+         -o -1 \
          -n "bar" \
          -B "${1:-#FFFFFF}" \
          -F "${2:-#000000}"
