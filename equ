@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Change alsaequal settings.
+set_eq() {
+    freqs=("31 Hz" "63 Hz" "125 Hz" "250 Hz" "500 Hz"
+           "1 kHz" "2 kHz" "4 kHz" "8 kHz" "16 kHz")
+
+    for i in {1..10}; do
+        amixer -D equal -q set "0$((i-1)). ${freqs[$((i-1))]}" "${!i}"
+    done
+}
+
+main() {
+    case "$1" in
+        bass) set_eq 85 80 75 70 66 66 66 75 80 85 ;;
+        *)    set_eq 66 66 66 66 66 66 66 66 66 66 ;;
+    esac
+}
+
+main "$@"
