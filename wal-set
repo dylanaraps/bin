@@ -9,9 +9,9 @@
 reload_dunst() {
     pkill dunst
     dunst \
-        -lb "${color15:-#FFFFFF}}" \
-        -nb "${color15:-#FFFFFF}}" \
-        -cb "${color15:-#FFFFFF}}" \
+        -lb "${color15:-#FFFFFF}" \
+        -nb "${color15:-#FFFFFF}" \
+        -cb "${color15:-#FFFFFF}" \
         -lf "${color0:-#000000}" \
         -bf "${color0:-#000000}" \
         -cf "${color0:-#000000}" \
