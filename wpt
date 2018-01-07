@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-
-display \
-          -resize 3200x -resize 'x1800<' \
-          -gravity center  -crop 3200x1800+0+0 +repage -window root   ~/Pictures/Wallpapers/4.jpg
