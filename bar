@@ -78,7 +78,7 @@ for((;;)) {
     bat
 
     printf "    %b    \\n" \
-           "$son%{c}$tim%{r}$bri    $vol    $wif   $bat"
+           "$son%{c}$tim%{r}$bri   $vol   $wif   $bat"
 
     builtin sleep 2
 } |\
