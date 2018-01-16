@@ -12,7 +12,7 @@ enable -f /usr/lib64/bash/sleep sleep
 wif() {
     # Read wifi information from file populated by netctl hook.
     cur="$(< /tmp/ssid)"
-    wif="${cur/connect} \\uf1eb"
+    wif="$cur \\uf1eb"
 }
 
 
