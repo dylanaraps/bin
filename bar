@@ -12,14 +12,14 @@ enable -f /usr/lib64/bash/sleep sleep
 wif() {
     # Read wifi information from file populated by netctl hook.
     cur="$(< /tmp/ssid)"
-    wif="$cur \\uf1eb"
+    wif="$cur %{F${color3}}\\uf1eb%{F}"
 }
 
 
 son() {
     # Read song information from file populated by cmus.
     cur="$(< ~/.cache/song)"
-    son="\\uf001  ${cur:-Not Playing}"
+    son="%{F${color6}}\\uf001%{F}  ${cur:-Not Playing}"
 }
 
 
@@ -32,7 +32,7 @@ tim() {
 bri() {
     # Read brightness from file.
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
-    bri="$((cur / 10 + 7))% \\uf0eb"
+    bri="$((cur / 10 + 7))% %{F${color1}}\\uf0eb%{F}"
 }
 
 
@@ -49,9 +49,10 @@ bat() {
         *)      bat_icon="\\uf240" ;;
     esac
 
-    [[ "$sta" == Charging ]] && bat_icon+="  \\uf0e7"
+    [[ "$sta" == Charging ]] && \
+        bat_icon+="%{F${color5}}  \\uf0e7%{F}"
 
-    bat="${cur}%  $bat_icon"
+    bat="${cur}%  %{F${color4}}$bat_icon%{F}"
 }
 
 
@@ -65,7 +66,7 @@ vol() {
         [5-6]?%*|*)  vol_icon="\\uf028" ;;
     esac
 
-    vol="${cur/ *} $vol_icon"
+    vol="${cur/ *} %{F${color2}}$vol_icon%{F}"
 }
 
 

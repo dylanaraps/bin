@@ -9,13 +9,13 @@
 reload_dunst() {
     pkill dunst
     dunst \
-        -lb "${color15:-#FFFFFF}" \
-        -nb "${color15:-#FFFFFF}" \
-        -cb "${color15:-#FFFFFF}" \
-        -lf "${color0:-#000000}" \
-        -bf "${color0:-#000000}" \
-        -cf "${color0:-#000000}" \
-        -nf "${color0:-#000000}" \
+        -lb "${color0:-#FFFFFF}" \
+        -nb "${color0:-#FFFFFF}" \
+        -cb "${color0:-#FFFFFF}" \
+        -lf "${color15:-#000000}" \
+        -bf "${color15:-#000000}" \
+        -cf "${color15:-#000000}" \
+        -nf "${color15:-#000000}" \
         -fn "Roboto 12" \
         -geometry "600x40-80+100" &
 }
@@ -31,7 +31,7 @@ reload_openbox() {
 
 reload_bar() {
     pkill bar
-    bar "$color15" &
+    bar "$color0" "$color15" &
     sleep 1
     xdo lower -a bar
 }
@@ -40,10 +40,20 @@ set_scss() {
     sassc --style expanded "${HOME}/projects/startpage/scss/style.scss" > "${HOME}/projects/startpage/style.css"
 }
 
+set_spotify() {
+    oomoxify-cli ~/.cache/wal/colors-oomox
+
+    if pgrep spotify; then
+        pkill spotify
+        ~/bin/spotify
+    fi
+}
+
 main() {
     reload_openbox &
     reload_dunst &
     reload_bar &
+    # set_spotify &
     # set_scss &
 }
 
