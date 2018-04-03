@@ -22,6 +22,23 @@ get_distro() {
 }
 
 
+get_host() {
+    if [ -f /sys/devices/virtual/dmi/id/product_name ] ||
+       [ -f /sys/devices/virtual/dmi/id/product_version ]; then
+        host="$(cat /sys/devices/virtual/dmi/id/product_name)"
+        host="$host $(cat /sys/devices/virtual/dmi/id/product_version)"
+
+    elif [ -f /sys/firmware/devicetree/base/model ]; then
+        host="$(cat /sys/firmware/devicetree/base/model)"
+
+    elif [ -f /tmp/sysinfo/model ]; then
+        host="$(cat /tmp/sysinfo/model)"
+    fi
+
+    info "Host" "$host"
+}
+
+
 get_uptime() {
     secs="$(cat /proc/uptime)"
     secs="${secs%%.*}"
@@ -175,6 +192,7 @@ info() {
 main() {
     get_title
     get_distro
+    get_host
     get_uptime
     get_kernel
     get_shell
