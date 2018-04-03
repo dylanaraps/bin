@@ -134,6 +134,17 @@ get_term() {
 }
 
 
+get_resolution() {
+    if command -v xrandr >/dev/null; then
+        resolution="$(xrandr --nograb --current |\
+                      awk -F 'connected |\\+|\\(' \
+                             '/ connected/ && $2 {printf $2 ", "}')"
+        resolution="${resolution%, }"
+        info "Resolution" "${resolution#primary }"
+    fi
+}
+
+
 get_cols() {
     printf "\\n"
     i=1; while [ "$i" -lt 8 ]; do
@@ -170,6 +181,7 @@ main() {
     get_memory
     get_wm
     get_term
+    get_resolution
 
     get_cols
 }
