@@ -6,8 +6,25 @@
 #
 # Created by Dylan Araps
 
+# GAP BETWEEN ASCII AND TEXT.
+GAP=15
+
+art="
+\\033c\\033[31m  .--.---.
+ ( \\'--'/ )
+( '..-...' )
+ '.'-._.'.'
+ \\033[34m <'-.,.->
+     \`\\(   _
+     < \\ / \\
+     __ \\\\|_/
+    /  \\ \\\\
+     '--'.\\ >
+           \\\\\\033[0m
+"
+
 get_title() {
-    printf "\\e[1m%s\\n\\e[0m" "${USER:-$(whoami)}@$(hostname)"
+    info "${USER:-$(whoami)}@$(hostname)"
 }
 
 
@@ -163,9 +180,9 @@ get_resolution() {
 
 
 get_cols() {
-    printf "\\n"
+    printf "\\n\\n"
     i=1; while [ "$i" -lt 8 ]; do
-        printf "%b" "\\e[4${i}m  \\e[0m"
+        printf "%b" "\\e[4${i}m      \\e[0m"
         i="$((i+1))"
     done
     printf "\\n\\n"
@@ -183,13 +200,27 @@ trim() {
 
 info() {
     reset="\\e[0m"
+    bold="\\e[1m"
     title_color="\\e[32m"
 
-    printf "%b: %s\\n" "${title_color}${1}${reset}" "$2"
+    if [ "$2" ]; then
+        printf "\\e[%sC%b: %s\\n" \
+               "$GAP" \
+               "${title_color}${1}${reset}" "$2"
+
+    else
+        printf "\\e[%sC%b\\n" \
+               "$GAP" \
+               "${bold}${1}${reset}"
+    fi
 }
 
 
 main() {
+    printf "%b\\n" "$art"
+    ascii_height="$(echo "$art" | wc -l)"
+    printf "%b" "\\e[?25l\\e[?7l\\e[${ascii_height}A"
+
     get_title
     get_distro
     get_host
@@ -202,6 +233,8 @@ main() {
     get_resolution
 
     get_cols
+
+    printf "\\e[?25h\\e[?7h"
 }
 
 main "$@"
