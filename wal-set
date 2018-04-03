@@ -17,21 +17,19 @@ reload_dunst() {
         -cf "${color15:-#000000}" \
         -nf "${color15:-#000000}" \
         -fn "Roboto 12" \
-        -geometry "600x40-80+100" &
+        -geometry "600x40-150+120" &
 }
 
 reload_openbox() {
     sed -i"" --follow-symlinks \
         -e "s/bg.color: #.*/bg.color: ${color2:-#FFFFFF}/" \
         -e "s/text.color: #.*/text.color: ${color0:-#000000}/" \
-        -e "s/image.color: #.*/image.color: ${color0:-#000000}/" \
+        -e "s/image.color: #.*/image.color: ${color8:-#000000}/" \
         "${HOME}/.themes/thicc/openbox-3/themerc"
     openbox --reconfigure
 }
 
 reload_bar() {
-    pkill bar
-    bar "$color0" "$color15" &
     sleep 1
     xdo lower -a bar
 }
@@ -52,7 +50,7 @@ set_spotify() {
 main() {
     reload_openbox &
     reload_dunst &
-    reload_bar &
+    # reload_bar &
     # set_spotify &
     # set_scss &
 }

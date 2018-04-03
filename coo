@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Cols
+for i in {0..15}; do
+    ((i%8==0)) && echo
+    ((i>7)) && i="8;5;$i"
+    echo -en "\\e[4${i}m  \\e[0m"
+done
+echo
+echo

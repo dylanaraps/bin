@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Pretty M-F
+
+printf -v day "%(%u)T" "-1"
+day="$((day-1))"
+
+days=(M T W T F S S)
+days[$day]="\\033[1m${days[$day]}\\033[0m"
+
+printf "%b\\n" "${days[*]}"

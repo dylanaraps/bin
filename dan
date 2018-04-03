@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# Night/Day pywal
+
+while :; do
+    printf -v time "%(%H)T" "-1"
+
+    if ((time > 5 && time < 18)); then
+        wal -R -l
+    else
+        wal -R
+    fi
+
+    # 1 hour
+    sleep 3600
+done
