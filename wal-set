@@ -9,13 +9,13 @@
 reload_dunst() {
     pkill dunst
     dunst \
-        -lb "${color0:-#FFFFFF}" \
-        -nb "${color0:-#FFFFFF}" \
-        -cb "${color0:-#FFFFFF}" \
-        -lf "${color15:-#000000}" \
-        -bf "${color15:-#000000}" \
-        -cf "${color15:-#000000}" \
-        -nf "${color15:-#000000}" \
+        -lb "${color15:-#FFFFFF}" \
+        -nb "${color15:-#FFFFFF}" \
+        -cb "${color15:-#FFFFFF}" \
+        -lf "${color0:-#000000}" \
+        -bf "${color0:-#000000}" \
+        -cf "${color0:-#000000}" \
+        -nf "${color0:-#000000}" \
         -fn "Roboto 12" \
         -geometry "600x40-150+120" &
 }
