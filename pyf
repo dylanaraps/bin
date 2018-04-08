@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Profile pywal
+prof_file="${HOME}/pywal.cprof"
+wal_args=("-i" "${HOME}/Pictures/Wallpapers" "-o" "wal-set")
+
+python -m cProfile -o "$prof_file" "$(type -p wal)" "${wal_args[@]}"
+pyprof2calltree -k -i "$prof_file"
