@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Rofi for pywal.
+cd "$HOME" || exit 1
+
+shopt -s nullglob
+n=$'\n'
+mode="$(rofi -dmenu -p wal <<< "image${n}theme${n}")"
+
+case "$mode" in
+    "image")
+        while [[ ! -f "$image" ]]; do
+            files=(*/ *.png *.jpg *.gif *.jpeg)
+            image="$(printf "%s\\n" "${files[@]}" | rofi -dmenu -p wal)"
+            [[ -d "$image" ]] && { cd "$image" || continue; }
+            [[ -z "${files[0]}" ]] && break
+        done
+
+        wal -i "$image" -q -o wal-set 2>/dev/null
+    ;;
+
+    "theme")
+        mapfile themes <<< "$(wal --theme)"
+        themes=("${themes[@]// - }")
+        themes=("${themes[@]/*Themes*:*}")
+        themes=("${themes[@]/*Extra*:*}")
+        themes=("${themes[@]/(*}")
+        theme="$(printf "%s" "${themes[@]}" | rofi -dmenu -p wal)"
+
+        wal --theme "$theme" -q -o wal-set 2>/dev/null
+    ;;
+esac
