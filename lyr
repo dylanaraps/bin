@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# Fetch song lyrics.
+
+song="$(\
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+    org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
+    string:'Metadata' |\
+    awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+    awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " :: " t}'
+)"
+
+artist="${song/ :: *}"
+artist="${artist/Troy/Zac Efron & Vanessa Hudgens}"
+title="${song/* :: }"
+title="${title/ - *}"
+title="${title/,}"
+title="${title/Pt./Part}"
+
+url="https://lyrics.wikia.com/wiki/$artist:$title"
+
+lyrics="$(w3m -dump -T text/html "$url")"
+lyrics="${lyrics/*'agreement with music Gracenote.'}"
+lyrics="${lyrics/'External links'*}"
+lyrics="${lyrics/'Written by:'*}"
+lyrics="${lyrics/'Written '*}"
+lyrics="${lyrics/'Music by:'*}"
+lyrics="${lyrics/'Lyrics licensed'*}"
+lyrics="${lyrics/'     '*}"
+
+# printf "%s\\n" "$url"; exit
+printf "%s\\n" "$song"
+printf "%s\\n" "$lyrics"
