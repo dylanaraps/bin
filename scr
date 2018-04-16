@@ -6,16 +6,13 @@
 #
 # Depends on: imagemagick, libnotify (patched with id support)
 scr_dir="${HOME}/Pictures/Screenshots"
-mkdir -p "$scr_dir" || { printf "%s\n" "Error: Couldn't create screenshot directory"; exit; }
 
-# Use printf to store the current date/time as variables.
-printf -v date "%(%F)T"
-printf -v time "%(%I-%M-%S)T"
+printf -v date "%(%F)T" "-1"
+printf -v time "%(%I-%M-%S)T" "-1"
 
 mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}"
 
-notify-send " Saved screenshot as ${scr/*\/}"
-sleep 3
 import -window root "$scr".png &
 import -window root "$scr".jpg &
+notify-send " Saved screenshot as ${scr/*\/}"

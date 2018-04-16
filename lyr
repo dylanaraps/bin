@@ -18,6 +18,7 @@ title="${title/,}"
 title="${title/Pt./Part}"
 
 url="https://lyrics.wikia.com/wiki/$artist:$title"
+url="${url/\’/%27}"
 
 lyrics="$(w3m -dump -T text/html "$url")"
 lyrics="${lyrics/*'agreement with music Gracenote.'}"
@@ -29,5 +30,4 @@ lyrics="${lyrics/'Lyrics licensed'*}"
 lyrics="${lyrics/'     '*}"
 
 # printf "%s\\n" "$url"; exit
-printf "%s\\n" "$song"
-printf "%s\\n" "$lyrics"
+"$EDITOR" <(printf "%s\\n%s\\n" "$song" "$lyrics")
