@@ -4,6 +4,7 @@
 
 lcd() {
     cd "$@" || return
+    [ -d ".git" ] && git diff --shortstat
     exa -x --group-directories-first -a 2>/dev/null ||\
     ls --group-directories-first
 }
