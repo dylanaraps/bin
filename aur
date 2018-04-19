@@ -3,27 +3,23 @@
 # Simple aur helper.
 # Use this to install a real aur helper.
 #
-# Usage: ./saur pkg pkg pkg
-SAUR_CACHE_DIR="${HOME}/.cache/saur"
-mkdir -p "$SAUR_CACHE_DIR"
-cd "$SAUR_CACHE_DIR" || exit 1
+# Usage: ./aur pkg
+shopt -s nullglob nocasematch
 
-# Download the PKGBUILDs.
-for pkg in "$@"; do
-    cd "$pkg" 2>/dev/null || git clone "https://aur.archlinux.org/${pkg}.git"
-done
-cd "$SAUR_CACHE_DIR" || exit
+AUR_CACHE_DIR="${AUR_CACHE_DIR:-${HOME}/.cache/aur}"
+mkdir -p "$AUR_CACHE_DIR"
+cd "$AUR_CACHE_DIR" || exit 1
 
-# Check PKGBUILDs.
-for pkg in "$@"; do
-    cd "$pkg" || exit
-    read -rn 1 -p "View PKGBUILD for ${pkg}? [y/n] " response; echo
-    [[ "${response,,}" =~ y ]] && "${EDITOR:-vi}" PKGBUILD
-done
-cd "$SAUR_CACHE_DIR" || exit
+# Download the PKGBUILD / Files.
+git clone "https://aur.archlinux.org/${1}.git" 2>/dev/null || \
+    { cd "$1" && git pull; }
 
-# Install packages.
-for pkg in "$@"; do
-    cd "$pkg" || exit
-    makepkg -sfci
+# Check PKGBUILD / Files.
+cd "${AUR_CACHE_DIR}/${1}" || exit
+for file in PKGBUILD *.sh *.desktop *.h *.install; do
+    read -rn 1 -p "View $file? [y/n] " yn; echo
+    [[ "$yn" =~ y ]] && "${EDITOR:-vi}" "$file"
 done
+
+# Install package.
+makepkg -sfcCi
