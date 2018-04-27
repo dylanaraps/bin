@@ -9,15 +9,15 @@
 reload_dunst() {
     pkill dunst
     dunst \
-        -lb "${color15:-#FFFFFF}" \
-        -nb "${color15:-#FFFFFF}" \
-        -cb "${color15:-#FFFFFF}" \
-        -lf "${color0:-#000000}" \
-        -bf "${color0:-#000000}" \
-        -cf "${color0:-#000000}" \
-        -nf "${color0:-#000000}" \
-        -fn "Roboto 12" \
-        -geometry "600x40-150+120" &
+        -lb "${color0:-#FFFFFF}" \
+        -nb "${color0:-#FFFFFF}" \
+        -cb "${color0:-#FFFFFF}" \
+        -lf "${color7:-#000000}" \
+        -bf "${color7:-#000000}" \
+        -cf "${color7:-#000000}" \
+        -nf "${color7:-#000000}" \
+        -fn "Roboto 15" \
+        -geometry "600x40-100+80" &
 }
 
 reload_openbox() {
@@ -53,6 +53,7 @@ main() {
     # reload_bar &
     # set_spotify &
     # set_scss &
+    xrdb -merge ~/.cache/wal/rofi.xres &
 }
 
 main

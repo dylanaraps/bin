@@ -13,6 +13,7 @@ printf -v time "%(%I-%M-%S)T" "-1"
 mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}"
 
+sleep 2
+# notify-send " Saved screenshot as ${scr/*\/}"
 import -window root "$scr".png &
 import -window root "$scr".jpg &
-notify-send " Saved screenshot as ${scr/*\/}"

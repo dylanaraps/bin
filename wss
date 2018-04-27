@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Workspace switcher
+readarray -t wm < <(wmctrl -d)
+ws="${wm[*]##*  }"
+w="${wm/*\-*}"
+echo "${w: -1}"
+echo "${w}"
+echo "${ws/${w: -1}/*${w: -1}}"

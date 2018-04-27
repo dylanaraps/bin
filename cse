@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+mkdir -p ~/col.out
+
+for file in *.json; do
+    jq ".colors.color9  = .colors.color1 |\
+        .colors.color10 = .colors.color2 |\
+        .colors.color11 = .colors.color3 |\
+        .colors.color12 = .colors.color4 |\
+        .colors.color13 = .colors.color5 |\
+        .colors.color14 = .colors.color6" "$file" > ~/col.out/"${file##*/}"
+done
