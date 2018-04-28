@@ -1,3 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
+#
+# Control brightness.
+#
+# Usage: bri [0-100] [+,-], bri [0-100]
+bri_path="/sys/class/backlight/intel_backlight/"
+current="$(< "${bri_path}/brightness")"
+max="$(< "${bri_path}/max_brightness")"
 
-echo "${1:-100}" > /sys/class/backlight/intel_backlight/brightness
+# Shellcheck can't parse this correctly. :shrug:
+bri="$((current ${2:-=} $1 * 10))"
+
+# Don't allow user to set brightness outside min-max.
+((bri > max)) && bri="$max"
+((bri < 0))   && bri="0"
+
+printf "%s" "$bri" > "${bri_path}/brightness"
