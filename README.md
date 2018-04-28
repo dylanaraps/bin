@@ -1,3 +1,1 @@
 # Dylan's Scripts
-
-faggot
