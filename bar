@@ -5,24 +5,16 @@
 unset PATH
 
 wif() {
-    # Read wifi information from file populated by netctl hook.
+    # Read wifi information from file populated by NetworkManager hook.
     cur="$(< /tmp/ssid)"
     wif="$cur \\uf1eb"
 }
-
-
-tim() {
-    # Get the current date/time using printf format string.
-    printf -v tim "%(%a %d %b  - %l:%M %p)T" "-1"
-}
-
 
 bri() {
     # Read brightness from file.
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
     bri="$((cur / 10 + 7))% \\uf0eb"
 }
-
 
 bat() {
     # Read battery status from file.
@@ -42,7 +34,6 @@ bat() {
 
     bat="${cur}% $bat_icon"
 }
-
 
 vol() {
     # Read volume information from file populated by volume hotkeys.

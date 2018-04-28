@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "${1:-100}" > /sys/class/backlight/intel_backlight/brightness
