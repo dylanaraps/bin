@@ -3,7 +3,7 @@
 # cd and ls
 
 lcd() {
-    cd "$@" || return
+    cd "$@" 2>/dev/null || cd "${HOME}/${*}" 2>/dev/null || return
     [ -d ".git" ] && git diff --shortstat
     exa -x --group-directories-first -a 2>/dev/null ||\
     ls --group-directories-first
