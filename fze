@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Run fzf and open match in EDITOR.
+readarray -t files < <(fzf --height "2%")
+
+[[ "${files[0]}" ]] && \
+    nvim "${files[@]}"
+
+kill 0
