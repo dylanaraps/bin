@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 #
 # Run fzf and open match in EDITOR.
-fze() {
-    readarray -t files < <(fzf --height "2%")
+readarray -t files < <(fzf --height "2%")
 
-    [[ "${files[0]}" ]] && \
-        "${EDITOR:-vi}" "${files[@]}"
+[[ "${files[0]}" ]] && \
+    "${EDITOR:-vi}" "${files[@]}"
 
-    kill 0
-}
-
-fze
+kill 0
