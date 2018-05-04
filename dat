@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# Date output for tmux.
+(("$1" > 60)) && \
+    printf "%(%a %d %B - %l:%M %p)T" "-1"
