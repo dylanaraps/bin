@@ -49,7 +49,7 @@ vol() {
 }
 
 # $1 is from tmux supplying column width.
-if (("$1" > 60)); then
+if (("$1" > 62)); then
     bri
     vol
     wif
