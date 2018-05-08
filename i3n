@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Focus next window in i3.
+
+# 1. Get the focused monitor and workspace.
+readarray -t desk < <(i3-msg -t get_workspaces | \
+                      jq -r '.[]|select(.focused==true)|.num,.output')
+
+# 1. Select the focused monitor.
+# 2. Select the focused workspace.
+# 3. Select all window ids and their focused state.
+readarray -t wins < <(i3-msg -t get_tree | \
+                      jq -cr ".nodes[].nodes[]|\
+                              select(.output==\"${desk[1]}\").nodes[]|\
+                              select(.num==${desk[0]}).nodes[]|..|\
+                              select(.window?//empty)|[.focused,.window]")
+
+# Loop over the windows and find the index of the
+# focused one.
+for i in "${!wins[@]}"; do
+    [[ "${wins[$i]}" == *true* ]] && win_id="$((i+=1))"
+done
+win="${wins[${win_id}]:-${wins[0]}}"
+
+# Focus the next window.
+i3-msg "[id=${win/\[false,} focus"
