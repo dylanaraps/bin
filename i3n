@@ -15,8 +15,7 @@ readarray -t wins < <(i3-msg -t get_tree | \
                               select(.num==${desk[0]}).nodes[]|..|\
                               select(.window?//empty)|[.focused,.window]")
 
-# Loop over the windows and find the index of the
-# focused one.
+# Loop over the windows and find the index of the focused one.
 for i in "${!wins[@]}"; do
     [[ "${wins[$i]}" == *true* ]] && \
         win="${wins[$((i+=1))]:-${wins[0]}}"
