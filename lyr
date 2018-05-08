@@ -29,5 +29,4 @@ lyrics="${lyrics/'Music by:'*}"
 lyrics="${lyrics/'Lyrics licensed'*}"
 lyrics="${lyrics/'     '*}"
 
-# printf "%s\\n" "$url"; exit
 "$EDITOR" <(printf "%s\\n%s\\n" "$song" "$lyrics")
