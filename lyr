@@ -29,4 +29,4 @@ lyrics="${lyrics/'Music by:'*}"
 lyrics="${lyrics/'Lyrics licensed'*}"
 lyrics="${lyrics/'     '*}"
 
-"$EDITOR" <(printf "%s\\n%s\\n" "$song" "$lyrics")
+nvim -c Limelight -- <(printf "%s\\n%s\\n" "$song" "$lyrics")
