@@ -7,10 +7,10 @@ bri_path="/sys/class/backlight/intel_backlight/"
 current="$(< "${bri_path}/brightness")"
 max="$(< "${bri_path}/max_brightness")"
 
-# Shellcheck can't parse this correctly. :shrug:
+# Set the value based on $2.
 bri="$((current ${2:-=} $1 * 10))"
 
-# Don't allow user to set brightness outside min-max.
+# Don't allow brightness outside min-max.
 ((bri > max)) && bri="$max"
 ((bri < 0))   && bri="0"
 

@@ -4,11 +4,11 @@
 
 # 1. Get the focused monitor and workspace.
 readarray -t desk < <(i3-msg -t get_workspaces | \
-                      jq -r '.[]|select(.focused==true)|.num,.output')
+                      jq -r ".[]|select(.focused==true)|.num,.output")
 
 # 1. Select the focused monitor.
 # 2. Select the focused workspace.
-# 3. Select all window ids and their focused state.
+# 3. Select all tiled window ids and their focused state.
 readarray -t wins < <(i3-msg -t get_tree | \
                       jq -cr ".nodes[].nodes[]|\
                               select(.output==\"${desk[1]}\").nodes[]|\
@@ -17,8 +17,7 @@ readarray -t wins < <(i3-msg -t get_tree | \
 
 # Loop over the windows and find the index of the focused one.
 for i in "${!wins[@]}"; do
-    [[ "${wins[$i]}" == *true* ]] && \
-        win="${wins[$((i+=1))]:-${wins[0]}}"
+    [[ "${wins[$i]}" == *true* ]] && win="${wins[$((i+=1))]:-${wins[0]}}"
 done
 
 # Focus the next window.
