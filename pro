@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 #
 # Fast and minimal prompt for bash.
-branch() {
+
+prompt() {
     branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-    printf "%s\\n" "${branch:+ on  ${branch}}"
+    printf "%s%s%s" "\\[\\e[1m\\]\\w\\[\\e[0m\\]" \
+                    "\\[\\e[0;33m\\]${branch:+ on  ${branch}}\\[\\e[0m\\]" \
+                    "\\[\\e[1;3\${?/#0/7}m\\] ➜ \\[\\e[0m\\]"
 }
 
-status() {
-    [[ $? != 0 ]] && status=1
-    printf "%s" "\\e[0;3${status:-7}m"
-}
-
-PS1="${PWD/${HOME}/\~}\$(branch)\\[\$(status)\\] > \\[\\e[0m\\]"
+PROMPT_COMMAND='PS1=$(prompt)'
