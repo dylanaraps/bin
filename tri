@@ -2,12 +2,13 @@
 #
 # Trim a variable and re-set it yourself.
 hello="        hi        world       "
+echo "$hello"
 
 trim() {
     set -f
     # shellcheck disable=2048,2086
     read -ra string <<< "${!1}"
-    declare -g "${1}=${string[*]//[[:space:]]/ }"
+    printf -v "$1" '%s' "${string[*]//[[:space:]]/ }"
     set +f
 }
 
