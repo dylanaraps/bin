@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Simple logging with :.
+
+[[ "$1" == "-v" ]] && {
+    set -x
+    : "Logging enabled"
+}
+
+[[ ! -f blablabla ]] && \
+    : "File doesn't exist."
+

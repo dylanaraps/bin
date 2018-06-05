@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# Decode URLS.
+url_decode() { : "${1//+/ }"; printf "%b\\n" "${_//%/\\x}"; }
+url_decode "$@"

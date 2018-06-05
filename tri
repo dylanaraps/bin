@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Trim a variable and re-set it yourself.
+hello="        hi        world       "
+
+trim() {
+    set -f
+    # shellcheck disable=2048,2086
+    read -ra string <<< "${!1}"
+    declare -g "${1}=${string[*]//[[:space:]]/ }"
+    set +f
+}
+
+trim "hello"
+echo "$hello"
+
+# set -f
+# # shellcheck disable=2048,2086
+# set -- $string
+# printf '%s\n' "${*//[[:space:]]/ }"
+# set +f

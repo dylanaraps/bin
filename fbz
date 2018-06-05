@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# fizz buzz
+
+for i in {1..10}; {
+    ((i%3)) || i=("fizz")
+    ((i%5)) || i+=("buzz")
+    [[ $_ == *z* ]] && printf "%s\\n" "${i[@]}"
+}

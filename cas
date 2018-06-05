@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+case "$USER" in
+    "black") : black2 ;;
+    *)       : other ;;
+esac
+
+user="$_"
+echo "$user"
