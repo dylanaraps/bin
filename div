@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Fake floating point division.
+
+div() {
+    read -r a b <<< "${1/./ }"
+    read -r c d <<< "${2/./ }"
+
+    ((a2=10**${#b}))
+    ((c2=10**${#d}))
+
+    ((e=a*${a2/#0/1}+b))
+    ((f=c*${c2/#0/1}+d))
+
+    e="${e: -${#b}}$b"
+    f="${f: -${#d}}$d"
+
+    # bc <<< "$1 / $2"
+    printf '%s\n' "$((e/f))"
+}
+
+div "$@"

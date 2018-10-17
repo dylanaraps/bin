@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Trim whitespace.
+
+trim() {
+   : "${1#"${1%%[![:space:]]*}"}"
+   : "${_%"${_##*[![:space:]]}"}"
+   printf '%s\n' "$_"
+}
+
+trim "$1"

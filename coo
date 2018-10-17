@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 #
-# Cols
+# Print terminal cols with pywal hex colors.
+
+. ~/.cache/wal/colors.sh
+
 for i in {0..15}; do
-    ((i%8==0)) && echo
-    ((i>7)) && i="8;5;$i"
-    echo -en "\\e[4${i}m  \\e[0m"
+    color="color${i}"
+    ((i%8==0)) && printf '\n'
+    ((i!=0)) && t=0
+    printf '%b' "\\e[3${t:-7}m\\e[48;5;${i}m ${!color} \\e[0m"
 done
-echo
-echo
+printf '\n\n'

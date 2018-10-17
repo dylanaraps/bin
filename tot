@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Count lines.
+
+count() {
+    # Usage: count command flags
+    #        count pacman -Q
+    IFS=$'\n' read -d "" -ra lines < <("$@")
+    printf '%s\n' "${#lines[@]}"
+}
+
+count "$@"

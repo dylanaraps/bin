@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+lines_loop() {
+    count=0
+    while IFS= read -r _; do
+        ((count++))
+    done < "$1"
+    printf '%s\n' "$count"
+}
+
+lines() {
+    mapfile -tn 0 lines < "$1"
+    printf '%s\n' "${#lines[@]}"
+}
+
+printf '%s\n' "while loop:"
+time lines_loop "$1"
+
+printf '%s\n' "mapfile:"
+time lines "$1"

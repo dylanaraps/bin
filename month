@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# Check if previous month is January 2018.
+
+months=(
+    January
+    February
+    March
+    April
+    May
+    June
+    July
+    August
+    September
+    October
+    November
+    December
+)
+printf -v month '%(%m)T' '-1'
+printf -v year  '%(%y)T' '-1'
+
+prev_month="${months[$((month-2))]}"
+
+[[ "$prev_month" == "January" ]] && ((year==18)) && {
+    # Do stuff here.
+    :
+}
+
+# Test string to show it works.
+printf '%s\n' "$prev_month"

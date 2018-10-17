@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# Split string on delimiter.
+
+split() {
+   # Usage: split "string" "delimiter"
+   IFS=$'\n' read -d "" -ra arr <<< "${1//$2/$'\n'}"
+   printf '%s\n' "${arr[@]}"
+}
+
+split "hello---world---my---name---is---john" "---"
+split "apples,oranges,pears,grapes" ","
+split "1, 2, 3, 4, 5" ", "
+trap 'printf \\e[2J\\e[H\\e[m' EXIT

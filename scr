@@ -19,8 +19,8 @@ mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}"
 
 # Hide terminal cursors when taking a scrot.
-send_to_terms "\\e[?25l"
+# send_to_terms "\\e[?25l"
 import -window root "$scr".png &
 import -window root "$scr".jpg &
 sleep 2
-send_to_terms "\\e[?25h"
+# send_to_terms "\\e[?25h"

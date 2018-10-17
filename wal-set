@@ -17,8 +17,9 @@ reload_openbox() {
 
 main() {
     reload_openbox &
+    pkill bar && bar &
     xrdb -merge ~/.cache/wal/rofi.xres &
-    wal-discord; beautifuldiscord --css "${HOME}/.cache/wal-discord/style.css"
+    # wal-discord; beautifuldiscord --css "${HOME}/.cache/wal-discord/style.css"
 }
 
 main

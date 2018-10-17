@@ -2,57 +2,46 @@
 # shellcheck disable=SC1090
 #
 # bar - Dylan Araps
-unset PATH
+# unset PATH
+
+source ~/.cache/wal/colors.sh
+
+dat() {
+    printf -v dat '%(%c)T' '-1'
+    dat="${dat/ AEDT}"
+    dat="${dat/:?? / }"
+}
 
 wif() {
     # Read wifi information from file populated by NetworkManager hook.
     cur="$(< /tmp/ssid)"
-    wif="$cur \\uf1eb"
+    wif="wifi: ${cur:-none}"
 }
 
 bri() {
     # Read brightness from file.
     cur="$(< /sys/class/backlight/intel_backlight/brightness)"
-    bri="$((cur / 10 + 7))% \\uf0eb"
+    bri="backlight: $((cur / 10 + 7))%"
 }
 
 bat() {
     # Read battery status from file.
     cur="$(< /sys/class/power_supply/BAT1/capacity)"
     sta="$(< /sys/class/power_supply/BAT1/status)"
-
-    case "$cur" in
-        [0-9])  bat_icon="\\uf244" ;;
-        [1-3]?) bat_icon="\\uf243" ;;
-        [4-5]?) bat_icon="\\uf242" ;;
-        [6-7]?) bat_icon="\\uf241" ;;
-        *)      bat_icon="\\uf240" ;;
-    esac
-
-    [[ "$sta" == Charging ]] && \
-        bat_icon+="  \\uf0e7"
-
-    bat="${cur}% $bat_icon"
+    bat="battery: ${cur}% [${sta}]"
 }
 
 vol() {
     # Read volume information from file populated by volume hotkeys.
     cur="$(< ~/.cache/vol)"
-
-    case "$cur" in
-        [0-9]%*|*f*) vol_icon="\\uf026" ;;
-        [1-4]?%*)    vol_icon="\\uf027" ;;
-        [5-6]?%*|*)  vol_icon="\\uf028" ;;
-    esac
-
-    vol="${cur/ *} $vol_icon"
+    vol="volume: ${cur/ *}"
 }
 
-# $1 is from tmux supplying column width.
-if (("${1:-63}" > 62)); then
-    bri
-    vol
-    wif
-    bat
-    printf "%b\\n" "$bri  $vol   $wif   $bat  "
-fi
+for ((;;)); {
+    dat; bri; vol; wif; bat
+    printf "%b\\n" " $dat %{r}$bri    $vol    $wif    $bat "
+    sleep 0.2
+} | lemonbar -B "${color0:-#000000}" \
+             -F "${color15:-#FFFFFF}" \
+             -f "Roboto Mono:size=15" \
+             -g "x75"

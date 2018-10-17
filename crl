@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#
+# Download a file in pure bash.
+
+download() {
+    IFS=/ read -r _ _ host query <<< "$1"
+
+    # Send the HTTP request.
+    exec 3<"/dev/tcp/${host}/80"; {
+        printf '%s\r\n%s\r\n\r\n' \
+               "GET /${query} HTTP/1.0" \
+               "Host: $host"
+    } >&3
+
+    # Strip the HTTP headers.
+    while IFS= read -r line; do
+        [[ "$line" == $'\r' ]] && break
+    done <&3
+
+    # Output the file.
+    nul='\0'
+    while IFS= read -d '' -r line || { nul=""; [[ -n "$line" ]]; }; do
+        printf "%s%b" "$line" "$nul"
+    done <&3
+
+    exec 3>&-
+}
+
+download "$1"

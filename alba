@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Album art switcher for cmus (using mpv[c]).
+#
+# Created by Dylan Araps.
+
+while [[ "$1" != "file" ]]; do shift; done
+
+if pgrep mpv; then
+    mpvc -a "$2" -j '+1' -S /tmp/albasock
+else
+    mpv --no-config \
+        --pause \
+        --no-audio \
+        --osc=no \
+        --geometry "500x500" \
+        --input-ipc-server=/tmp/albasock "$2"
+fi
+
+# Slower method using ffmpeg/qiv.
+# ffmpeg -y -i "$2" -s 500x500 ~/.cache/album.jpg
+# pgrep qiv || qiv -teGT ~/.cache/album.jpg

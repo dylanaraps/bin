@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+random_array_element() {
+    # Usage: random_array_element "array"
+    arr=("$@")
+    printf '%s\n' "${arr[RANDOM % $#]}"
+}
+
+random_array_element_nameref() {
+    # Usage: random_array_element "array"
+    declare -n array="$1"
+
+    local length=${#array[@]}
+    local index=$(( RANDOM % length))
+    local choice=${array[$index]}
+
+    printf '%s\n' "$choice"
+}
+
+nums=({1..10000})
+
+time random_array_element_nameref "nums"
+time random_array_element "${nums[@]}"
