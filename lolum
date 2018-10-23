@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# column in bash. lolum
+
+term_size() {
+    shopt -s checkwinsize; (:;:)
+    ((LINES==0)) && read -r LINES COLUMNS < <(stty size)
+}
+
+slurp() {
+    [[ -f "$1" ]] || { echo file ded; exit 1; }
+
+    IFS=$'\n' read -d "" -ra file < "$1"
+
+    for line in "${file[@]}"; do
+        IFS="$2" read -ra column <<< "$line"
+
+        for col in "${column[@]}"; do
+            printf '\e[20C%s' "$col"
+        done
+    done
+}
+
+main() {
+    slurp "$1" "$2"
+}
+
+main "$@"
