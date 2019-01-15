@@ -45,7 +45,7 @@ for ((;;)); {
     dat; vol; wif; bat
     printf '%b\n' "   $dat %{r}$vol  $wif $bat   "
     sleep 1
-} | lemonbar -B "#55${color0/\#}" \
+} | lemonbar -B "${color0}" \
              -F "#FFFFFF" \
              -f "Roboto Mono:size=16" \
              -f "Font Awesome:size=17" \

@@ -8,6 +8,7 @@ while [[ "$1" != "file" ]]; do shift; done
 
 if pgrep mpv; then
     mpvc -a "$2" -j '+1' -S /tmp/albasock
+
 else
     mpv --no-config \
         --pause \

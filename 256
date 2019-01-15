@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for ((c=0;c<256;c++)); {
+    printf '%s\e[4D\e[4C\e[48;5;%sm\e[K\e[m\n' "$c" "$c"
+}

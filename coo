@@ -3,11 +3,12 @@
 # Print terminal cols with pywal hex colors.
 
 . ~/.cache/wal/colors.sh
+printf '\n'
 
 for i in {0..15}; do
     color="color${i}"
-    ((i%8==0)) && printf '\n'
+    ((i==8)) && printf '\n'
     ((i!=0)) && t=0
-    printf '%b' "\\e[3${t:-7}m\\e[48;5;${i}m ${!color} \\e[0m"
+    printf '\e[48;5;%s;3%sm %s \e[m' "$i" "${t:-7}" "${!color}"
 done
 printf '\n\n'

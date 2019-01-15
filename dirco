@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+#
+
+# ls_cols="${LS_COLORS//:\*./:file_}"
+# ls_cols="${ls_cols//:./:file_}"
+# ls_cols="${ls_cols//:\*/:file_}"
+# ls_cols="${ls_cols//=/=\'}"
+# ls_cols="${ls_cols//:/\';}"
+
+# bash 3 compatible method of sourcing a variable.
+# see: https://i.imgur.com/e4tIACE.jpg
+# shellcheck source=/dev/null
+# source /dev/stdin <<< "$ls_cols" >/dev/null 2>&1
+
+file="mynameisearl-TODO"
+
+# *TODO=07;38;5;250:
+
+# [[ $LS_COLORS == *"$file"= ]] && echo "hi"
+ls_pattern="png|TODO"
+
+[[ $file =~ .*($ls_pattern)$ ]] && printf '%s\n' "${BASH_REMATCH[1]}"
+
+# file="${1:-file.rpm}"
+# file_extension="${file##*.}"
+
+# [[ $file != "${file##*.}" && $LS_COLORS == *."${file##*.}"* ]] && {
+#     file_color="${LS_COLORS/*.${file##*.}=}"
+#     file_color="${file_color/:*}"
+#     [[ $file_color ]] && printf '\e[%sm%s\e[m\n' "$file_color" "$file"
+# }

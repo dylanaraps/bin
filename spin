@@ -3,12 +3,11 @@
 # Spinner
 
 spinner() {
-    chars=("/" "-" "\\" "|")
-    printf '\b%s' "${chars[${i:=0}]}"
-    ((i=i>=${#chars[@]}-1?0:++i))
+    chars=(/ - \\ \|)
+    printf '%s\r' "${chars[$((i=i>${#chars[@]}?0:i++))]}"
 }
 
 for ((;i++<100;)) {
     spinner
-    read -rst 0.1 -N 999
+    read -rst 0.05 -N 999
 }

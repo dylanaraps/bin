@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-#
-# :shrug:
-
-script=~/ConkyClicky/ccaction.sh
-class="conky"
-
-xdotool search --class "$class" behave '%@' mouse-click getmouselocation exec "$script"
