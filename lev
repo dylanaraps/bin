@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+#
+# fuzzy search in bash
+
+# list=("$PWD"/*)
+query="Pictu"
+item="Pictures"
+
+for ((i=0;i<(${#query}+1)*(${#item}+1);i++)); {
+    dist[i]=0
+}
+
+for ((i=0;i<${#query};i++)); {
+    dist[i+0*${#query}]="$i"
+}
+
+for ((i=0;i<${#item};i++)); {
+    dist[0+i*(${#query}+1)]="$i"
+}
+
+for ((j=1;j<${#item};j++)); {
+    for ((i=1;i<${#query};i++)); {
+        [[ ${query:i-1:1} == "${item:j-1:1}" ]] && cost=0 || cost=1
+
+        ((del=dist[(i-1)+${#query}*j]+1))
+        ((ins=dist[i+${#query}*(j-1)]+1))
+        ((alt=dist[(i-1)+${#query}*(j-1)]+cost))
+
+        for val in "$del" "$ins" "$alt"; do
+            ((val < del)) && min="$val"
+        done
+        echo "$del"
+
+        dist[i+${#query}*j]="$min"
+        min=
+    }
+}
+
+echo ${dist[${#query}+${#query}*(${#item})]}

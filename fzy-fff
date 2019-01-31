@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Run fzy in FFF.
+
+fff_script() {
+    fzf_item="$(fzf --height=100%)"
+
+    [[ -e $fzf_item ]] &&
+        open "$fzf_item"
+}

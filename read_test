@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# test read with custom bindings.
+
+bind '"\e":"\015"'
+
+read -d $'\e' -er
+
+echo
+echo "$REPLY"

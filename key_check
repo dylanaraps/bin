@@ -10,7 +10,7 @@ key() {
         # Escape Sequences.
         $'\e')
             read -rsn 2
-            printf '%s\n' "key: ${REPLY: -1}"
+            printf '%s %q\n' "key:" "${1}${REPLY}"
         ;;
 
         # Return / Enter.

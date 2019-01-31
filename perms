@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# Show file perms in pure bash.
+
+file="${1:-${HOME}/dotfiles}"
+
+[[ -r $file ]] &&
+    perms+="r"
+
+[[ -w $file ]] &&
+    perms+="w"
+
+[[ -x $file ]] &&
+    perms+="x"
+
+printf '%s\n' "$perms"

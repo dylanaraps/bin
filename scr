@@ -20,6 +20,7 @@ scr="${scr_dir}/${date}/${date}-${time}"
 
 # Hide terminal cursors when taking a scrot.
 # send_to_terms "\\e[?25l"
+sleep 2
 import -window root "$scr".png &
 import -window root "$scr".jpg &
 sleep 2

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash3
+#
+# Get terminal size in all versions of bash.
+
+get_term_size() {
+    # Save cursor pos and move cursor to bottom right corner.
+    printf '\e7\e[999999B\e[999999C'
+
+    # Get cursor position.
+    IFS='[;' read -sp $'\e[6n' -d R -rs _ h w
+
+    # Restore cursor pos.
+    printf '\e8'
+    printf '%s\n' "${w}x${h}"
+}
