@@ -2,6 +2,7 @@
 #
 # lnchr - dmenu replacement.
 
+enable -f /usr/lib/bash/sleep sleep
 pal -r
 
 while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
@@ -22,11 +23,14 @@ while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
             }
         ;;
 
-        ""|$'\e')
-            [[ -z $REPLY ]] &&
-                sh -c "$input"
-
+        $'\e')
             exit
+        ;;
+
+        "")
+            nohup "$input" &>/dev/null & disown
+            sleep 0.3
+            break
         ;;
 
         *)
@@ -35,3 +39,4 @@ while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
         ;;
     esac
 done
+
