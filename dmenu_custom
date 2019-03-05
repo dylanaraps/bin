@@ -2,15 +2,15 @@
 #
 # dmenu_custom -
 
-. ~/.cache/wal/colors.sh
+. ~/.cache/buddy/colors.sh
 
 dmenu_run \
     -b \
     -i \
     -p ">" \
     -fn "Roboto:size=16" \
-    -nb "$color0" \
-    -nf "$color7" \
-    -sb "$color1" \
-    -sf "$color0"
+    -nb "#${clrs[0]}" \
+    -nf "#${clrs[7]}" \
+    -sb "#${clrs[1]}" \
+    -sf "#${clrs[0]}"
 

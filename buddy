@@ -53,7 +53,8 @@ col() {
         printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
     fi
 
-    pal "${final_pal[@]}"
+    printf 'clrs=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
+    pal "${final_pal[@]}" &
 }
 
 sys() {
@@ -75,7 +76,7 @@ main() {
 
     img "$1"
     col
-    sys &
+    sys
 }
 
-main "$1" &>/dev/null
+main "$1"
