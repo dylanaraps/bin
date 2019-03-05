@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# dmenu_custom -
+
+. ~/.cache/wal/colors.sh
+
+dmenu_run \
+    -b \
+    -i \
+    -p ">" \
+    -fn "Roboto:size=16" \
+    -nb "$color0" \
+    -nf "$color7" \
+    -sb "$color1" \
+    -sf "$color0"
+

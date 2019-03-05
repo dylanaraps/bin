@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# test_char_repl -
+
+echo "$str"
+
+str=012301230123012301230
+str=${str//[^0]/-}
+str=${str//0/*}
+
+echo "$str"

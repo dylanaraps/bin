@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# wifi
+
+nm-applet &
+stalonetray
+killall nm-applet

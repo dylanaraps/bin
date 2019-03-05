@@ -2,5 +2,5 @@
 #
 # Count files in a dir.
 
-for _ in "${1:-$HOME}"/*; do ((packages+=1)); done
-echo "$packages"
+files=("${1:-$PWD}"/*)
+echo "${#files[@]}"

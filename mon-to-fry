@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Pretty Monday to Friday
+
+printf -v day '%(%u)T'; ((day-=1))
+
+days=(M T W T F S S)
+days[day]="\\e[1m${days[day]}\\e[m"
+
+printf '%b\n' "${days[*]}"

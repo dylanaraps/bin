@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#
+# compresh - compress a shell script.
+
+while read -r line; do
+    # Save the shebang before comments are removed.
+    [[ $shbng ]] || {
+        shbng=1
+        printf '%s\n' "$line"
+    }
+
+    # Comments.
+    line=${line/#\#*}
+
+    # Quotes around 'case "$var" in'.
+    [[ $line == *case\ [\"\']\$* ]] && {
+        line=${line/case [\"\']/case }
+        line=${line/[\"\'] in/ in}
+    }
+
+    # Spaces around '&&'/'||'.
+    line=${line// &&/&&}
+    line=${line//&& /&&}
+    line=${line// ||/||}
+    line=${line//|| /||}
+
+    [[ $line ]] &&
+        printf '%s\n' "$line"
+done < "$1"

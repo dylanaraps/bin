@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+# Usage: random_array_element "array"
+
+arr=("$@")
+printf '%s\n' "${arr[RANDOM % $#]}"

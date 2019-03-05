@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# diamond -
+
+a=123456789
+for((;i++<$1;)){
+    b+="${a:0:i}${a: -i}
+"
+}
+printf "$b"

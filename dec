@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 #
 # Decode URLS.
-url_decode() { : "${1//+/ }"; printf "%b\\n" "${_//%/\\x}"; }
-url_decode "$@"
+
+url_decode() {
+    : "${1//+/ }"
+    echo -e "${_//%/\\x}"
+}
+
+url_decode "https%3A%2F%2Fkys.sexy%2Fhello%20world"

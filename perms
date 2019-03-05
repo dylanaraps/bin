@@ -4,13 +4,8 @@
 
 file="${1:-${HOME}/dotfiles}"
 
-[[ -r $file ]] &&
-    perms+="r"
+[[ -r $file ]] && r="r"
+[[ -w $file ]] && w="w"
+[[ -x $file ]] && x="x"
 
-[[ -w $file ]] &&
-    perms+="w"
-
-[[ -x $file ]] &&
-    perms+="x"
-
-printf '%s\n' "$perms"
+printf '%s\n' "$file: ${r:--}${w:--}${x--}"

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# tui
+
+main() {
+    printf '\e[?1049h'
+    printf '\e[2J'
+    printf '\e[H'
+
+    stty -echo icanon
+
+    for ((;;)); {
+        read -srn 1
+        echo "$REPLY"
+    }
+}
+
+main "$@"
+printf '\e[?1049l'
+stty echo -icanon

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# all_chrom -
+
+mapfile -t ppids < <(pgrep chrom)
+printf '%s\n' "${ppids[@]}"
+
+for ppid in "${ppids[@]}"; do
+    pgrep -P "$ppid" 2>/dev/null
+done

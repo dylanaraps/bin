@@ -3,25 +3,13 @@
 # Created by Dylan Araps.
 scr_dir="${HOME}/Pictures/Screenshots"
 
-send_to_terms() {
-    # Send a set of characters to all open terminals.
-    for term in /dev/pts/[0-9]*; do
-       [[ -w "$term" ]] && printf "%b" "$1" > "$term" &
-    done
-}
-
 # Store the date and time as variables.
-printf -v date "%(%F)T" "-1"
-printf -v time "%(%I-%M-%S)T" "-1"
+printf -v date '%(%F)T'
+printf -v time '%(%I-%M-%S)T'
 
 # Store the screenshots in dated folders.
 mkdir -p "${scr_dir}/${date}"
 scr="${scr_dir}/${date}/${date}-${time}"
 
-# Hide terminal cursors when taking a scrot.
-# send_to_terms "\\e[?25l"
-sleep 2
 import -window root "$scr".png &
 import -window root "$scr".jpg &
-sleep 2
-# send_to_terms "\\e[?25h"

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+#
+# snake -
+
+setup_terminal() {
+    # Setup the terminal for the TUI.
+    # '\e[?1049h': Use alternative screen buffer.
+    # '\e[?7l':    Disable line wrapping.
+    # '\e[?25l':   Hide the cursor.
+    # '\e[2J':     Clear the screen.
+    # '\e[H':      Move cursor to 0,0.
+    printf '\e[?1049h\e[?7l\e[?25l\e[2J\e[H'
+
+    # Hide echoing of user input
+    stty -echo
+}
+
+reset_terminal() {
+    # Reset the terminal to a useable state (undo all changes).
+    # '\e[?7h':    Re-enable line wrapping.
+    # '\e[?25h':   Unhide the cursor.
+    # '\e[2J':     Clear the terminal.
+    # '\e[H':      Move cursor to 0,0.
+    # '\e[?1049l': Restore main screen buffer.
+    printf '\e[?7h\e[?25h\e[2J\e[H\e[?1049l'
+
+    # Show user input.
+    stty echo
+}
+
+get_term_size() {
+    # Tell bash to update LINES/COLUMNS after every command.
+    # Then run a fake command to update the variables.
+    shopt -s checkwinsize; (:;:)
+}
+
+key() {
+    case $1 in
+        j)
+            printf '%s\e[B\b' "┃"
+            direction=0
+        ;;
+
+        k)
+            printf '%s\e[A\b' "┃"
+            direction=0
+        ;;
+
+        h)
+            printf '%s\e[D' "━"
+            direction=1
+        ;;
+
+        l)
+            printf '%s' "━"
+            direction=1
+        ;;
+    esac
+}
+
+main() {
+    setup_terminal
+
+    trap 'reset_terminal' EXIT
+    trap 'get_term_size; redraw' WINCH
+
+    chars=(┃ ━ ┏ ┓ ┗ ┛)
+    direction=1
+
+    for ((;;)) {
+        if read -rsn 1 -t 0.1; then
+            key "$REPLY"
+        else
+            printf '%s' "${chars[direction]}"
+        fi
+
+        # Exit if there is no longer a terminal attached.
+        [[ -t 1 ]] || exit 1
+    }
+}
+
+main "$@"

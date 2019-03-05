@@ -25,4 +25,4 @@ key() {
     esac
 }
 
-read -srn 1 && key "$REPLY"
+IFS= read -esrn 1 && key "$REPLY"

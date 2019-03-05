@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# btree -
+
+shopt -s globstar nullglob
+
+printf '%s\n' "${PWD##*/}"
+
+for pwrd in **; do
+    [[ -d $pwrd ]] &&
+        dir=/
+
+    nest=${pwrd//[^\/]}
+    pwrd=${pwrd//[^[:print:]]/^[}
+    pwrd=${pwrd//.gpg}
+
+    printf '%s\n' "${nest//\//│  }├─ ${pwrd##*/}${dir}"
+    dir=
+done
+
+printf '└%s\b┘\n' "${nest//\//──┴}"

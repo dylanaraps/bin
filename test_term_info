@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+#
+# Un-hardcoded escape sequences.
+
+get_terminfo() {
+    # Find location of terminfo files.
+    # First process the "$TERMINFO_DIRS" variable.
+    IFS=':' read -ra terminfo_paths <<< "$TERMINFO_DIRS"
+
+    # Define an array of possible terminfo locations.
+    # Locations are checked in the following order.
+    terminfo_paths=(
+        "$TERMINFO"
+        "${terminfo_paths[@]}"
+        ~/.terminfo
+        /usr/share/terminfo
+        /usr/share/lib/terminfo
+        /usr/lib/terminfo
+        /usr/local/share/terminfo
+        /usr/local/share/lib/terminfo
+        /usr/local/lib/terminfo
+        /usr/local/ncurses/lib/terminfo
+        /lib/terminfo
+    )
+
+    # The terminfo database is sorted using the first
+    # char of the terminal name.
+    # 1  4  7  a  c  E  h  k  m  N  P  r  u  x
+    # 2  5  8  A  d  f  i  l  M  o  q  s  v  X
+    # 3  6  9  b  e  g  j  L  n  p  Q  t  w  z
+    terminfo_parent_dir="${TERM:0:1}"
+
+    for dir in "${terminfo_paths[@]}"; do
+        [[ -f ${dir}/${terminfo_parent_dir}/${TERM} ]] && {
+            terminfo_file="${dir}/${terminfo_parent_dir}/${TERM}"
+            break
+        }
+    done
+}
+
+decode_terminfo() {
+    while IFS= read -n 1 byte; do
+        printf '%q' "$byte"
+    done < "$terminfo_file"
+}
+
+get_terminal() {
+    IFS=', ' read -d "" -ra terminfo < <(infocmp)
+
+    for item in "${terminfo[@]}"; do
+        [[ $item == *=* && $item == *\E* ]] &&
+            term_caps+=("esc_$item")
+    done
+
+    export "${term_caps[@]//[[:space:]]}"
+}
+
+main() {
+    get_terminfo
+
+    [[ ! -f $terminfo_file ]] && {
+        printf '%s\n' "error: Couldn't find terminfo file."
+        exit 1
+    }
+
+    # decode_terminfo
+    get_terminal
+
+    echo "$esc_smcup"
+    echo "$esc_rmcup"
+    echo "$esc_civis"
+}
+
+main "$@"
+

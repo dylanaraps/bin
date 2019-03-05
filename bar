@@ -3,12 +3,10 @@
 #
 # bar - Dylan Araps
 
-source ~/.cache/wal/colors.sh
-enable -f /usr/lib64/bash/sleep sleep
+enable -f /usr/lib/bash/sleep sleep
 
 dat() {
-    printf -v dat '%(%r)T' '-1'
-    dat="${dat/:?? / }"
+    printf -v dat '%(%R)T'
 }
 
 wif() {
@@ -29,6 +27,7 @@ bat() {
     esac
 
     [[ "$sta" == "Charging" ]] && bat+=" "
+    bat+=" $((cur>99?100:cur))"
 }
 
 vol() {
@@ -41,12 +40,14 @@ vol() {
     esac
 }
 
-for ((;;)); {
-    dat; vol; wif; bat
-    printf '%b\n' "   $dat %{r}$vol  $wif $bat   "
+pkill bar
+
+for ((;;)) {
+    dat; vol; bat
+    printf '%b\n' "   $dat %{r}$vol  $bat   "
     sleep 1
-} | lemonbar -B "${color0}" \
-             -F "#FFFFFF" \
+} | lemonbar -B "$1" \
+             -F "$2" \
              -f "Roboto Mono:size=16" \
              -f "Font Awesome:size=17" \
              -g "x100"

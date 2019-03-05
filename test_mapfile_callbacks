@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# test_mapfile_callbacks -
+
+long() {
+    ((${#2} > max)) && max=${#2}
+}
+
+mapfile -tC long -c 1 < "${1:-${HOME}/.bashrc}"
+echo "$max"

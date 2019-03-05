@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#
+# print text on right size.
+printf '\e[9999C\e[%sD%s\n' "${#1}" "$1"

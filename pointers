@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# pointers -
+
+declare -A animals=(
+    [cat]=meow
+    [dog]=woof
+    [cow]=moo
+    [ape]=oof
+)
+
+_() {
+   declare -n arr=$1
+
+   arr[cat]=woof
+}
+
+echo "cat says ${animals[cat]}"
+_ animals
+echo "cat says ${animals[cat]}"

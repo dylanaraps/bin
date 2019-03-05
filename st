@@ -1,1 +1,0 @@
-/home/black/aur/st/st-0.8.1/st

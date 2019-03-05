@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+#
+# shab256 - sha256sum in pure bash
+
+function sha256 {
+	k=(428a2f98 71374491 b5c0fbcf e9b5dba5 3956c25b 59f111f1
+       923f82a4 ab1c5ed5 d807aa98 12835b01 243185be 550c7dc3
+       72be5d74 80deb1fe 9bdc06a7 c19bf174 e49b69c1 efbe4786
+       0fc19dc6 240ca1cc 2de92c6f 4a7484aa 5cb0a9dc 76f988da
+       983e5152 a831c66d b00327c8 bf597fc7 c6e00bf3 d5a79147
+       06ca6351 14292967 27b70a85 2e1b2138 4d2c6dfc 53380d13
+       650a7354 766a0abb 81c2c92e 92722c85 a2bfe8a1 a81a664b
+       c24b8b70 c76c51a3 d192e819 d6990624 f40e3585 106aa070
+       19a4c116 1e376c08 2748774c 34b0bcb5 391c0cb3 4ed8aa4a
+       5b9cca4f 682e6ff3 748f82ee 78a5636f 84c87814 8cc70208
+       90befffa a4506ceb bef9a3f7 c67178f2)
+
+    for ((i=0;i<${#k[@]};i++)) {
+        ((k[i]=0x${k[i]}))
+    }
+
+    data=(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+
+    hash=(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0)
+
+    data_len=0
+    bit_len=(0 0)
+
+    state=(6a09e667 bb67ae85 3c6ef372 a54ff53a 510e527f
+           9b05688c 1f83d9ab 5be0cd19)
+
+    for ((i=0;i<${#state[@]};i++)) {
+        ((state[i]=0x${state[i]}))
+    }
+
+    dbl_int_add() {
+        ((bitlen[0]>0xffffffff - $1)) &&
+            ((bitlen[1]=bitlen[1] + 1))
+        ((bitlen[0]=bitlen[0]+  $1))
+    }
+
+	function rotright {
+		echo $(( ((${1} >> ${2}) | (${1} << (32 - ${2}))) & 0xFFFFFFFF ))
+	}
+	function ch {
+		echo $(( (${1} & ${2}) ^ ($(not32 ${1}) & ${3}) ))
+	}
+	function maj {
+		echo $(( (${1} & ${2}) ^ (${1} & ${3}) ^ (${2} & ${3}) ))
+	}
+	function ep0 {
+		echo $(( $(rotright ${1} 2) ^ $(rotright ${1} 13) ^ $(rotright ${1} 22) ))
+	}
+	function ep1 {
+		echo $(( $(rotright ${1} 6) ^ $(rotright ${1} 11) ^ $(rotright ${1} 25) ))
+	}
+	function sig0 {
+		echo $(( $(rotright ${1} 7) ^ $(rotright ${1} 18) ^ (${1} >> 3) ))
+	}
+	function sig1 {
+		echo $(( $(rotright ${1} 17) ^ $(rotright ${1} 19) ^ (${1} >> 10) ))
+	}
+	function b32 {
+		echo $(( ${1} & 0xFFFFFFFF ))
+	}
+	function not32 {
+		b32 $(( ~${1} ))
+	}
+
+	function sha256_transform {
+		declare -a m
+		m=(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+		for i in `seq 0 15`; do
+			local j=$(($i * 4))
+			m[$i]=$(b32 $(( (${data[$j]} << 24) | (${data[$(($j + 1))]} << 16) | (${data[$(($j + 2))]} << 8) | ${data[$(($j + 3))]} )))
+		done
+		for i in `seq 16 63`; do
+			m[$i]=$(b32 $(( $(sig1 ${m[$(($i - 2))]}) + ${m[$(($i - 7))]} + $(sig0 ${m[$(($i - 15))]}) + ${m[$(($i - 16))]} )))
+		done
+
+		local a=${state[0]}
+		local b=${state[1]}
+		local c=${state[2]}
+		local d=${state[3]}
+		local e=${state[4]}
+		local f=${state[5]}
+		local g=${state[6]}
+		local h=${state[7]}
+
+		for i in `seq 0 63`; do
+			local t1=$(b32 $(( $h + $(ep1 $e) + $(ch $e $f $g) + ${k[$i]} + ${m[$i]} )))
+			local t2=$(b32 $(( $(ep0 $a) + $(maj $a $b $c) )))
+			h=$g
+			g=$f
+			f=$e
+			e=$(b32 $(( $d + $t1 )))
+			d=$c
+			c=$b
+			b=$a
+			a=$(b32 $(( $t1 + $t2 )))
+		done
+
+		state[0]=$(b32 $(( ${state[0]} + $a )))
+		state[1]=$(b32 $(( ${state[1]} + $b )))
+		state[2]=$(b32 $(( ${state[2]} + $c )))
+		state[3]=$(b32 $(( ${state[3]} + $d )))
+		state[4]=$(b32 $(( ${state[4]} + $e )))
+		state[5]=$(b32 $(( ${state[5]} + $f )))
+		state[6]=$(b32 $(( ${state[6]} + $g )))
+		state[7]=$(b32 $(( ${state[7]} + $h )))
+	}
+
+	while read line; do
+		for byte in $line; do
+			data[$datalen]=$byte
+			datalen=$(( $datalen + 1 ))
+			if [ $datalen -eq 64 ]; then
+				sha256_transform
+				dbl_int_add 512
+				datalen=0
+			fi
+		done
+	done < <(od -An -t d1) # Replace the call to `od` with your favorite
+	                       # binary -> ASCII dec converter here (e.g. xxd)
+
+	local i=$datalen
+
+	if [ $datalen -lt 56 ]; then
+		data[$i]=$(( 0x80 ))
+		i=$(( $i + 1 ))
+		while [ $i -lt 56 ]; do
+			data[$i]=0
+			i=$(( $i + 1 ))
+		done
+	else
+		data[$i]=$(( 0x80 ))
+		i=$(( $i + 1 ))
+		while [ $i -lt 64 ]; do
+			data[$i]=0
+			i=$(( $i + 1 ))
+		done
+		sha256_transform
+		for j in `seq 0 55`; do
+			data[$j]=0
+		done
+	fi
+
+	dbl_int_add $(( $datalen * 8 ))
+	data[63]=$(( ${bitlen[0]} & 0xFF ))
+	data[62]=$(( (${bitlen[0]} >> 8) & 0xFF ))
+	data[61]=$(( (${bitlen[0]} >> 16) & 0xFF ))
+	data[60]=$(( (${bitlen[0]} >> 24) & 0xFF ))
+	data[59]=$(( ${bitlen[1]} & 0xFF ))
+	data[58]=$(( (${bitlen[1]} >> 8) & 0xFF ))
+	data[57]=$(( (${bitlen[1]} >> 16) & 0xFF ))
+	data[56]=$(( (${bitlen[1]} >> 24) & 0xFF ))
+	sha256_transform
+
+	for j in `seq 0 3`; do
+		rhash[$j]=$(( (${state[0]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 4 ))]=$(( (${state[1]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 8 ))]=$(( (${state[2]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 12 ))]=$(( (${state[3]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 16 ))]=$(( (${state[4]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 20 ))]=$(( (${state[5]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 24 ))]=$(( (${state[6]} >> (24 - $j * 8)) & 0xff ))
+		rhash[$(( $j + 28 ))]=$(( (${state[7]} >> (24 - $j * 8)) & 0xff ))
+	done
+
+	printf "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n" ${rhash[@]}
+}
+
+sha256

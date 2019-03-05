@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# Simple error printing with :.
+
+[[ "$1" == "-v" ]] && {
+    set -x
+    : "Logging enabled"
+}
+
+[[ -f ~/.bashrc ]] &&
+    echo "file found"
+
+[[ ! -f blablabla ]] &&
+    : "File doesn't exist."
+

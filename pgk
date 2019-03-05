@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-pkgs() { type -p "$1" >/dev/null && { ((packages+="$2")); managers+="$_, "; }; }
-
-pkgs "pacman-key" "$(files=(~/projects/*/*/)&&echo ${#files[@]})"
-
-echo "$packages"

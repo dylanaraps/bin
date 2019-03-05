@@ -1,0 +1,8 @@
+#!/bin/sh
+chrome \
+    --force-device-scale-factor=2.3 \
+    --disable-sync-preferences \
+    --disable-plugins \
+    --single-process \
+    --disable-sync \
+    --in-process-gpu

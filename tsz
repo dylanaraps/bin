@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# Get Terminal Size using only bash.
-
-printf '%b' "${TMUX:+\\ePtmux;\\e}\\e[14t${TMUX:+\\e\\\\}"
-IFS=';t' read -d t -t 0.10 -sra term_size
-printf '%s\n' "${term_size[1]}x${term_size[2]}"

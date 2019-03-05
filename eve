@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 #
 # Testing magic arg variables.
+
 exec 2>/dev/null
 
-set -o history
-set -o histexpand
+set -o history -o histexpand
 
-[[ -f ~/.bashrc ]] && \
+: "File found"
+
+[[ -f ~/.bashrc ]] &&
     file=!!:2
+
 
 echo "$file"

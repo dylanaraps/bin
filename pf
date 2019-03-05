@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+(k=(`</pr*/ver*`);s=`</pr*/upt*`;s=${s/.*};((d=s/60/60/24,h=s/60/60%24,m=s/60%60));((d))&&u+=$d\d\ ;((h))&&u+=$h\h\ ;((m))&&u+=$m\m\ ;p=/sys/devi*/vi*/dmi/id/product_;m=`<$p\na*`\ `<$p\ver*`;[[ $m == *O.E* || ! ${m/ } ]]&&m=\?;. /etc/os-*;while IFS=: read -r a b; do b=${b/kB};case $a in MemT*)((z+=b,y=b));;Shmem)((z+=b));;MemF*|Buf*|Cac*|SR*)((z-=b));esac;done</pr*/me*;((z/=1024,y/=1024));echo "
+    ___     ${USER:-`whoami`}@$HOSTNAME
+   (.· |    os: ${PRETTY_NAME:-Linux}
+   (<> |    shell: ${SHELL##*/}
+  / __  \   model: $m
+ ( /  \ /|  uptime: ${u:-?}
+_/\ __)/_)  memory: ${z:-?}MB / ${y:-?}MB
+\/-____\/   kernel: ${k[2]:-?}
+") 2>/dev/null
