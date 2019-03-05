@@ -62,9 +62,9 @@ sys() {
     bar "#${final_pal[0]}" "#${final_pal[15]}" &
 
     sed -i"" \
-        -e "s/bg.color: #.*/bg.color: #${final_pal[1]}/" \
-        -e "s/text.color: #.*/text.color: #${final_pal[1]}/" \
-        -e "s/image.color: #.*/image.color: #${final_pal[1]}/" \
+        -e "s/bg.color: #.*/bg.color: #FFFFFF/" \
+        -e "s/text.color: #.*/text.color: #FFFFFF/" \
+        -e "s/image.color: #.*/image.color: #FFFFFF/" \
         ~/.themes/thicc/openbox-3/themerc
 
     openbox --reconfigure
