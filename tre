@@ -2,23 +2,19 @@
 #
 # btree - tree in pure bash
 
-[[ -d $1 ]] &&
-    cd "$1" &>/dev/null
+[[ -d $1 ]] && cd "$1" &>/dev/null
 
 shopt -s globstar nullglob
+printf '%s\n' "${PWD##*/}/"
 
-printf '%s\n' "${PWD##*/}"
+for item in **; do
+    [[ -d $item ]] && dir=/ || dir=
 
-for pwrd in **; do
-    [[ -d $pwrd ]] &&
-        dir=/
+    nest=${item//[^\/]}
+    item=${item//[^[:print:]]/^[}
+    item=${item//.gpg}
 
-    nest=${pwrd//[^\/]}
-    pwrd=${pwrd//[^[:print:]]/^[}
-    pwrd=${pwrd//.gpg}
-
-    printf '%s\n' "${nest//\//│  }├─ ${pwrd##*/}${dir}"
-    dir=
+    printf '%s\n' "${nest//\//│  }├─ ${item##*/}${dir}"
 done
 
 printf '└%s\b┘\n' "${nest//\//──┴}"
