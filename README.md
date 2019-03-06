@@ -24,70 +24,70 @@
 <br>
 
 
-## `junk/`
+### `junk/`
 
 Random little experiments and scripts.
 
-## `16`
+### `16`
 
 Print the first `16` terminal colors.
 
-## `256`
+### `256`
 
 Print the first `256` terminal colors.
 
-## `bar`
+### `bar`
 
 Lemonbar script.
 
-## `bri`
+### `bri`
 
 Control brightness.
 
-## `bud`
+### `bud`
 
 Minimal `wal`/`pywal` alternative.
 
-## `grt`
+### `grt`
 
 Toggle between `https` and `ssh` git remotes.
 
-## `men`
+### `men`
 
 A `dmenu_run` replacement.
 
-## `mks`
+### `mks`
 
 Create a `bash` script using a template.
 
-## `mus`
+### `mus`
 
 Start `mpv` in my Music directory.
 
-## `opn`
+### `opn`
 
 Minimal `xdg-open` alternative.
 
-## `pfe`
+### `pfe`
 
 Super tiny fetch script.
 
-## `pkl`
+### `pkl`
 
 List `alpine` packages without splits.
 
-## `scr`
+### `scr`
 
 Take a screenshot and log it by date.
 
-## `tre`
+### `tre`
 
 A version of `tree` written in pure bash.
 
-## `vol`
+### `vol`
 
 Control volume and log result.
 
-## `web`
+### `web`
 
 Start Chromium with custom launch flags.
