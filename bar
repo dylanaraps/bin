@@ -27,7 +27,6 @@ bat() {
     esac
 
     [[ "$sta" == "Charging" ]] && bat+=" "
-    bat+=" $((cur>99?100:cur))"
 }
 
 vol() {
