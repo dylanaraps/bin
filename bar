@@ -43,11 +43,13 @@ vol() {
 pkill bar
 
 for ((;;)) {
+    . ~/.cache/buddy/colors.sh
     dat; vol; bat
-    printf '%b\n' "   $dat %{r}$vol  $bat   "
+    printf '%s%s   %b   \n' \
+           "%{B#${clrs[0]}}" \
+           "%{F#${clrs[15]}}" \
+           "$dat %{r}$vol  $bat"
     sleep 1
-} | lemonbar -B "$1" \
-             -F "$2" \
-             -f "Roboto Mono:size=16" \
+} | lemonbar -f "Roboto Mono:size=16" \
              -f "Font Awesome:size=17" \
              -g "x100"

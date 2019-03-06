@@ -12,7 +12,7 @@ mod() {
 img() {
     [[ -d $1 ]] && {
         imgs=("${1%/}"/*.{png,jp*})
-        img="${imgs[RANDOM%${#imgs[@]}]}"
+        img=${imgs[RANDOM%${#imgs[@]}]}
     }
 
     [[ -f ${img:-$1} ]] && {
@@ -49,7 +49,15 @@ col() {
         [[ ${#clrs[@]} -lt 16 ]] &&
             exit 1
 
-        final_pal=("$bg" "${clrs[@]:9:6}" "$fg" "$co" "${clrs[@]:9:6}" "$fg")
+        final_pal=(
+            "$bg"
+            "${clrs[@]:9:6}"
+            "$fg"
+            "$co"
+            "${clrs[@]:9:6}"
+            "$fg"
+        )
+
         printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
     fi
 
@@ -59,7 +67,6 @@ col() {
 
 sys() {
     feh --bg-fill "$img" &
-    bar "#${final_pal[0]}" "#${final_pal[15]}" &
 
     sed -i"" \
         -e "s/bg.color: #.*/bg.color: #FFFFFF/" \
