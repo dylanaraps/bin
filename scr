@@ -4,11 +4,9 @@
 
 scr_dir=~/Pictures/Screenshots
 
-# Store the date and time as variables.
 printf -v date '%(%F)T'
 printf -v time '%(%I-%M-%S)T'
 
-# Store the screenshots in dated folders.
 mkdir -p "${scr_dir}/${date}"
 scr=${scr_dir}/${date}/${date}-${time}
 
