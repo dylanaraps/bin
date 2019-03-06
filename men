@@ -28,8 +28,8 @@ while IFS= read -srn 1 -p $'\r\e[K'"run ➜ $input"; do
         ;;
 
         "")
-            nohup bash -c "$input" &>/dev/null &
             xdotool getactivewindow windowminimize
+            setsid "$input" &>/dev/null &
             sleep 2
             break
         ;;

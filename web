@@ -1,6 +1,0 @@
-#!/bin/sh
-chromium-browser \
-    --disable-sync-preferences \
-    --disable-sync \
-    --single-process \
-    --in-process-gpu
