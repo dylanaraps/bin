@@ -28,8 +28,9 @@ while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
         ;;
 
         "")
-            nohup "$input" &>/dev/null & disown
-            sleep 0.3
+            nohup bash -c "$input" &>/dev/null &
+            xdotool getactivewindow windowminimize
+            sleep 2
             break
         ;;
 
@@ -39,4 +40,3 @@ while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
         ;;
     esac
 done
-
