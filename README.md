@@ -15,4 +15,3 @@
 - `scr`: Take a screenshot and log it by date.
 - `tre`: A version of `tree` written in pure bash.
 - `vol`: Control volume and log result.
-- `web`: Start Chromium with custom launch flags.
