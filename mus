@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+# music - simple music player using mpv.
+
+songs=(~/Music/final/*.flac)
+mpv "${songs[RANDOM%${#songs[@]}]}"

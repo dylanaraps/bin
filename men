@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# lnchr - dmenu replacement.
+# men - dmenu replacement.
 
 enable -f /usr/lib/bash/sleep sleep
 pal -r
 
-while IFS= read -srn 1 -p $'\r\e[K'"launch ➜ $input"; do
+while IFS= read -srn 1 -p $'\r\e[K'"run ➜ $input"; do
     case $REPLY in
         $'\177')
             input=${input%?}

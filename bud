@@ -66,7 +66,7 @@ col() {
 }
 
 sys() {
-    feh --bg-fill "$img" &
+    setroot -z "$img"
 
     sed -i"" \
         -e "s/bg.color: #.*/bg.color: #FFFFFF/" \

@@ -2,6 +2,9 @@
 #
 # btree -
 
+[[ -d $1 ]] &&
+    cd "$1" &>/dev/null
+
 shopt -s globstar nullglob
 
 printf '%s\n' "${PWD##*/}"
