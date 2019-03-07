@@ -12,27 +12,32 @@ bat() {
     read -r cur < /sys/class/power_supply/BAT1/capacity
     read -r sta < /sys/class/power_supply/BAT1/status
 
-    ((cur<20)) &&         bat=
-    ((cur<50&&cur>20)) && bat=
-    ((cur>49&&cur<70)) && bat=
-    ((cur<90&&cur>69)) && bat=
-    ((cur>89)) &&         bat=
+    case $cur in
+        [0-9]|1[0-9])         bat= ;;
+        2[0-9]|3[0-9]|4[0-9]) bat= ;;
+        5[0-9]|6[0-9])        bat= ;;
+        7[0-9]|8[0-9])        bat= ;;
+        *)                    bat= ;;
+    esac
 
     [[ $sta == Charging ]] && bat+=' '
 }
 
 vol() {
-    read -r cur < ~/.cache/vol
+    read -r cur < /home/black/.cache/vol
 
-    ((cur>50)) && vol=
-    ((cur<50)) && vol=
+    if [[ $cur -ge 50 ]]; then
+        vol=
+    else
+        vol=
+    fi
 }
 
 pkill bar
 
 for ((;;)) {
-    . ~/.cache/buddy/colors.sh
-    dat; vol; bat
-    echo "%{B#${clrs[0]}}" "%{F#${clrs[15]}}" " $dat %{r}$vol  $bat   "
+    . /home/black/.cache/buddy/colors.sh; dat; vol; bat
+    printf '%s   %s   \n' "%{B#${c[0]}}%{F#${c[15]}}" "$dat%{r}$vol  $bat"
     sleep 1
-} | lemonbar -f "Roboto Mono:size=16" -f "Font Awesome:size=17" -g "x100"
+} |
+lemonbar -f "Roboto Mono:size=16" -f "Font Awesome:size=17" -g "x100"

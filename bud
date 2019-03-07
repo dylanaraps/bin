@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# buddy - a minimal wal replacement
+# bud - a minimal wal replacement
 
 mod() {
     ((r=16#${2:0:2}${3}${4},g=16#${2:2:2}${3}${4},b=16#${2:4:2}${3}${4}))
@@ -61,7 +61,7 @@ col() {
         printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
     fi
 
-    printf 'clrs=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
+    printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
     pal "${final_pal[@]}" &
 }
 
