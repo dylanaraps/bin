@@ -16,7 +16,6 @@ while IFS= read -srn 1 -p $'\r\e[K'"run ➜ $input"; do
             [[ -z ${comp[0]} ]] &&
                 mapfile -t comp < <(compgen -c "$input")
 
-            # On each tab press, cycle through the completion list.
             [[ -n ${comp[c]} ]] && {
                 ((c=c >= ${#comp[@]}-1 ? 0 : ++c))
                 input=${comp[c]}

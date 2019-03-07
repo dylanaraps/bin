@@ -9,11 +9,6 @@ dat() {
     printf -v dat '%(%R)T'
 }
 
-wif() {
-    cur="$(< /tmp/ssid)"
-    wif="${cur:+ }"
-}
-
 bat() {
     cur="$(< /sys/class/power_supply/BAT1/capacity)"
     sta="$(< /sys/class/power_supply/BAT1/status)"

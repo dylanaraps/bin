@@ -12,7 +12,6 @@ for item in **; do
 
     nest=${item//[^\/]}
     item=${item//[^[:print:]]/^[}
-    item=${item//.gpg}
 
     printf '%s\n' "${nest//\//│  }├─ ${item##*/}${dir}"
 done
