@@ -43,7 +43,7 @@ col() {
         clrs=("${clrs[@]// *}")
 
         mod bg "${clrs[0]}" - 50
-        mod fg "${clrs[0]}" + 200
+        mod fg "${clrs[0]}" + 220
         mod co "$bg" + 125
 
         [[ ${#clrs[@]} -lt 16 ]] &&

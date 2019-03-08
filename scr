@@ -12,3 +12,5 @@ scr=${scr_dir}/${date}/${date}-${time}
 
 import -window root "$scr".png &
 import -window root "$scr".jpg &
+
+printf '%s\n' "$scr.jpg" > ~/.cache/scrot

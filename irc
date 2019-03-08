@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# irc - Run discord in birch.
+
+pkill IRCdiscord
+setsid IRCdiscord &>/dev/null &
+weechat
+pkill IRCdiscord
