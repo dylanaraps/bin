@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# irc - Run discord in birch.
+# irc - Run discord in weechat.
 
 pkill IRCdiscord
 setsid IRCdiscord &>/dev/null &
