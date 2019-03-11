@@ -5,7 +5,7 @@
 enable -f /usr/lib/bash/sleep sleep
 
 dat() {
-    printf -v dat '%(%R)T'
+    printf -v dat '%(%R)T' -1
 }
 
 bat() {

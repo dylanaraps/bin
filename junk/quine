@@ -1,1 +1,1 @@
-trap -- 'trap' EXIT
+echo $BASH_COMMAND

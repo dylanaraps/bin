@@ -2,7 +2,7 @@
 #
 # tek - Upload image to teknik.io.
 
-file=${1:-$(< ~/.cache/scrot)}
+file=${1:-~/Pictures/Screenshots/current.jpg}
 
 [[ -f $file ]] ||
     exit 1

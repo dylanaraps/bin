@@ -18,7 +18,7 @@ for ((i=0;i<=100;i++)); do
     (:;:) && (:;:) && (:;:) && (:;:) && (:;:)
 
     # Print the bar.
-    bar "$i" "10"
+    bar "$i" 100
 done
 
 printf '\n'
