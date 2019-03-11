@@ -1,6 +1,6 @@
 #!/bin/bash
-trap 'printf \\e[?25h' EXIT
-IFS='[;' read -d R -rsp $'\e7\e[9999;9999H\e[6n\e8' _ h w
-:(){ printf -v s '%s%*s' "$s" "$[(${#2}+w)/2]" "$2";}
-mapfile -C : -c1 f < "$1" || exit 1
-read -srt 10 -p $'\e[2J\e[?25l\e['"$[(h-${#f[@]})/2]H$s"
+shopt -s checkwinsize; (:;:)
+
+while read -r line; do
+    printf '%*s\n' "$(((${#line}+COLUMNS)/2))" "$line"
+done < "${1:-/dev/stdin}"

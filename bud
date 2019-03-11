@@ -11,7 +11,7 @@ mod() {
 
 img() {
     [[ -d $1 ]] && {
-        imgs=("${1%/}"/*.{png,jp*})
+        imgs=("${1%/}"/*.{png,jp*,JPG*})
         img=${imgs[RANDOM%${#imgs[@]}]}
     }
 
