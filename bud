@@ -44,8 +44,7 @@ col() {
         mapfile -ts 1 clrs < <(convert "$img" "${magic_flags[@]}")
 
         [[ ${#clrs[@]} -lt 16 ]] && {
-            echo hi
-                col "$((max_colors++))" "$((75+max_colors))" "$((140+max_colors))"
+            col "$((max_colors++))" "$((75+max_colors))" "$((140+max_colors))"
             return
         }
 
