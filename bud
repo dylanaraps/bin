@@ -10,10 +10,14 @@ mod() {
 }
 
 img() {
+    shopt -s nullglob
+
     [[ -d $1 ]] && {
-        imgs=("${1%/}"/*.{png,jp*,JPG*})
+        imgs=("${1%/}"/*.{png,jpg,JPG})
         img=${imgs[RANDOM%${#imgs[@]}]}
     }
+
+    printf '%s\n' "${img:-$1}"
 
     [[ -f ${img:-$1} ]] && {
         img=${img:-$1}
@@ -27,8 +31,8 @@ col() {
     magic_flags=(
        -alpha off
        -resize 25%
-       -modulate 150,150,100
-       -colors 16
+       -modulate "${3:-100},${3:-100},100"
+       -colors "${1:-16}"
        -unique-colors
        txt:-
     )
@@ -39,15 +43,18 @@ col() {
     else
         mapfile -ts 1 clrs < <(convert "$img" "${magic_flags[@]}")
 
+        [[ ${#clrs[@]} -lt 16 ]] && {
+            echo hi
+                col "$((max_colors++))" "$((75+max_colors))" "$((140+max_colors))"
+            return
+        }
+
         clrs=("${clrs[@]//*\#}")
         clrs=("${clrs[@]// *}")
 
-        mod bg "${clrs[0]}" - 50
+        mod bg "${clrs[0]}" - "${2:-50}"
         mod fg "${clrs[0]}" + 220
         mod co "$bg" + 125
-
-        [[ ${#clrs[@]} -lt 16 ]] &&
-            exit 1
 
         final_pal=(
             "$bg"
@@ -62,7 +69,7 @@ col() {
     fi
 
     printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
-    pal "${final_pal[@]}" &
+    pal "${final_pal[@]}"
 }
 
 sys() {
@@ -80,6 +87,8 @@ sys() {
 main() {
     [[ -d ${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/buddy} ]] ||
         mkdir -p "$cache_dir"
+
+    max_colors=16
 
     img "$1"
     col
