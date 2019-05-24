@@ -37,8 +37,8 @@ col() {
        txt:-
     )
 
-    if [[ -f ${cache_dir}/${img//\//_} ]]; then
-        mapfile -t final_pal < "${cache_dir}/${img//\//_}"
+    if [[ -f ${cache_dir}/${img//\//_}$light ]]; then
+        mapfile -t final_pal < "${cache_dir}/${img//\//_}$light"
 
     else
         mapfile -ts 1 clrs < <(convert "$img" "${magic_flags[@]}")
@@ -51,9 +51,15 @@ col() {
         clrs=("${clrs[@]//*\#}")
         clrs=("${clrs[@]// *}")
 
-        mod bg "${clrs[0]}" - "${2:-50}"
-        mod fg "${clrs[0]}" + 220
-        mod co "$bg" + 125
+        if [[ $light == -l ]]; then
+            mod bg "${clrs[0]}" + "${2:-255}"
+            mod fg "${clrs[0]}" - 250
+            mod co "$bg" - 125
+        else
+            mod bg "${clrs[0]}" - "${2:-50}"
+            mod fg "${clrs[0]}" + 220
+            mod co "$bg" + 125
+        fi
 
         final_pal=(
             "$bg"
@@ -64,7 +70,7 @@ col() {
             "$fg"
         )
 
-        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
+        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}$light"
     fi
 
     printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
@@ -73,14 +79,6 @@ col() {
 
 sys() {
     setroot -z "$img"
-
-    sed -i"" \
-        -e "s/bg.color: #.*/bg.color: #FFFFFF/" \
-        -e "s/text.color: #.*/text.color: #FFFFFF/" \
-        -e "s/image.color: #.*/image.color: #FFFFFF/" \
-        ~/.themes/thicc/openbox-3/themerc
-
-    openbox --reconfigure
 }
 
 main() {
@@ -88,10 +86,11 @@ main() {
         mkdir -p "$cache_dir"
 
     max_colors=16
+    light=$2
 
     img "$1"
     col
     sys
 }
 
-main "$1"
+main "$@"
