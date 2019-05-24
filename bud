@@ -17,8 +17,6 @@ img() {
         img=${imgs[RANDOM%${#imgs[@]}]}
     }
 
-    printf '%s\n' "${img:-$1}"
-
     [[ -f ${img:-$1} ]] && {
         img=${img:-$1}
         return
