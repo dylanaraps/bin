@@ -17,6 +17,8 @@ img() {
         img=${imgs[RANDOM%${#imgs[@]}]}
     }
 
+    printf '%s\n' "${img:-$1}"
+
     [[ -f ${img:-$1} ]] && {
         img=${img:-$1}
         return
@@ -28,47 +30,38 @@ img() {
 col() {
     magic_flags=(
        -alpha off
-       -resize 25%
-       -modulate "${3:-100},${3:-100},100"
-       -colors "${1:-16}"
+       -resize 64x64
+       -posterize 16
+       -fill white
+       -colorize 30%
+       -modulate '125,175,100'
        -unique-colors
        txt:-
     )
 
-    if [[ -f ${cache_dir}/${img//\//_}$light ]]; then
-        mapfile -t final_pal < "${cache_dir}/${img//\//_}$light"
+    if [[ -f ${cache_dir}/${img//\//_} ]]; then
+        mapfile -t final_pal < "${cache_dir}/${img//\//_}"
 
     else
         mapfile -ts 1 clrs < <(convert "$img" "${magic_flags[@]}")
 
-        [[ ${#clrs[@]} -lt 16 ]] && {
-            col "$((max_colors++))" "$((75+max_colors))" "$((140+max_colors))"
-            return
-        }
-
         clrs=("${clrs[@]//*\#}")
         clrs=("${clrs[@]// *}")
 
-        if [[ $light == -l ]]; then
-            mod bg "${clrs[0]}" + "${2:-255}"
-            mod fg "${clrs[0]}" - 250
-            mod co "$bg" - 125
-        else
-            mod bg "${clrs[0]}" - "${2:-50}"
-            mod fg "${clrs[0]}" + 220
-            mod co "$bg" + 125
-        fi
+        mod bg "${clrs[0]}" - 120
+        mod fg "${clrs[0]}" + 220
+        mod co "$bg" + 125
 
         final_pal=(
             "$bg"
-            "${clrs[@]:9:6}"
+            "${clrs[@]:10:6}"
             "$fg"
             "$co"
-            "${clrs[@]:9:6}"
+            "${clrs[@]:10:6}"
             "$fg"
         )
 
-        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}$light"
+        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
     fi
 
     printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
@@ -77,18 +70,23 @@ col() {
 
 sys() {
     setroot -z "$img"
+
+    sed -i"" \
+        -e "s/bg.color: #.*/bg.color: #FFFFFF/" \
+        -e "s/text.color: #.*/text.color: #FFFFFF/" \
+        -e "s/image.color: #.*/image.color: #FFFFFF/" \
+        ~/.themes/thicc/openbox-3/themerc
+
+    openbox --reconfigure
 }
 
 main() {
     [[ -d ${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/buddy} ]] ||
         mkdir -p "$cache_dir"
 
-    max_colors=16
-    light=$2
-
     img "$1"
     col
     sys
 }
 
-main "$@"
+main "$1"
