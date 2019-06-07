@@ -49,7 +49,7 @@ col() {
         clrs=("${clrs[@]// *}")
 
         mod bg "${clrs[0]}" - 120
-        mod fg "${clrs[0]}" + 220
+        mod fg "${clrs[0]}" + 150
         mod co "$bg" + 125
 
         final_pal=(
@@ -65,16 +65,19 @@ col() {
     fi
 
     printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
-    pal "${final_pal[@]}"
+    pal "${final_pal[@]}" &
 }
 
 sys() {
-    setroot -z "$img"
+    setroot -z "$img" &
+
+    mkdir -p ~/.cache/wal
+    echo "$img" > ~/.cache/wal/wal
 
     sed -i"" \
-        -e "s/bg.color: #.*/bg.color: #FFFFFF/" \
-        -e "s/text.color: #.*/text.color: #FFFFFF/" \
-        -e "s/image.color: #.*/image.color: #FFFFFF/" \
+        -e "s/bg.color: #.*/bg.color: #${final_pal[15]}/" \
+        -e "s/text.color: #.*/text.color: #${final_pal[15]}/" \
+        -e "s/image.color: #.*/image.color: #${final_pal[15]}/" \
         ~/.themes/thicc/openbox-3/themerc
 
     openbox --reconfigure
@@ -86,7 +89,7 @@ main() {
 
     img "$1"
     col
-    sys
+    sys &
 }
 
 main "$1"
