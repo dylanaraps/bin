@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# ppid
+
+time while IFS=$':\t' read -r key val; do
+    case $key in
+        PPid) echo "Loop: $val"
+    esac
+done < /proc/$PPID/status
+
+time {
+    ppid=$(< /proc/$PPID/status)
+    ppid=${ppid/*PPid:}
+    ppid=${ppid/$'\n'*}
+    echo "Replace: ${ppid//$'\t'}"
+}
+
+time {
+    [[ $(< /proc/$PPID/status) =~ PPid:$'\t'[0-9]* ]] &&
+        echo "Regex: ${BASH_REMATCH[0]/PPid:$'\t'}"
+}
+
+time {
+    mapfile -t < /proc/$PPID/status
+    echo "mapfile: ${MAPFILE[6]//PPid:$'\t'}"
+}
+
+time {
+    IFS=$'\n' read -d '' -ra ppid < /proc/$PPID/status
+    echo "read: ${ppid[6]//PPid:$'\t'}"
+}
+
+time {
+    ppid=$(grep -F 'PPid:' /proc/$PPID/status)
+    echo "grep: ${ppid/PPid:$'\t'}"
+}
+

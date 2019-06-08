@@ -7,10 +7,10 @@
 printf '%s' "\
 #!/usr/bin/env bash
 #
-# $1 - $2
+# $1${2:+ - $2}
 
 main() {
-
+    :
 }
 
 main \"\$@\"

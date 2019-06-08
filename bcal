@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# bcal - Pure bash cal.
+
+read -r day month year months < <(printf  '%(%e %m %Y)T 0033614625035' -1)
+
+((leap      = year%4?0:1))
+((year_code = (${year:2}+(${year:2}/4))%7))
+((start     = (year_code+${months:month:1}+6+1-leap)%7%7))
+
+[[ $month == 0[469] || $month == 11 ]] && ((days=30))
+[[ $month == 02 ]]                     && ((days=leap?28:29))
+
+printf '      %(%B)T %s\nSu Mo Tu We Th Fr Sa\n' -1 "$year"
+
+for ((;i++<${days:-31};)) {
+    ((i==1))   && printf "%$((start*3))s"
+    ((i==day)) && printf '\e[7m'
+
+    printf '%2s\e[m ' "$i"
+
+    ((i==days||(i+start)%7)) || printf '\n'
+}
+
+printf '\n\n'

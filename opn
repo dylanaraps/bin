@@ -8,7 +8,7 @@
 mime_type="$(file -biL "$1")"
 
 case "$mime_type" in
-    image/*|audio/*|video/*)
+    image/*|audio/*|video/*|*HEIC*)
         mpv "$1"
     ;;
 

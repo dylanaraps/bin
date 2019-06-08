@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# pkginfo
+
+a=(
+    "drwxr-xr-x      root/root       usr/"
+    "drwxr-xr-x      root/root       usr/share/"
+    "drwxr-xr-x      root/root       usr/bin/"
+    "-rwxr-xr-x      root/root       usr/bin/bspc"
+    "-rwxr-xr-x      root/root       usr/bin/bspwm"
+    "drwxr-xr-x      root/root       usr/share/zsh/"
+    "drwxr-xr-x      root/root       usr/share/fish/"
+    "drwxr-xr-x      root/root       usr/share/man/"
+    "drwxr-xr-x      root/root       usr/share/bspwm/"
+    "drwxr-xr-x      root/root       usr/share/bash-completion/"
+)
+
+printf '%s\n' "${a[@]}"

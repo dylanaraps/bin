@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#
+# err_trap
+
+setup_terminal() {
+    printf '\e[2J\e[H'
+}
+
+reset_terminal() {
+    printf '\e[2J\e[H'
+}
+
+key_handler() {
+    local key=$?
+
+    [[ $key == 0 ]] && return
+
+    case $mode in
+        insert)
+            case $key in
+                33) mode= ;;
+                72) printf '\e[B' ;;
+
+                [1-9]*)
+                    printf %b \\"$key"
+                ;;
+            esac
+        ;;
+
+        *)
+            case $key in
+                # hjkl
+                153) printf '\e[A' ;;
+                152) printf '\e[B' ;;
+                154) printf '\e[C' ;;
+                150) printf '\e[D' ;;
+
+                # HJKL
+                147) printf '\e[999A' ;;
+                107) printf '\e[999B' ;;
+                114) printf '\e[999C' ;;
+                110) printf '\e[999D' ;;
+
+                151) mode=insert ;;
+
+                # Return.
+                72)  printf '\e[B' ;;
+            esac
+        ;;
+    esac
+}
+
+key_press() {
+    read -srn 1 || return
+
+    printf -v oct %o "'${REPLY:-†}"
+    return "$oct"
+}
+
+main() {
+    exec 2>/dev/null
+    trap key_handler    ERR
+    trap reset_terminal EXIT
+
+    setup_terminal
+
+    for ((;;)) { key_press; }
+}
+
+main "$@"

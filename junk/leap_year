@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Is divisible by 4.
-# Not if it is divisible by 100.
-# But is if it is divisible by 400.
-for((i=1800;i++<2400;)){((i%4==0&&i%100!=0||i%400==0))&&echo $i;}
-
-: $[i%4==0&&i%100!=0||i%400==0&&[i]=i];printf %s\\n ${j[@]}

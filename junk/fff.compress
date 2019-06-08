@@ -1,0 +1,107 @@
+st() {
+printf '\e[?1049h\e[?7l\e[?25l\e[2J\e[1;%sr' "$mi"
+};cs() {
+printf '\e[%sH\e[9999C\e[1J%b\e[1;%sr' \
+"$((LINES-2))" "${TMUX:+\e[2J}" "$mi"
+};gts() {
+LINES=10
+COLUMNS=30
+((mi=LINES-3))
+};sl() {
+local mark_ui="[${#marked_files[@]}] selected (${file_program[*]}) [p] ->"
+pwded=${PWD//[^[:print:]]/^[}
+printf '\e7\e[%sH\e[30;4%sm%*s\r%s %s%s\e[m\e[%sH\e[K\e8' \
+"$((LINES-1))" \
+"${FFF_COL2:-1}" \
+"$COLUMNS" "" \
+"($((ss+1))/$((lt+1)))" \
+"${marked_files[*]:+${mark_ui}}" \
+"${1:-${pwded:-/}}" \
+"$LINES"
+};read_dir() {
+local dirs
+local files
+local item_index
+[[ $PWD == / ]]&&PWD=
+for item in "$PWD"/*; do
+if [[ -d $item ]]; then
+dirs+=("$item")
+((item_index++))
+[[ $item == "$OLDPWD" ]]&&
+((pei=item_index))
+else
+files+=("$item")
+fi
+done
+list=("${dirs[@]}" "${files[@]}")
+[[ -z ${list[0]} ]]&&
+list[0]=empty
+((lt=${#list[@]}-1))
+cur_list=("${list[@]}")
+};pl() {
+local file_name=${list[$1]##*/}
+local file_ext=${file_name##*.}
+local format
+local suffix
+if [[ -z ${list[$1]} ]]; then
+return
+elif [[ -d ${list[$1]} ]]; then
+format+=\\e[${di:-1;3${FFF_COL1:-2}}m
+suffix+=/
+else
+format+=\\e[${fi:-37}m
+fi
+(($1 == ss))&&
+format+="\\e[1;3${FFF_COL4:-6};7m"
+[[ ${marked_files[$1]} == "${list[$1]:-null}" ]]&&{
+format+=\\e[3${FFF_COL3:-1}m${mark_pre:= }
+suffix+=${mark_post:=*}
+}
+file_name=${file_name//[^[:print:]]/^[}
+printf '\r%b%s\e[m\r' \
+"${file_pre}${format}" \
+"${file_name}${suffix}${file_post}"
+}
+draw_dir() {
+local ss=$ss
+local snp
+local se
+((find_previous == 1))&&{
+((ss=pei-1))
+((ss=ss))
+find_previous=
+}
+if ((lt < mi||ss < mi/2)); then
+((ss=0))
+((se=mi))
+((snp=ss+1))
+elif ((lt - ss < mi/2)); then
+((ss=lt-mi+1))
+((snp=mi-(lt-ss)))
+((se=lt+1))
+else
+((ss=ss-mi/2))
+((se=ss+mi))
+((snp=mi/2+1))
+fi
+printf '\e[H'
+for ((i=ss;i<se;i++)); {
+((i > ss))&&
+printf '\n'
+pl "$i"
+}
+printf '\e[%sH' "$snp"
+((y=snp))
+}
+rd() {
+[[ $1 == full ]]&&{
+read_dir
+ss=0
+}
+cs
+draw_dir
+sl
+}
+cd ${2:-$1} ||:
+read_flags=(-t 0.05)
+gts; st; rd full

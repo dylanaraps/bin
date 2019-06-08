@@ -39,7 +39,7 @@ get_terminfo() {
 }
 
 decode_terminfo() {
-    while IFS= read -n 1 byte; do
+    while IFS= read -rn 1 byte; do
         printf '%q' "$byte"
     done < "$terminfo_file"
 }

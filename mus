@@ -2,5 +2,6 @@
 #
 # music - simple music player using mpv.
 
-songs=(~/Music/final/*.flac)
-mpv "${songs[RANDOM%${#songs[@]}]}"
+mpv ~/Music/final/*.flac ~/Music/acous/*/*.mp3 \
+    --geometry 650x650+2450+200 \
+    --x11-name music

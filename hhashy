@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# hhashy
+
+bin_exist() {
+    for bin; do
+        hash "$bin" &>/dev/null || ERRO "Missing ${1}!";
+    done
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# shdw
+
+awk -F: '{
+pw = ":!:"
+if ($1 == "root") { pw = "::" }
+    print($1 pw ":0:::::")
+}' ~/projects/kiss/core/kiss-base/passwd

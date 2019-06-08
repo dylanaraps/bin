@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# puip
+
+host=icanhazip.com
+
+exec 69<>"/dev/tcp/$host/80"
+
+printf 'GET / HTTP/1.1\r\nhost: http://%s\r\n' "$host" >&69
+
+while read -sru 69; do
+    printf '%s\n' "$REPLY"
+done
+
+exec 69>&-

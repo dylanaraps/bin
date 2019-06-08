@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# nodes
+
+
+while read -rn 1 int; do
+    echo "$int"
+done < ~/000

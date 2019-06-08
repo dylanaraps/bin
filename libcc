@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# libcc
+
+# IFS=$'\n' read -r libc _ < <(ldd --version 2>&1)
+# libc="ldd (Debian EGLIBC 2.13-38+rpi2) 2.13"
+# libc="ldd (GNU libc) 2.29"
+# libc="musl libc (x86_64)"
+# libc=${libc/ldd \(}
+# libc=${libc/\)*}
+libclib=(/{lib,lib64,lib32,usr/lib}/{libglib,ld-musl,ld{32,64}-uClibc}*)
+case ${libclib[0]} in
+    *glib*)   libc=GNU libc ;;
+    *musl*)   libc=musl ;;
+    *uClibc*) libc=uClibc ;;
+esac
+echo "libc: $libc"

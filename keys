@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+# keys
+
+key() {
+    [[ $1 == $'\e' ]] && {
+        read -t 0.01 -rsn 2
+
+        [[ $special_key == $'\e\e'* ]] &&
+            read -t 0.01 -rsn 1 _
+
+        local special_key=$1$REPLY
+    }
+
+    case ${special_key:-$1} in
+        *) printf '%q\n' "${special_key:-$1}"
+    esac
+}
+
+main() {
+    for ((;;)) {
+        read -srn 1 && key "$REPLY"
+    }
+}
+
+main "$@"

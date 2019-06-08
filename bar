@@ -1,43 +1,12 @@
 #!/usr/bin/env bash
 #
-# bar - Dylan Araps
+# bar
 
 enable -f /usr/lib/bash/sleep sleep
 
-dat() {
-    printf -v dat '%(%R)T' -1
-}
-
-bat() {
-    read -r cur < /sys/class/power_supply/BAT1/capacity
-    read -r sta < /sys/class/power_supply/BAT1/status
-
-    case $cur in
-        [0-9]|1[0-9])         bat= ;;
-        2[0-9]|3[0-9]|4[0-9]) bat= ;;
-        5[0-9]|6[0-9])        bat= ;;
-        7[0-9]|8[0-9])        bat= ;;
-        *)                    bat= ;;
-    esac
-
-    [[ $sta == Charging ]] && bat+=' '
-}
-
-vol() {
-    read -r cur < /home/black/.cache/vol
-
-    if [[ $cur -ge 50 ]]; then
-        vol=
-    else
-        vol=
-    fi
-}
-
-pkill bar
-
-for ((;;)) {
-    . /home/black/.cache/buddy/colors.sh; dat; vol; bat
-    printf '%s   %s   \n' "%{B#${c[0]}}%{F#${c[15]}}" "$dat%{r}$vol  $bat"
-    sleep 1
-} |
-lemonbar -f "Roboto Mono:size=16" -f "Font Awesome:size=17" -g "x100"
+clo &
+bat &
+sleep 2
+xdo lower -a bar_clo
+xdo lower -a bar_bat
+wait

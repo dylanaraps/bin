@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cat <<< $(printf '%s\n' "$(mapfile_callback()(((mapfile_line!=mapfile_end-1)) && history -p "$2"); mapfile -C mapfile_callback -tc 1 <<< $(< ~/.bashrc))") > /dev/fd/1

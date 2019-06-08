@@ -1,8 +1,3 @@
-#!/usr/bin/env bash
-#
-# rose
-
-read -r -d '' rose <<- EOM
 \\033c\\033[31m    .--.---.
    ( \\'--'/ )
   ( '..-...' )
@@ -14,6 +9,3 @@ read -r -d '' rose <<- EOM
       /  \\ \\\\
        '--'.\\ >
              \\\\\\033[0m
-EOM
-
-printf "%b\\n\\n" "$rose"
