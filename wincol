@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-#
-# wincol
-
-main() {
-    :
-}
-
-main "$@"

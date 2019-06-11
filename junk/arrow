@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# arrow
+
+export LC_ALL=C LANG=C
+
+for ((s=${1:-5},m=s*2;i<m;i++)) {
+    if ((i<s)); then
+        printf "%$((i+1))s\\n" \\
+    else
+        printf "%$((m-i))s\\n" /
+    fi
+}
