@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# bstow - stow compatible symlinker for dotfiles.
+
+shopt -s dotglob globstar
+
+[[ -d $1 ]] || {
+    echo "${PWD##*/}/ does not contain '$1'" >&2
+    exit 1
+}
+
+for file in "$PWD/${1%\/}"/**; do
+    rel_path=~/${file#$PWD/${1%\/}/}
+
+    [[ $file == $PWD/${1%\/}/ ]] &&
+        continue
+
+    [[ -d $file && -d $rel_path ]] &&
+        continue
+
+    [[ -d $file && ! -d $rel_path ]] &&
+        mkdir -p "$rel_path"
+
+    [[ -f $file && -e $rel_path ]] && {
+        echo "$rel_path already exists." >&2
+        continue
+    }
+
+    [[ -f $file && ! -e $rel_path ]] &&
+        ln -sf "$file" "$rel_path"
+
+    echo "$file --> $rel_path"
+done
