@@ -5,7 +5,7 @@
 shopt -s dotglob globstar
 
 [[ -d $1 ]] || {
-    echo "${PWD##*/}/ does not contain '$1'" >&2
+    echo "${PWD##*/}/ does not contain '$1'." >&2
     exit 1
 }
 
