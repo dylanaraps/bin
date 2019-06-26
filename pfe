@@ -25,12 +25,14 @@
     _=$((z/=1024))
     _=$((y/=1024))
 
-    echo "
-    ___     ${USER:-$(whoami)}@$(hostname)
-   (.· |    os:     ${PRETTY_NAME:-Linux}
-   (<> |    shell:  ${SHELL:-/bin/sh}
-  / __  \   model:  $name $vers
- ( /  \ /|  uptime:${u:-?}
-_/\ __)/_)  memory: ${z:-?}MB / ${y:-?}MB
-\/-____\/   kernel: ${k:-?}
+    printf '%b\n' "
+\033[34;1m    ___      \033[33m${USER:-$(whoami)}\033[m@\033[33;1m${HOSTNAME:-$(hostname)}\033[m
+\033[34;1m   (\033[37m.· \033[34m|     \033[31mos\033[m:     ${PRETTY_NAME:-Linux}
+\033[34;1m   (\033[35m<> \033[34m|     \033[31mshell\033[m:  ${SHELL:-/bin/sh}
+\033[34;1m  / \033[37m__  \033[34m\\    \033[31mmodel\033[m:  $name $vers
+\033[34;1m ( \033[37m/  \\ \033[34m/|   \033[31muptime\033[m:${u:-0m}
+\033[35;1m_\033[34m/\\ \033[37m__)\033[34m/\033[35m_\033[34m)   \033[31mmemory\033[m: ${z:-?}MB / ${y:-?}MB
+\033[35;1m\/\033[34m-____\033[35m\/    \033[31mkernel\033[m: ${k:-linux}
 ") 2>/dev/null
+
+
