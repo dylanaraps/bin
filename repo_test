@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# repo_test
+
+KISS_PATH=~/projects/kiss-new/repo:~/projects/kiss-new/repo
+
+name=$1
+
+set -f
+# shellcheck disable=2046
+set -- $(IFS=:; set -- $KISS_PATH; find "$@" -maxdepth 1 -name "$name")
+set +f
+
+echo "$1"
+
+# $(find "$@" -mindepth 1 -maxdepth 1 -name "$name")
+# echo "$rep_dir"

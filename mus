@@ -2,6 +2,8 @@
 #
 # music - simple music player using mpv.
 
-mpv ~/Music/final/*.flac ~/Music/acous/*/*.mp3 \
-    --geometry 650x650+2450+200 \
-    --x11-name music
+mapfile -t music < <(shuf -e ~/Music/final/*.{flac,mp3})
+
+mpv --geometry 650x650+2450+200 \
+    --x11-name music \
+    -- "${music[@]}"
