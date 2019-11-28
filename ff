@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo | exec su -c "/bin/firefox --display $DISPLAY" - webshit
