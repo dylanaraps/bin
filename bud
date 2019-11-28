@@ -95,7 +95,6 @@ col() {
         printf '%s\n' "$@" > "$cache_dir/$cache_file"
     fi
 
-    echo "$@"
     paleta "$@" &
 }
 
@@ -105,7 +104,11 @@ main() {
     img "$1"
     col
 
-    display -page 3200x -sample 3200x -window root "$img" &
+    display \
+        -page 3200x \
+        -sample 3200x \
+        -window root \
+        "$img" &
 }
 
 main "$1"
