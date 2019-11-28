@@ -2,7 +2,6 @@
 #
 # pywalesque posix sh alternative.
 
-
 img() {
     [ -d "$1" ] && {
         set +f
