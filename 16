@@ -2,18 +2,18 @@
 #
 # 16 color script.
 
-trap "printf '\033[?25h\033[?7h\n'" EXIT INT
+trap "printf '[?25h[?7h\n'" EXIT INT
 
-printf '\033[?25l\033[?7l\033[2J\033[H'
+printf '[?25l[?7l[2J[H'
 
 for i in 1 2 3 4 5 6; do
-    printf '\033[4%sm  \033[m ' "$i"
+    printf '[4%sm  [m ' "$i"
 done
 
 printf '\n'
 
 for i in 1 2 3 4 5 6; do
-    printf '\033[10%sm  \033[m ' "$i"
+    printf '[10%sm  [m ' "$i"
 done
 
 read -r _
