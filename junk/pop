@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-shopt -s globstar
-
-for f in ~/Artist/**; do
-    [[ -f $f ]] && ffprobe "$f" &
-done
-
-wait

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-#
-# Print strings as owo.
-
-owo="${*-$(</dev/stdin)}"
-owo="${owo//r/w}"
-owo="${owo//R/W}"
-echo "$owo owo"

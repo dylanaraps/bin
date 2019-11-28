@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-file=$(<~/test.json)

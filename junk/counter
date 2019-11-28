@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# counter
-
-while read -srn 1; do
-    [[ $REPLY == " " ]] && printf '\r%s' "$((i++))"
-done

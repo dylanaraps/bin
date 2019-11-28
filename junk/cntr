@@ -1,6 +1,0 @@
-#!/bin/bash
-shopt -s checkwinsize; (:;:)
-
-while read -r line; do
-    printf '%*s\n' "$(((${#line}+COLUMNS)/2))" "$line"
-done < "${1:-/dev/stdin}"

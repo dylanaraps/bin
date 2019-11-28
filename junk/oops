@@ -1,3 +1,0 @@
-pkginfo --footprint "$TARGET" | \
-    sed "s|\tlib/modules/`uname -r`/|\tlib/modules/<kernel-version>/|g" | \
-    sort -k 3

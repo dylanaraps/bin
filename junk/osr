@@ -1,7 +1,0 @@
-#!/bin/sh
-
-os=$(awk -F = '/PRETTY_NAME/{print $2}' /etc/os-release)
-os=${os%[\'\"]}
-os=${os#[\'\"]}
-
-echo "$os"

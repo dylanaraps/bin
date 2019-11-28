@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-#
-# Change volume.
-
-volume=$(amixer sset Master "$1")
-volume=${volume/\%\]*}
-volume=${volume/*\[}
-
-echo "$volume" > ~/.cache/vol

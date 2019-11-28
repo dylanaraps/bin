@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# Get terminal size in all versions of bash.
-
-# Get cursor position.
-IFS='[;' read -sp $'\e7\e[9999;9999H\e[6n\e8' -d R -rs _ h w
-printf '%s\n' "${w}x${h}"

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-for i in {01..31}; do
-    s=${i/[023]1/st}
-    s=${s/[02]2/nd}
-    s=${s/[02]3/rd}
-
-    printf '%s\n' "${i#0}${s/$i/th}"
-done

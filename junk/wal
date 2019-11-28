@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-#
-# wal
-
-main() {
-    :
-}
-
-main "$@"

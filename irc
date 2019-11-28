@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-#
-# irc - Run discord in weechat.
-
-pkill IRCdiscord
-setsid IRCdiscord &>/dev/null &
-weechat
-pkill IRCdiscord

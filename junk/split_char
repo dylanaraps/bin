@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-#
-# Format chars as discord spoiler text.
-
-str=$*
-for ((i=0;i<${#str};i++)) {
-    echo -n "||${str:i:1}||"
-}
-echo

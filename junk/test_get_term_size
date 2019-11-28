@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# Get the terminal size from a script.
-
-# (:;:) is a micro sleep to ensure the variables are exported immediately.
-shopt -s checkwinsize; (:;:)
-echo "$LINES $COLUMNS"

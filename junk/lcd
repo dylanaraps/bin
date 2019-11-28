@@ -1,7 +1,0 @@
-#!/bin/sh
-
-lcd() {
-    cd "$@" 2>/dev/null || cd "${HOME}/$*" 2>/dev/null || return
-    [ -d ".git" ] && git diff --shortstat
-    ls --group-directories-first --color=always -A
-}

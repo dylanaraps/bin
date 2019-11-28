@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# recu
-
-run() { for i in *; do echo "$i"; if [[ -d $i ]]; then (cd "$i"; run); fi; done; }
-
-run

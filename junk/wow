@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-#
-# wow
-
-for((;;)){
-    echo ${_}{1..100}
-    (sleep 1)
-}

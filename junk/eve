@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# Testing magic arg variables.
-
-set -o history -o histexpand
-[[ -f ~/.bashrc ]] &&
-    echo !1

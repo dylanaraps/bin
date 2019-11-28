@@ -1,2 +1,0 @@
-#!/bin/sh
-spotify --force-device-scale-factor=2.5 "$@"

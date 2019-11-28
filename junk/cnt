@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#
-# Count files in a dir.
-
-files=("${1:-$PWD}"/*)
-echo "${#files[@]}"
