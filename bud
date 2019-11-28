@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+#
+# TODO: Rewrite in POSIX sh.
+# bud - a minimal wal replacement
+
+hex2rgb() {
+    ((r=16#${1:0:2}${2}${3},g=16#${1:2:2}${2}${3},b=16#${1:4:2}${2}${3}))
+    ((r=r<0?0:r,g=g<0?0:g,b=b<0?0:b))
+    ((r=r>255?255:r,g=g>255?255:g,b=b>255?255:b))
+}
+
+mod() {
+    hex2rgb "$2" "$3" "$4"
+    printf -v "$1" '%02x%02x%02x' "$r" "$g" "$b"
+}
+
+img() {
+    [ -d "$1" ] && {
+        set -- "${1%/}/"*.png "${1%/}/"*.jpg "${1%/}/"*.JPG
+        shift "$(shuf -i "1-$#" -n 1)"
+        img=$1
+
+        [ -f "$img" ] || img "$1"
+    }
+
+    printf '%s\n' "${img:-$1}"
+
+    [ -f "${img:-$1}" ] && {
+        img=${img:-$1}
+        return
+    }
+
+    exit 1
+}
+
+col() {
+    set -- \
+        -alpha off \
+        -resize 64x64 \
+        -posterize 16 \
+        -fill white \
+        -colorize 30% \
+        -modulate '125,175,100' \
+        -unique-colors \
+        txt:-
+
+
+    if [[ -f ${cache_dir}/${img//\//_} ]]; then
+        mapfile -t final_pal < "${cache_dir}/${img//\//_}"
+
+    else
+        mapfile -ts 1 clrs < <(convert "$img" "$@")
+
+        clrs=("${clrs[@]//*\#}")
+        clrs=("${clrs[@]// *}")
+
+        mod bg "${clrs[0]}" - 120
+        mod fg "${clrs[0]}" + 150
+        mod co "$bg" + 125
+
+        final_pal=(
+            "$bg"
+            "${clrs[@]:10:6}"
+            "$fg"
+            "$co"
+            "${clrs[@]:10:6}"
+            "$fg"
+        )
+
+        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
+    fi
+
+    printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
+    paleta "${final_pal[@]}" &
+}
+
+sys() {
+    display -page 3200x -sample 3200x -window root "$img" &
+
+    mkdir -p ~/.cache/wal
+    echo "$img" > ~/.cache/wal/wal
+}
+
+main() {
+    [ -d "${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/buddy}" ] ||
+        mkdir -p "$cache_dir"
+
+    img "$1"
+    col
+    sys &
+}
+
+main "$1"

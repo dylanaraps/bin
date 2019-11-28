@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Control brightness.
+#
+# Usage: bri [0-100] [+,-], bri [0-100]
+
+bri_path=/sys/class/backlight/intel_backlight
+
+read -r cur < "$bri_path/brightness"
+read -r max < "$bri_path/max_brightness"
+
+# Set the value based on $2.
+bri=$((cur ${2:-=} $1 * 10))
+
+# Don't allow brightness outside min-max.
+[ "$bri" -gt "$max" ] && bri=$max
+[ "$bri" -lt 0 ]      && bri=0
+
+printf %s "$bri" > "$bri_path/brightness"
