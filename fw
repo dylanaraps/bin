@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rfkill block   wlan
+rfkill unblock wlan
+dhcpcd

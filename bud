@@ -1,93 +1,111 @@
-#!/usr/bin/env bash
+#!/bin/sh -f
 #
-# TODO: Rewrite in POSIX sh.
-# bud - a minimal wal replacement
+# pywalesque posix sh alternative.
 
-hex2rgb() {
-    ((r=16#${1:0:2}${2}${3},g=16#${1:2:2}${2}${3},b=16#${1:4:2}${2}${3}))
-    ((r=r<0?0:r,g=g<0?0:g,b=b<0?0:b))
-    ((r=r>255?255:r,g=g>255?255:g,b=b>255?255:b))
-}
-
-mod() {
-    hex2rgb "$2" "$3" "$4"
-    printf -v "$1" '%02x%02x%02x' "$r" "$g" "$b"
-}
 
 img() {
     [ -d "$1" ] && {
-        set -- "${1%/}/"*.png "${1%/}/"*.jpg "${1%/}/"*.JPG
+        set +f
+        set -f -- "$1/"*
         shift "$(shuf -i "1-$#" -n 1)"
         img=$1
-
-        [ -f "$img" ] || img "$1"
     }
 
-    printf '%s\n' "${img:-$1}"
+    [ -f "${img:=$1}" ] || exit 1
 
-    [ -f "${img:-$1}" ] && {
-        img=${img:-$1}
-        return
+    printf '%s\n' "$img"
+}
+
+hex2rgb() {
+    set -- "${1##\#}"
+
+    r=${1%%????}
+    g=${1##??}
+    g=${g%%??}
+    b=${1##????}
+
+    r=$((0x$r))
+    g=$((0x$g))
+    b=$((0x$b))
+}
+
+mod() {
+    hex2rgb "$2"
+
+    # The operator is stored in a variable
+    # which makes shellcheck freak out.
+    # shellcheck disable=1102,2086
+    {
+        r=$((r $3 $4))
+        g=$((g $3 $4))
+        b=$((b $3 $4))
     }
 
-    exit 1
+    r=$((r > 255 ? 255 : r < 0 ? 0 : r))
+    g=$((g > 255 ? 255 : g < 0 ? 0 : g))
+    b=$((b > 255 ? 255 : b < 0 ? 0 : b))
+
+    export "$1=$(printf '%02x%02x%02x' "$r" "$g" "$b")"
 }
 
 col() {
-    set -- \
-        -alpha off \
-        -resize 64x64 \
-        -posterize 16 \
-        -fill white \
-        -colorize 30% \
-        -modulate '125,175,100' \
-        -unique-colors \
-        txt:-
+    cache_file=$(echo "$img" | base64)
 
-
-    if [[ -f ${cache_dir}/${img//\//_} ]]; then
-        mapfile -t final_pal < "${cache_dir}/${img//\//_}"
+    # Backticks need to be used here to fix bugs in
+    # some specific POSIX shells.
+    #
+    # Word splitting is also intentional and safe here.
+    # shellcheck disable=2046,2006
+    if [ -f "$cache_dir/$cache_file" ]; then
+        set -- $(cat "$cache_dir/$cache_file")
 
     else
-        mapfile -ts 1 clrs < <(convert "$img" "$@")
+        set -- `\
+            convert "$img" \
+                -alpha off \
+                -resize 64x64 \
+                -posterize 16 \
+                -fill white \
+                -colorize 30% \
+                -modulate '125,175,100' \
+                -unique-colors \
+                txt:- |
 
-        clrs=("${clrs[@]//*\#}")
-        clrs=("${clrs[@]// *}")
+            while IFS='# ' read -r _ _ col _; do
+                i=$((i+1))
 
-        mod bg "${clrs[0]}" - 120
-        mod fg "${clrs[0]}" + 150
-        mod co "$bg" + 125
+                [ "$i" -lt 11 ] && continue
+                [ "$i" -gt 16 ] && continue
 
-        final_pal=(
-            "$bg"
-            "${clrs[@]:10:6}"
-            "$fg"
-            "$co"
-            "${clrs[@]:10:6}"
-            "$fg"
-        )
+                printf '%s\n' "$col"
+            done
+        `
 
-        printf '%s\n' "${final_pal[@]}" > "${cache_dir}/${img//\//_}"
+        # These variables are dynamically defined,
+        # ignore undeclared variable warnings.
+        # shellcheck disable=2154
+        {
+            mod bg "$2"  / 4
+            mod fg "$2"  + 150
+            mod co "$bg" + 125
+
+            set -- "$bg" "$@" "$fg" "$co" "$@" "$fg"
+        }
+
+        printf '%s\n' "$@" > "$cache_dir/$cache_file"
     fi
 
-    printf 'c=(%s)\n' "${final_pal[*]}" > "${cache_dir}/colors.sh"
-    paleta "${final_pal[@]}" &
-}
-
-sys() {
-    display -page 3200x -sample 3200x -window root "$img" &
-
-    mkdir -p ~/.cache/wal
-    echo "$img" > ~/.cache/wal/wal
+    echo "$@"
+    paleta "$@" &
 }
 
 main() {
-    [ -d "${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/buddy}" ] ||
-        mkdir -p "$cache_dir"
+    mkdir -p "${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/bud}"
 
     img "$1"
     col
-    sys &
+
+    display -page 3200x -sample 3200x -window root "$img" &
 }
 
 main "$1"
