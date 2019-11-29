@@ -55,7 +55,7 @@ col() {
     # Word splitting is also intentional and safe here.
     # shellcheck disable=2046,2006
     if [ -f "$cache_dir/$cache_file" ]; then
-        set -- $(cat "$cache_dir/$cache_file")
+        paleta < "$cache_dir/$cache_file" &
 
     else
         set -- `\
@@ -65,7 +65,7 @@ col() {
                 -posterize 16 \
                 -fill white \
                 -colorize 30% \
-                -modulate '125,175,100' \
+                -modulate 125,175,100 \
                 -unique-colors \
                 txt:- |
 
@@ -90,10 +90,9 @@ col() {
             set -- "$bg" "$@" "$fg" "$co" "$@" "$fg"
         }
 
+        printf '%s\n' "$@" | paleta &
         printf '%s\n' "$@" > "$cache_dir/$cache_file"
     fi
-
-    paleta "$@" &
 }
 
 main() {
@@ -107,7 +106,7 @@ main() {
         -window root \
         "$img" &
 
-    col
+    col &
 }
 
 main "$1"
