@@ -100,13 +100,14 @@ main() {
     mkdir -p "${cache_dir:=${XDG_CACHE_HOME:=${HOME}/.cache}/bud}"
 
     img "$1"
-    col
 
     display \
         -page 3200x \
         -sample 3200x \
         -window root \
         "$img" &
+
+    col
 }
 
 main "$1"

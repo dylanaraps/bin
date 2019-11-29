@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# music - simple music player using mpv.
+
+exec mpv --geometry 650x650+2450+200 \
+         --x11-name music \
+         --shuffle \
+         -- ~/Music/final/*
