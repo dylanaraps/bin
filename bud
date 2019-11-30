@@ -47,7 +47,7 @@ mod() {
 }
 
 col() {
-    cache_file=$(echo "$img" | base64)
+    cache_file=$(printf %s "$img" | base64)
 
     # Backticks need to be used here to fix bugs in
     # some specific POSIX shells.
