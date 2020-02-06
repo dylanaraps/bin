@@ -1,0 +1,38 @@
+#!/bin/sh
+
+json=$1
+town=town:$(jq -r .address.village.en < "$1")
+isle=isle:$(jq -r .address.island.en  < "$1")
+size=size:$(jq -r .size               < "$1")
+bsize=bsize:$(jq -r .buildable_size   < "$1")
+bath=bath:$(jq -r .baths              < "$1")
+beds=beds:$(jq -r .beds               < "$1")
+price=price:$(jq -r .price            < "$1")
+type=type:$(jq -r .type.en            < "$1")
+
+set -- "$town" "$isle" "$size" "$bsize" "$bath" "$beds" "$price" "$type"
+
+tot=$#
+start=1
+
+while [ "$start" -le "$tot" ]; do
+    end=$start
+
+    while [ "$end" -le "$tot" ]; do
+        for v in $(seq "$start" "$end"); do
+            eval "f=\"\${$v}\""
+            f=$(echo "$f" | sed 's/ /-/g')
+            printf '%s#' "$f"
+        done
+
+        printf '\n'
+
+        end=$((end + 1))
+    done
+
+    start=$((start + 1))
+done |
+
+while read -r line; do
+    cat "$json" >> ".www/db/$line.json"
+done

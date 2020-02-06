@@ -1,0 +1,7 @@
+#!/bin/sh
+
+test_func() {
+    whoami
+}
+
+su goldie -c "sh -c test_func"

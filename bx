@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+
+eval set {1..${m:=${1-5}}} {$m..1}
+printf '\e[%sCx\n' "${@:1:m-1}"
+printf '\e[%sA' "$m"
+printf '\e[%sCx\n' "${@:m+1}"

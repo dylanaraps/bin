@@ -1,0 +1,74 @@
+#!/bin/sh
+
+# MIT License
+
+# Copyright (c) 2019 Adam Schaefers paxchristi888@gmail.com
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+die() {
+    [ "$1" ] && printf "(SPM) %s\n" "$*"
+    exit 1
+}
+
+[ "$(pidof -o %PPID -x "${0##*/}")" ] &&
+    die "SPM is already running"
+
+# Battery thresholds.
+set -- 99 80 40 20 10 5
+
+mkdir -p "${conf_dir:=${XDG_CONFIG_HOME:-$HOME/.config}/spm}/state"
+
+[ -f "$conf_dir/config" ] ||
+    die "Please create $conf_dir/config and try again."
+
+# This was originally 'rm -f' but it's a directory(?).
+rm -rf "$conf_dir/state"/* > /dev/null 2>&1 #shh
+
+while :; do
+    . "$conf_dir/config"
+
+    batt_status=$(cat /sys/class/power_supply/BAT0/status)
+    batt_percent=$(cat /sys/class/power_supply/BAT0/capacity)
+
+    case $batt_status in
+        Discharging)
+            echo "$batt_thresholds" | tr ' ' '\n' | while read -r state; do
+                if [ "$batt_percent" -eq "$state" ] ||
+                   [ "$batt_percent" -lt "$state" ]; then
+                    if [ ! -f "$conf_dir/state/$state" ]; then
+                        rm -f "$conf_dir/state/100"
+                        touch "$conf_dir/state/$state"
+                        user_custom_low_battery_hook
+                    fi
+                fi
+            done
+        ;;
+
+        Charging)
+            if [ ! -f "$conf_dir/state/100" ]; then
+                rm -f "$conf_dir/state"/* >/dev/null 2>&1
+                touch "$conf_dir/state/100"
+                user_custom_battery_normal_hook
+            fi
+        ;;
+    esac
+
+    sleep 10
+done

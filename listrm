@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+list_del() {
+    # Remove an item from a "string list".
+    rm=$1
+    shift "$(($# ? 1 : 0))"
+
+    for pkg; do
+        [ "$pkg" = "$rm" ] || printf %s "$pkg "
+    done
+}
+
+cd ~/bin
+set -- *
+
+list_rm bud "$@"

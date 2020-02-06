@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+a=world
+b=test
+
+read_line() {
+    source <(printf '%s\n' "printf '%b\n' \"$2\"")
+}
+
+mapfile -C read_line -c 1 -t < "${1:-/dev/stdin}"

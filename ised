@@ -1,0 +1,16 @@
+#!/bin/sh
+
+dosu() {
+    su -c "$*"
+}
+
+ssed() {
+    # $4 is unquoted so that this will work even when
+    # $4 is empty. In kiss, globbing is disabled and
+    # the input is hardcoded.
+
+    sed "s/$1/$2/" "$3" | $4 tee "$3.tmp" >/dev/null
+    $4 mv -f "$3.tmp" "$3"
+}
+
+ssed search replace file dosu

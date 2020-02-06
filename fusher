@@ -49,7 +49,7 @@ args() {
             *)       file=$1    ;;
         esac
 
-        shift "$(($# ? 1 : 0))"
+        shift
     done
 }
 

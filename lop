@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+loop_cmd() {
+    for i in {1..10000}; do
+        /bin/printf '%s\n' "$i"
+    done
+}
+
+loop_builtin() {
+    for i in {1..10000}; do
+        printf '%s\n' "$i"
+    done
+}
+
+printf 'Command\n'
+time loop_cmd >/dev/null
+
+printf '\nBuiltin\n'
+time loop_builtin >/dev/null

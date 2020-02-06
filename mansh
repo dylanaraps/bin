@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+# less /usr/share/man/man?/"${1?}".*
+# vim -c 'set ft=man' /usr/share/man/man?/"${1?}".*
+vim -M +MANPAGER /usr/share/man/man?/"${1?}".*

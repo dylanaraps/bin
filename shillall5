@@ -1,0 +1,26 @@
+#!/bin/sh
+
+echo "\$\$: $$ $(cat /proc/$$/comm)"
+echo "PPID: $PPID $(cat /proc/$PPID/comm)"
+exit
+
+killall5_sh() {
+    cd /proc || {
+        log "ERROR: /proc doesn't exist..."
+    	return 1
+    }
+
+    kill -s SIGSTOP -1
+
+    for pid in [0-9]*/; do
+        case ${pid%/} in
+            "$$"|"$PPID"|*[!0-9]*|1) continue ;;
+        esac
+
+        kill -s "${1:-TERM}" "${pid%/}"
+    done
+
+    kill -s SIGCONT -1
+
+    cd -
+}
