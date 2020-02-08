@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
 # git_week
 
@@ -7,4 +7,6 @@ url=$(git remote get-url origin)
 grt >/dev/null
 
 git shortlog --since="${1:-8} days ago" --no-merges --format='- %h %s' |
-    sed -E "s@ {6}- (.{7})@    - [\`\1\`]($url/commit/\1)@;s@^(\S)@- **\1@;s@....:\$@**:@"
+
+sed -E \
+"s@ {6}- (.{7})@    - [\`\1\`]($url/commit/\1)@;s@^(\S)@- **\1@;s@....:\$@**:@"
