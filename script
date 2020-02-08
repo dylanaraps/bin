@@ -1,7 +1,0 @@
-
-exit_handler() {
-    stty echo icanon
-    exit
-}
-
-trap exit_handler INT EXIT

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-while :; do
-    iwd >/dev/null 2>&1
-done

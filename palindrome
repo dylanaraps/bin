@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-read -ra a <<< "$1"
-echo "${a[@]}"

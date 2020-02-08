@@ -1,8 +1,0 @@
-#!/bin/sh
-
-set -- * && img=$1
-
-shift "$(($$ * PPID % $#))"
-
-[ -f "${1:-$img}" ] &&
-    echo --bg-fill "${1:-$img}"
