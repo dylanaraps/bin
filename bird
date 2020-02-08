@@ -1,2 +1,0 @@
-#!/bin/sh
-echo | exec su -c "DISPLAY=:0 GDK_SCALE=2 firefox" - webshit
