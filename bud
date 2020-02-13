@@ -6,7 +6,8 @@ img() {
     [ -d "$1" ] && {
         set +f
         set -f -- "$1/"*
-        shift "$(shuf -i "1-$#" -n 1)"
+
+        shift "$(($$ * PPID % $#))"
     }
 
     [ -f "${img:=$1}" ] || exit 1
