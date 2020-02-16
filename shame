@@ -1,21 +1,43 @@
 #!/bin/sh
 
+e() {
+    printf '%s\n' "$f: $1"
+
+    e=1
+}
+
 x() {
     sed "$2" "$f" > "/tmp/$$"
 
-    cmp -s "/tmp/$$" "$f" || {
-        printf '%s\n' "$f: $1"
-
-        e=1
-    }
+    cmp -s "/tmp/$$" "$f" || e "$1"
 }
 
-printf 'SEE: https://k1ss.org/style.txt\n'
+printf 'SEE: https://k1ss.org/style.txt\n' >&2
 
 find . -type f -name build | while read -r f; do
     x 0202 "s|\t||g"
+    x 0203 "s|.\{81\}||g"
     x 0204 "1s|^(?!.*#!/bin/sh -).*$||"
     x 0207 "s|\${[a-zA-Z0-9_]*}[^a-zA-Z0-9_]||g"
+    x 0208 "s|[^ ]=[\"\'][^$ ]*[\"\']||g"
+    x 0213 "s|mkdir (?!-p|-m|-pm)||"
+    x 0400 "s|configure --||g"
+    x 0600 "s|meson -||g"
+done
+
+find . -type f -name depends | while read -r f; do
+    x 1202 "s|^\(gcc\|musl\|pkgconf\|linux-headers\) ||"
+    x 1203 "s|^\(autoconf\|automake\|cmake\|meson\)$||"
+
+    [ -s "$f" ] || e 1206 
+done
+
+find . -type f -name sources | while read -r f; do
+    x 1404 "s|www\.||;s|\.git||"
+done
+
+find . -type f -name version | while read -r f; do
+    x 1602 "s|^9999 ||"
 done
 
 [ "$e" ] && exit 1
