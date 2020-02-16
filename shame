@@ -17,9 +17,8 @@ x() {
 printf 'SEE: https://k1ss.org/style.txt\n' >&2
 
 # Run linter only on packages changed in PR.
-git diff --name-only --diff-filter=b \
-    "$(git merge-base HEAD "${BRANCH:-stage}")" |
 
+git diff --name-only --diff-filter=b -r "\${{ github.sha }}" |
 sed 's/\/\w*$//' | 
 sort |
 uniq |
