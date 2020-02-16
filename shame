@@ -1,0 +1,21 @@
+#!/bin/sh
+
+x() {
+    sed "$2" "$f" > "/tmp/$$"
+
+    cmp -s "/tmp/$$" "$f" || {
+        printf '%s\n' "$f: $1"
+
+        e=1
+    }
+}
+
+printf 'SEE: https://k1ss.org/style.txt\n'
+
+find . -type f -name build | while read -r f; do
+    x 0202 "s|\t||g"
+    x 0204 "1s|^(?!.*#!/bin/sh -).*$||"
+    x 0207 "s|\${[a-zA-Z0-9_]*}[^a-zA-Z0-9_]||g"
+done
+
+[ "$e" ] && exit 1
