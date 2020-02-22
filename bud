@@ -7,7 +7,7 @@ img() {
         set +f
         set -f -- "$1/"*
 
-        shift "$(($$ * PPID % $#))"
+        shift "$(shuf -i "1-$#" -n 1)"
     }
 
     [ -f "${img:=$1}" ] || exit 1

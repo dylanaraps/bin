@@ -9,5 +9,14 @@ time=$(date +%I-%M-%S)
 file=$scr_dir/$date/$date-$time.jpg
 
 mkdir -p "$scr_dir/$date"
-import -window root "$file"
+
+ffmpeg -y \
+    -hide_banner \
+    -loglevel error \
+    -f x11grab \
+    -video_size 3200x1800 \
+    -i :0.0 \
+    -vframes 1 \
+    "$file"
+
 cp -f "$file" "$scr_dir/current.jpg"

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+printf '%s\n' "TYPE=$TYPE, PKG=$PKG, DEST=$DEST"
+
+case $TYPE in
+    pre-build)
+        # case $PKG in
+        #    zlib) export CFLAGS="-Os -static" ;;
+        #    curl) export CFLAGS="-O3" ;;
+        # esac
+    ;;
+
+    post-build)
+        : "${DEST:?DEST is unset}"
+
+        rm -rf "$DEST/usr/share/doc"
+        rm -rf "$DEST/usr/share/gettext"
+        rm -rf "$DEST/usr/share/zsh"
+    ;;
+esac

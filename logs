@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Read logs from #kisslinux irc channel with colorized output.
+#
+# Usage: irc, irc [YYYYMMDD]
+
+curl "https://freenode.logbot.info/kisslinux/$(date +%Y%m%d)/raw" |
+
+while read -r _ n m; do
+    n=${n%>}
+    n=${n#<}
+
+    printf '%s %s\n' "$n" "$m"
+done
