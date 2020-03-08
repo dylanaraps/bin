@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git add .
+git commit -m 'docs: update' -S
+git push

@@ -3,18 +3,36 @@
 printf '%s\n' "TYPE=$TYPE, PKG=$PKG, DEST=$DEST"
 
 case $TYPE in
-    pre-build)
-        # case $PKG in
-        #    zlib) export CFLAGS="-Os -static" ;;
-        #    curl) export CFLAGS="-O3" ;;
-        # esac
+    pre-build) 
+        IFS=. read -r start _ < /proc/uptime
     ;;
 
     post-build)
+        IFS=. read -r end _ < /proc/uptime
+
+        (
+            s=$((end - start))
+            d=$((s / 60 / 60 / 24))
+            h=$((s / 60 / 60 % 24))
+            m=$((s / 60 % 60))
+
+            [ "$d" = 0 ] || u="${u}${d}d "
+            [ "$h" = 0 ] || u="${u}${h}h "
+            [ "$m" = 0 ] || u="${u}${m}m "
+
+            log "$PKG" "Build finished in ${u:-${s}s}" 
+        )
+
         : "${DEST:?DEST is unset}"
 
-        rm -rf "$DEST/usr/share/doc"
-        rm -rf "$DEST/usr/share/gettext"
-        rm -rf "$DEST/usr/share/zsh"
+        case $PKG in
+           kiss) ;;
+
+           *) 
+               rm -rf "$DEST/usr/share/doc" 
+               rm -rf "$DEST/usr/share/gettext"
+               rm -rf "$DEST/usr/share/zsh"
+           ;;
+        esac
     ;;
 esac

@@ -6,7 +6,6 @@ img() {
     [ -d "$1" ] && {
         set +f
         set -f -- "$1/"*
-
         shift "$(shuf -i "1-$#" -n 1)"
     }
 
