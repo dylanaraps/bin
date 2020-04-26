@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo | exec env - su -c 'DISPLAY=:0 firefox' webshit

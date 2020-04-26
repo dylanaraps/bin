@@ -1,0 +1,9 @@
+case $TYPE in
+    pre-build)
+        case $PKG in
+            fribidi) export CFLAGS="" ;;
+            gcc)     export CFLAGS="" ;;
+            zlib)    export CFLAGS="" ;;
+        esac
+    ;;
+esac

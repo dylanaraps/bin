@@ -2,11 +2,11 @@
 #
 # Take a screenshot.
 
-scr_dir=~/Pictures/Screenshots
+scr_dir=~/pictures/screenshots
 
 date=$(date +%F)
 time=$(date +%I-%M-%S)
-file=$scr_dir/$date/$date-$time.jpg
+file=$scr_dir/$date/$date-$time.png
 
 mkdir -p "$scr_dir/$date"
 
@@ -14,9 +14,9 @@ ffmpeg -y \
     -hide_banner \
     -loglevel error \
     -f x11grab \
-    -video_size 3200x1800 \
+    -video_size 1920x1080 \
     -i :0.0 \
     -vframes 1 \
     "$file"
 
-cp -f "$file" "$scr_dir/current.jpg"
+cp -f "$file" "$scr_dir/current.png"

@@ -2,7 +2,7 @@
 #
 # music - simple music player using mpv.
 
-exec mpv --geometry=650x650+2450+200 \
+exec mpv --geometry=200x200+1600+800 \
          --shuffle \
          --x11-name=no-title \
-         -- ~/Music/final/*
+         -- ~/music/*

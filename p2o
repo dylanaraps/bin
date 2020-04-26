@@ -1,0 +1,50 @@
+#!/bin/sh
+
+ls -ld "$1" | { while [ "${i:-0}" -lt 10 ]; do
+    case $i$(dd ibs=1 count=1 2>/dev/null) in 
+        ?r) sum=$((sum + 4)) ;;
+        ?w) sum=$((sum + 2)) ;;
+        ?x) sum=$((sum + 1)) ;;
+        ?s) sum=$((sum + 1)) oct=$((4 / (i/3)))$oct ;;
+        9t) sum=$((sum + 1)) oct=1$oct 
+    esac
+
+    case $i$((i%3)) in 00) ;; 
+        ?0) oct=$oct$sum sum=0
+    esac
+
+    i=$((i + 1)) 
+done; printf '%s\n' "$oct"; }
+
+
+#perms() {
+#    # This function simply converts -rwxrwxrwx to its octal
+#    # equivalent from the output of 'ls -l'.
+#    #
+#    # Disable this warning as the usage of 'ls -l' is intended
+#    # here and the field we're parsing ia fine for use.
+#    # shellcheck disable=2012
+
+#    perms=$(ls -ld "$1") perms=${perms%% *} perms=${perms#?}
+#    o=${perms##??????} u=${perms%%??????} g=${perms##???} g=${g%%???}
+
+#    echo "$u $g $o"
+#    # oct=; ch=0; sum=
+
+#    # for p do
+#    #     case $ch$p in 
+#    #         ?r) sum=$((sum + 4)) ;;
+#    #         ?w) sum=$((sum + 2)) ;;
+#    #         ?x) sum=$((sum + 1)) ;;
+#    #         ?s) sum=$((sum + 1)) oct=$((2 * (ch/3)))$oct ;;
+#    #         9t) sum=$((sum + 1)) oct=1$oct 
+#    #     esac
+
+#    #     [ "$((ch % 3))" = 0 ] &&
+#    #         oct=$oct$sum sum=0
+
+#    #     ch=$((ch + 1)) 
+#    # done
+#}
+
+#perms "$1"

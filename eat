@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# Run a program from a terminal and destroy
+# the terminal. Think "Using the terminal as
+# a dmenu replacement".
+
+while [ ! "$term" ]; do
+    # Grab the parent process ID of the given PID.
+    while IFS=':	' read -r key val; do 
+        case $key in PPid) ppid=$val; esac
+    done < "/proc/${ppid:-$$}/status"
+
+    # Grab the process name of the found PPID.
+    read -r name < "/proc/$ppid/comm"
+
+    # Abort the loop once we pass through the
+    # blacklist of process names.
+    case $name in
+        "${SHELL##*/}"|init) ;;
+        *) term=$name ;;
+    esac
+done
+
+# Run the program in a new session and then
+# kill the found PPID (which will be the
+# terminal).
+setsid "$@" >/dev/null & kill "$ppid"
