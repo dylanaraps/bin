@@ -4,24 +4,29 @@
 # the terminal. Think "Using the terminal as
 # a dmenu replacement".
 
-while [ ! "$term" ]; do
-    # Grab the parent process ID of the given PID.
-    while IFS=':	' read -r key val; do 
-        case $key in PPid) ppid=$val; esac
-    done < "/proc/${ppid:-$$}/status"
+# Store the process list to iterate over below.
+# This lets us avoid calling ps per loop iteration times.
+ps=$(ps -f -o pid -o ppid -o comm)
 
-    # Grab the process name of the found PPID.
-    read -r name < "/proc/$ppid/comm"
+while [ ! "$term" ]; do
+    # Iterate over the 'ps' list and grab the parent process
+    # ID's information. Heredocs are used to avoid subshell
+    # usage with restricts variable scope.
+    while read -r pid _ppid comm; do case $pid in
+        "${ppid:-$$}") ppid=$_ppid; break
+    esac done <<EOF
+$ps
+EOF
 
     # Abort the loop once we pass through the
     # blacklist of process names.
-    case $name in
-        "${SHELL##*/}"|init) ;;
-        *) term=$name ;;
+    case $comm in
+        "${0##*/}"|"${SHELL##*/}"|init) ;;
+        *) term=$comm ;;
     esac
 done
 
 # Run the program in a new session and then
 # kill the found PPID (which will be the
 # terminal).
-setsid "$@" >/dev/null & kill "$ppid"
+setsid "$@" >/dev/null & kill "$pid"

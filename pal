@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# set dark colors if argument passed
+[ "$1" ] && {
+    bg=000000
+    fg=fffdff
+}
+
+cat <<EOF
+${bg:-ffffff}
+#d73a49
+#22863a
+#e36209
+#005cc5
+#6f42c1
+#b31d28
+${fg:-#24292e}
+#6a737d
+#d73a49
+#22863a
+#e36209
+#005cc5
+#6f42c1
+#b31d28
+${fg:-#24292e}
+EOF
+

@@ -1,37 +1,80 @@
 #!/bin/sh
 
-printf '%s\n' "TYPE=$TYPE, PKG=$PKG, DEST=$DEST"
-
 case $TYPE in
-    pre-build) 
-        IFS=. read -r start _ < /proc/uptime
+    pre-build)
+        IFS=. read -r _start _ < /proc/uptime
+
+        case $PKG in
+            llvm|clang|rust)
+                export MAKEFLAGS=-j2
+            ;;
+
+            tmux)
+cat <<EOF > .build
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -static"
+
+./configure \
+    ac_cv_search_forkpty=-lncursesw \
+    --prefix=/usr \
+    --enable-static
+
+make
+make DESTDIR="$1" install
+EOF
+                chmod +x .build
+            ;;
+        esac
+    ;;
+
+    pre-extract)
+        case $PKG in
+            firefox|firefox-esr|rust|llvm|clang|gcc)
+                mak_dir=$KISS_TMPDIR/build-$pid
+                pkg_dir=$KISS_TMPDIR/pkg-$pid
+            ;;
+
+            *)
+                log "$PKG" "Activating tmpfs"
+
+                mak_dir=/tmp/build-$pid
+                pkg_dir=/tmp/pkg-$pid
+            ;;
+        esac
+
+        mkdir -p "$mak_dir" "$pkg_dir/$PKG/var/db/kiss/installed"
     ;;
 
     post-build)
-        IFS=. read -r end _ < /proc/uptime
+        IFS=. read -r _end _ < /proc/uptime
 
         (
-            s=$((end - start))
-            d=$((s / 60 / 60 / 24))
-            h=$((s / 60 / 60 % 24))
-            m=$((s / 60 % 60))
+            _s=$((_end - _start))
+            _h=$((_s / 60 / 60 % 24))
+            _m=$((_s / 60 % 60))
 
-            [ "$d" = 0 ] || u="${u}${d}d "
-            [ "$h" = 0 ] || u="${u}${h}h "
-            [ "$m" = 0 ] || u="${u}${m}m "
+            [ "$_h" = 0 ] || _u="${_u}${_h}h "
+            [ "$_m" = 0 ] || _u="${_u}${_m}m "
 
-            log "$PKG" "Build finished in ${u:-${s}s}" 
+            log "$PKG" "Build finished in ${_u:-${_s}s}"
         )
 
         : "${DEST:?DEST is unset}"
 
         case $PKG in
-           kiss) ;;
+           kiss) rm -rf "$DEST/usr/bin" ;;
 
-           *) 
-               rm -rf "$DEST/usr/share/doc" 
+           *)
+               rm -rf "$DEST/usr/share/doc"
                rm -rf "$DEST/usr/share/gettext"
+               rm -rf "$DEST/usr/share/man"
+               rm -rf "$DEST/usr/share/locale"
+               rm -rf "$DEST/usr/share/polkit-1"
+               rm -rf "$DEST/usr/share/info"
+               rm -rf "$DEST/usr/share/gtk-doc"
                rm -rf "$DEST/usr/share/zsh"
+               rm  -f "$DEST/usr/lib/charset.alias"
            ;;
         esac
     ;;

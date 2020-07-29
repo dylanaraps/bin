@@ -1,5 +1,8 @@
 #!/bin/sh
 
+efibootmgr -b 0000 -B
+efibootmgr -b 0001 -B
+
 efibootmgr --disk /dev/nvme0n1 \
            --part 1 \
            --create KISSLINUXOLD \
@@ -9,4 +12,3 @@ efibootmgr --disk /dev/nvme0n1 \
            --part 1 \
            --create KISSLINUX \
            --loader /vmlinuz
-

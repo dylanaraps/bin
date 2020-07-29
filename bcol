@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xsetroot -solid \#"${1:-c8e1ff}"

@@ -6,17 +6,23 @@ scr_dir=~/pictures/screenshots
 
 date=$(date +%F)
 time=$(date +%I-%M-%S)
-file=$scr_dir/$date/$date-$time.png
+file=$scr_dir/$date/$date-$time.jpg
 
 mkdir -p "$scr_dir/$date"
 
 ffmpeg -y \
-    -hide_banner \
-    -loglevel error \
     -f x11grab \
     -video_size 1920x1080 \
     -i :0.0 \
     -vframes 1 \
-    "$file"
+    "$file" 2>/dev/null
 
-cp -f "$file" "$scr_dir/current.png"
+ffmpeg -y \
+    -f x11grab \
+    -video_size 1920x1080 \
+    -i :0.0 \
+    -vframes 1 \
+    "${file%%.jpg}.png" 2>/dev/null
+
+cp -f "$file" "$scr_dir/current.jpg"
+cp -f "${file%%.jpg}.png" "$scr_dir/current.png"
