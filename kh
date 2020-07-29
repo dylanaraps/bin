@@ -9,6 +9,14 @@ case $TYPE in
                 export MAKEFLAGS=-j2
             ;;
 
+            mesa)
+                _flags=-Dgallium-drivers=radeonsi
+                _flags=$_flags\ -Dvulkan-drivers=amd
+                _flags=$_flags\ -Dgallium-va=true
+
+                sed -i "s/\. output/$_flags \0/" .build
+            ;;
+
             tmux)
 cat <<EOF > .build
 #!/bin/sh -e
