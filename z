@@ -1,9 +1,7 @@
   z() {
-      __zfile=$HOME/.zfile-$$
+      __zfile=/tmp/.zfile-$$
 
-      trap 'rm -f $__zfile' INT EXIT
-
-      if read -r _ 2>/dev/null < "$__zfile"; then
+      ! read -r _ 2>/dev/null < "$__zfile" ||
           while read -r __zhist; do
               unset __zmat
 
@@ -12,12 +10,13 @@
               esac done
 
               case $__zmat in "$#")
-                  cd "$__zhist"
+                  cd "$__zhist" ||:
                   return
               esac
           done < "$__zfile"
 
-      elif cd "${1:-"$HOME"}"; then
+      ! cd "${1:-"$HOME"}" ||
           printf '%s\n' "$PWD" >> "$__zfile"
-      fi
+
+      unset __zfile __zarg __zmat
   }
