@@ -1,0 +1,23 @@
+  z() {
+      __zfile=$HOME/.zfile-$$
+
+      trap 'rm -f $__zfile' INT EXIT
+
+      if read -r _ 2>/dev/null < "$__zfile"; then
+          while read -r __zhist; do
+              unset __zmat
+
+              for __zarg do case $__zhist in *"$__zarg"*)
+                  __zmat=$((__zmat + 1))
+              esac done
+
+              case $__zmat in "$#")
+                  cd "$__zhist"
+                  return
+              esac
+          done < "$__zfile"
+
+      elif cd "${1:-"$HOME"}"; then
+          printf '%s\n' "$PWD" >> "$__zfile"
+      fi
+  }
